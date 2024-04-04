@@ -1,0 +1,226 @@
+
+
+
+query findPersonnelNoteById($id : Long){
+    findPersonnelNoteById(id: $id){
+        id
+        authorizedUsers {
+            personnel {
+                matricule
+                noma
+                pnoma
+            }
+        }
+        observation
+        color
+        user {
+            personnel {
+                matricule
+                noma
+                pnoma
+            }
+        }
+        pamOff2024 {
+            matricule
+            noma
+            pnoma
+        }
+    }
+}
+query findPersonnelNotesByUserAndPersonnel($userId : String , $pesonnelId : String , $includeAllNotes : Boolean!) {
+    findPersonnelNotesByUserAndPersonnel(userId: $userId , personnelId: $pesonnelId , includeAllNotes: $includeAllNotes){
+        id
+        user {
+            id
+            personnel {
+                matricule
+                noma
+                pnoma
+            }
+        }
+        dateCreation
+        authorizedUsers {
+            personnel {
+                matricule
+                noma
+                pnoma
+                grade {
+                    grade
+                }
+                arme {
+                    id
+                }
+                pamOff2024 {
+                    trieAnciennete
+                }
+            }
+        }
+        observation
+        color
+        pamOff2024 {
+            matricule
+            noma
+            pnoma
+        }
+    }
+}
+query findPersonnelNotes{
+    findPersonnelNotes{
+        id
+        authorizedUsers {
+            personnel {
+                matricule
+                noma
+                pnoma
+            }
+        }
+        observation
+        color
+        user {
+            personnel {
+                matricule
+                noma
+                pnoma
+            }
+        }
+        dateCreation
+        pamOff2024 {
+            matricule
+            noma
+            pnoma
+        }
+    }
+}
+query findAllPersonnelNotesPaged($pageable : PaginationInput , $searchParams : PersonnelNoteSearchParamsInput){
+    findAllPersonnelNotesPaged(pageable: $pageable, searchParams: $searchParams){
+        content {
+            id
+            pamOff2024 {
+                matricule
+                noma
+                pnoma
+                arme
+                personnel {
+                    grade {
+                        grade
+                        libGradeArDetermine
+                        libGradeAr
+                        libGradeFr
+                    }
+                }
+            }
+            dateCreation
+            user {
+                id
+                personnel {
+                    matricule
+                    noma
+                    pnoma
+                    grade {
+                        grade
+                        libGradeAr
+                        libGradeArDetermine
+                        libGradeFr
+                    }
+                    arme {
+                        id
+                    }
+                }
+            }
+            observation
+            authorizedUsers {
+                id
+                personnel {
+                    matricule
+                    noma
+                    pnoma
+                    grade {
+                        grade
+                        libGradeFr
+                        libGradeAr
+                        libGradeArDetermine
+                    }
+                    arme {
+                        id
+                    }
+                }
+            }
+        }
+        totalPages
+        totalElements
+    }
+}
+query findPersonnelNotesByUser($userId : String , $pageable : PaginationInput){
+    findPersonnelNotesByUser(userId: $userId , pageable: $pageable){
+        content {
+            id
+            pamOff2024 {
+                matricule
+                noma
+                pnoma
+                arme
+                personnel {
+                    matricule
+                    noma
+                    pnoma
+                    grade {
+                        grade
+                        libGradeArDetermine
+                        libGradeAr
+                        libGradeFr
+                    }
+                }
+            }
+            dateCreation
+            user {
+                id
+                personnel {
+                    matricule
+                    noma
+                    pnoma
+                    grade {
+                        grade
+                        libGradeAr
+                        libGradeArDetermine
+                        libGradeFr
+                    }
+                    arme {
+                        id
+                    }
+                }
+            }
+            observation
+            authorizedUsers {
+                id
+                personnel {
+                    matricule
+                    noma
+                    pnoma
+                    grade {
+                        grade
+                        libGradeFr
+                        libGradeAr
+                        libGradeArDetermine
+                    }
+                    arme {
+                        id
+                    }
+                }
+            }
+        }
+        totalPages
+        totalElements
+    }
+}
+mutation createPersonnelNote($note : PersonnelNoteInput){
+    createPersonnelNote(note:$note )
+}
+mutation deletePersonnelNote($id : Long){
+    deletePersonnelNote(id: $id)
+}
+mutation deleteAuthorizedUser($userName : String , $noteId : Long){
+    deleteAuthorizedUser(userName: $userName , noteId: $noteId)
+}
+mutation updatePersonnelNoteContent($noteContent : String , $personnelId : Long){
+    updatePersonnelNoteContent(noteContent:$noteContent , personnelNoteId: $personnelId)
+}

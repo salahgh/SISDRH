@@ -1,0 +1,26 @@
+
+
+query searchUsersByToken($searchToken : String , $pageable : PaginationInput){
+    searchUsersByToken(searchToken: $searchToken , pageable: $pageable){
+        pageable {
+            pageNumber
+            pageSize
+        }
+        content {
+            id
+            personnel {
+                id
+                arme {
+                    id
+                }
+                grade {
+                    grade
+                }
+                nom
+                pnom
+                noma
+                pnoma
+            }
+        }
+    }
+}

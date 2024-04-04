@@ -1,0 +1,565 @@
+query allProjects{
+    allProjects {
+        id ,
+        description ,
+        nameAr
+        members {
+            personnel {
+                id ,
+                nom,
+                pnom ,
+                noma ,
+                pnoma ,
+                matricule
+            }
+        }
+        name
+    }
+}
+query bugProjectById( $projectId: Long ){
+    projectById(id: $projectId){
+        id ,
+        name ,
+        nameAr,
+        description ,
+        members {
+            id ,
+            personnel {
+                noma
+                pnoma
+                nom
+                pnom
+                matricule
+                grade {
+                    grade
+                }
+            }
+        }
+    }
+}
+query bugAllStatuses {
+    allStatus {
+        id
+        statusAn
+        statusAr
+        statusFr
+    }
+}
+query getAllIssuesByProjectPaged($pageRequest : PaginationInput , $projectId : Long){
+    allIssuesByProject(pageRequest: $pageRequest , projectId: $projectId){
+        pageable {
+            pageNumber
+            pageSize
+            sort {
+                orders {
+                    direction
+                    property
+                }
+            }
+        }
+        content {
+            id
+            description
+            title
+            issueType {
+                id
+                typeAr
+                typeFr
+                typeAn
+            }
+            sevirity {
+                id
+                sevirityFR
+                sevirityAR
+            }
+            priority {
+                id
+                priorityFR
+                priorityAR
+            }
+            comments {
+                id
+                createdDate
+                text
+                createdBy {
+                    personnel {
+                        matricule
+                        nom
+                        noma
+                        pnom
+                        pnoma
+                    }
+                }
+            }
+            assignee {
+                personnel {
+                    matricule
+                    nom
+                    pnom
+                    noma
+                    pnoma
+                }
+            }
+            status {
+                id
+                statusFr
+                statusAr
+            }
+            creator {
+                personnel {
+                    matricule
+                    noma
+                    pnoma
+                    nom
+                    pnom
+                    grade {
+                        grade
+                        abrGradeAr
+                        abrGradeFr
+                        libGradeAr
+                        libGradeFr
+                    }
+                    arme {
+                        id
+                        libArmeFr
+                        libArmeAr
+                    }
+                }
+            }
+            tags {
+                name
+                id
+            }
+            attachments {
+                id
+            }
+        }
+        totalElements
+        totalPages
+    }
+}
+query allPriorities{
+    allPriorities {
+        id
+        priorityAR
+        priorityFR
+    }
+}
+query allSeverities{
+    allSeverities {
+        id
+        sevirityAR
+        sevirityFR
+    }
+}
+query allTags{
+    allTags {
+        id
+        name
+    }
+}
+query issueById($issueId : Long){
+    issueById(id: $issueId){
+        id
+        description
+        title
+        dateCreation
+        issueType {
+            id
+            typeAr
+            typeFr
+            typeAn
+        }
+        sevirity {
+            id
+            sevirityFR
+            sevirityAR
+        }
+        priority {
+            id
+            priorityFR
+            priorityAR
+        }
+        comments {
+            id
+            createdDate
+            text
+            createdBy {
+                personnel {
+                    matricule
+                    nom
+                    noma
+                    pnom
+                    pnoma
+                    grade {
+                        grade
+                        libGradeAr
+                        libGradeFr
+                    }
+                }
+            }
+        }
+        assignee {
+            personnel {
+                matricule
+                nom
+                pnom
+                noma
+                pnoma
+            }
+        }
+        status {
+            id
+            statusFr
+            statusAr
+        }
+        creator {
+            personnel {
+                matricule
+                noma
+                pnoma
+                nom
+                pnom
+                grade {
+                    libGradeAr
+                    libGradeFr
+                    grade
+                }
+            }
+        }
+        attachments {
+            id
+        }
+        tags {
+            id
+            name
+        }
+        comments {
+            text ,
+            id ,
+            createdDate ,
+            createdBy {
+                personnel {
+                    nom
+                    noma
+                    pnom
+                    pnoma
+                    matricule
+                    grade {
+                        grade
+                        libGradeFr
+                        libGradeAr
+                    }
+                }
+            }
+        }
+    }
+}
+query getStatusById($statusId : Long){
+    satusById(satusId: $statusId){
+        id ,
+        statusAr ,
+        statusFr ,
+        statusAn
+    }
+}
+query getIssueTypeById($typeId : Long){
+    issueTypeById(typeId: $typeId){
+        id
+        typeAn
+        typeFr
+        typeAr
+    }
+}
+query allIssueTypes{
+    allIssueTypes {
+        id
+        typeAn
+        typeAr
+        typeFr
+    }
+}
+query sevirityById($sevirityId : Long){
+    sevirityById(sevirityId: $sevirityId){
+        id
+        sevirityAR
+        sevirityFR
+    }
+}
+query attachmentById($id : Long){
+    attachmentById(id: $id){
+        id
+        mimeType
+        base64FileData
+        issueId
+        originalFileName
+        size
+    }
+}
+query attachmentsByIssue($id : Long){
+    attachmentsByIssue(issueId: $id){
+        issueId
+        id
+        size
+        originalFileName
+        base64FileData
+        mimeType
+    }
+}
+query allStatuseCount($projectId : Long){
+    allStatuseCount(projectId: $projectId) {
+        id
+        statusAn
+        statusFr
+        statusAr
+        count_
+    }
+}
+query allIssueTypesCount($projectId : Long){
+    allIssueTypesCount(projectId:$projectId ){
+        count_
+        id
+        typeAn
+        typeFr
+        typeAr
+    }
+}
+query searchIssues($issueStatusId : Long , $issueTypeId : Long , $priorityId : Long , $pageable : PaginationInput , $projectId : Long){
+    searchIssues(issueStatusId: $issueStatusId , issueTypeId: $issueTypeId ,priorityId: $priorityId , pageable: $pageable , projectId: $projectId){
+        pageable {
+            pageNumber
+            pageSize
+            sort {
+                orders {
+                    direction
+                    property
+                }
+            }
+        }
+        content {
+            id
+            description
+            title
+            dateCreation
+            issueType {
+                id
+                typeAr
+                typeFr
+                typeAn
+            }
+            sevirity {
+                id
+                sevirityFR
+                sevirityAR
+            }
+            priority {
+                id
+                priorityFR
+                priorityAR
+            }
+            comments {
+                id
+                createdDate
+                text
+                createdBy {
+                    personnel {
+                        matricule
+                        nom
+                        noma
+                        pnom
+                        pnoma
+                    }
+                }
+            }
+            assignee {
+                personnel {
+                    matricule
+                    nom
+                    pnom
+                    noma
+                    pnoma
+                }
+            }
+            status {
+                id
+                statusFr
+                statusAr
+            }
+            creator {
+                personnel {
+                    matricule
+                    noma
+                    pnoma
+                    nom
+                    pnom
+                    grade {
+                        grade
+                        abrGradeAr
+                        abrGradeFr
+                        libGradeAr
+                        libGradeFr
+                    }
+                    arme {
+                        id
+                        libArmeFr
+                        libArmeAr
+                    }
+                }
+            }
+            tags {
+                name
+                id
+            }
+            attachments {
+                id
+            }
+        }
+        totalElements
+        totalPages
+    }
+}
+
+mutation createIssue( $issue : IssueInputDtoInput ) {
+    createIssue(issueInputDto : $issue ){
+        id ,
+        title ,
+        description ,
+        priority {
+            id ,
+            priorityFR ,
+            priorityAR
+        } ,
+        status {
+            id ,
+            statusAr ,
+            statusFr ,
+            statusAn
+        }
+        tags {
+            id ,
+            name
+        } ,
+        sevirity {
+            id
+            sevirityFR
+            sevirityAR
+        }
+        issueType {
+            typeFr
+            typeAr
+            typeAn
+            id
+        }
+    }
+}
+mutation updateIssueType($issueId : Long , $typeId : Long){
+    updateIssueType(issueId: $issueId , typeId:  $typeId){
+        id
+    }
+}
+mutation updateIssueStatus($issueId : Long , $statusId : Long ){
+    updateIssueStatus(issueId: $issueId , statusId: $statusId){
+        id
+    }
+}
+mutation updateIssueSevirity($issueId : Long , $sevirityId : Long ){
+    updateIssueSevirity(issueId: $issueId , sevirityId: $sevirityId){
+        id
+    }
+}
+mutation deleteIssueComment($commentId : Long){
+    deleteIssueComment(commentId:$commentId )
+}
+mutation updateIssueComment($commentId : Long , $text : String){
+    updateIssueComment(commentId:$commentId , text: $text){
+        text ,
+        id ,
+        createdDate ,
+        createdBy {
+            personnel {
+                nom
+                noma
+                pnom
+                pnoma
+                matricule
+                grade {
+                    grade
+                    libGradeFr
+                    libGradeAr
+                }
+            }
+        }
+    }
+}
+mutation createIssueComment($text : String , $issueId : Long){
+    createIssueComment(text: $text , issueId: $issueId){
+        text ,
+        id ,
+        createdDate ,
+        createdBy {
+            personnel {
+                nom
+                noma
+                pnom
+                pnoma
+                matricule
+                grade {
+                    grade
+                    libGradeFr
+                    libGradeAr
+                }
+            }
+        }
+    }
+}
+mutation addIssueTag($issueId : Long , $tagname : String){
+    addIssueTag(issueId: $issueId , tagname: $tagname)
+}
+
+query notifications($pageable : PaginationInput , $user : String) {
+    allNotifications(pageable: $pageable , userName: $user){
+        pageable {
+            pageSize
+            pageNumber
+        }
+        totalElements
+        content {
+            id
+            dateTime
+            emmitter {
+                personnel {
+                    noma
+                    pnoma
+                    nom
+                    pnom
+                    matricule
+                    grade {
+                        grade
+                        libGradeFr
+                        libGradeAr
+                    }
+                }
+            }
+            issue {
+                id
+                title
+                issueType {
+                    id
+                    typeAr
+                    typeFr
+                }
+            }
+            notificationType {
+                id
+                libAr
+                libFr
+            }
+            state
+        }
+    }
+}
+
+mutation changeNotificationState($notificationState : NotificationState , $notificationId: Long){
+    changeNotificationState(notificationId: $notificationId , notificationState: $notificationState)
+}
+

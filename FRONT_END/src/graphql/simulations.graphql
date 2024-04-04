@@ -1,0 +1,217 @@
+
+
+mutation createSimulation($simulationDto : SimulationDtoInput){
+    createSimulation(simulationDto: $simulationDto){
+        id
+        name
+        numberOfSteps
+        description
+        dateDebut
+        dateFin
+    }
+}
+mutation setNumberOfSteps($simulationId : Long , $steps : Int!){
+    setNumberOfSteps(simulationId: $simulationId , steps: $steps)
+}
+mutation startSimulation($simulationId : Long){
+    startSimulation(simulationId: $simulationId)
+}
+mutation createSimAgent($simAgentDto : SimAgentDtoInput){
+    createSimAgent(simAgentDto: $simAgentDto){
+        simAgentId {
+            step
+            id
+        }
+    }
+}
+
+query simulationById($simulationId : Long){
+    simulationById(simulationId: $simulationId){
+        id
+        name
+        numberOfSteps
+        description
+        dateDebut
+        dateFin
+    }
+}
+query simulations{
+    simulations {
+        id
+        name
+        numberOfSteps
+        description
+        dateDebut
+        dateFin
+    }
+}
+query simAgentsByStepAndSimulation($simulaitonId : Long , $pageable : PaginationInput , $step : Int!){
+    simAgentsByStepAndSimulation(simulationId: $simulaitonId , pageable: $pageable , step: $step){
+        pageable {
+            pageNumber
+            pageSize
+        }
+        content {
+            grade {
+                grade
+                libGradeAr
+                libGradeFr
+            }
+            arme {
+                id
+                libArmeAr
+                libArmeFr
+            }
+            nom
+            pnom
+            noma
+            pnoma
+            age
+            anicenneteGrade
+            anneDeService
+            class_
+            nombreDeProposition
+            simAgentId {
+                id
+                step
+            }
+            typeRecrutement
+        }
+    }
+}
+
+mutation deleteSimAgent($simAgentId : SimAgentIdInput){
+    deleteSimAgent(simAgentId: $simAgentId)
+}
+
+#V1
+
+mutation createRecrutement($recrutemnt : RecrutementDtoInput){
+    createRecrutement(recrutementDto: $recrutemnt){
+        id
+        typeRecrutement
+        anneDeRecrutemnt
+        nombre
+    }
+}
+mutation updateRecrutemntNombre($nombre : Int! , $recrutmentId : Long){
+    updateRecrutemntNombre(nomber: $nombre,recrutemntId: $recrutmentId)
+}
+mutation deleteRecrutement($recrutmentId : Long){
+    deleteRecrutement(recrutementId: $recrutmentId)
+}
+
+query allRecrutemnts{
+    allRecrutemnts {
+        nombre
+        anneDeRecrutemnt
+        typeRecrutement
+        id
+    }
+}
+
+query recrutementByClass($class : Int! , $simulationId : Long){
+    recrutementByClass(class_: $class , simulationId: $simulationId){
+        id
+        typeRecrutement
+        anneDeRecrutemnt
+        nombre
+    }
+}
+query recrutementByTypeRecrutement($typeRecrutment : TypeRecrutement, $simulationId : Long){
+    recrutementByTypeRecrutement(typeRecrutement: $typeRecrutment, simulationId: $simulationId){
+        typeRecrutement
+        nombre
+        anneDeRecrutemnt
+        id
+    }
+}
+query recrutementByTypeRecrutementAndClass($typeRecrutment : TypeRecrutement , $classe : Int! , $simulationId : Long){
+    recrutementByTypeRecrutementAndClass(typeRecrutement: $typeRecrutment , classe_: $classe , simulationId: $simulationId){
+        typeRecrutement
+        id
+        anneDeRecrutemnt
+        nombre
+    }
+}
+query allRecrutemntsBySimulation($simulationId : Long){
+    allRecrutemntsBySimulation(simulationId: $simulationId){
+        nombre
+        anneDeRecrutemnt
+        id
+        typeRecrutement
+        simulation {
+            id
+            name
+            description
+        }
+    }
+}
+
+# V2
+
+mutation createRecrutementV2($recrutemnt : RecrutementV2DtoInput){
+    createRecrutementV2(recrutementV2Dto: $recrutemnt){
+        anneDeRecrutemnt
+        EMP
+        FF
+        FS_L
+        FS_M
+        simulation {
+            id
+            description
+            name
+        }
+    }
+}
+mutation updateRecrutemntV2($recrutementV2Dto : RecrutementV2DtoInput){
+    updateRecrutemntV2(recrutementV2Dto: $recrutementV2Dto)
+}
+mutation deleteRecrutementV2($recrutmentId : Int!){
+    deleteRecrutementV2(recrutementId: $recrutmentId)
+}
+
+query allRecrutemntsV2{
+    allRecrutemntsV2 {
+        anneDeRecrutemnt
+        FS_M
+        FS_L
+        FF
+        EMP
+        simulation {
+            name
+            description
+            id
+        }
+
+
+    }
+}
+query recrutementV2ByClass($class : Int! , $simulationId : Long){
+    recrutementV2ByClass(class_: $class , simulationId: $simulationId){
+        anneDeRecrutemnt
+        FS_M
+        FS_L
+        FF
+        EMP
+        simulation {
+            name
+            description
+            id
+        }
+    }
+}
+query allRecrutemntsV2BySimulation($simulationId : Long){
+    allRecrutemntsV2BySimulation(simulationId: $simulationId){
+        anneDeRecrutemnt
+        FS_M
+        FS_L
+        FF
+        EMP
+        simulation {
+            name
+            description
+            id
+        }
+    }
+}

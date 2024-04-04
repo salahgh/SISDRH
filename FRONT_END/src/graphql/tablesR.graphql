@@ -1,0 +1,88 @@
+
+
+query gradeById($id : Long){
+    gradeById(gradeId: $id){
+        abrGradeAr
+        abrGradeFr
+        grade
+        gradeInf
+        libGradeAr
+        libGradeFr
+        rhRCatGrade {
+            cat
+            catGrade
+            libCatAr
+            libCatFr
+            libCatGradeAr
+            libCatGradeFr
+        }
+    }
+}
+query allGrades{
+    allGrades {
+        grade
+        libGradeFr
+        libGradeAr
+        abrGradeFr
+        abrGradeAr
+        gradeInf
+    }
+}
+
+query allGradesWithCategrie{
+    allGrades {
+        grade
+        libGradeFr
+        libGradeAr
+        abrGradeFr
+        abrGradeAr
+        gradeInf
+        rhRCatGrade {
+            catGrade
+            cat
+            libCatGradeFr
+            libCatGradeAr
+            libCatFr
+            libCatAr
+        }
+    }
+}
+
+query armeById($id : Long){
+    armeById(armeId: $id){
+        id
+        libArmeAr
+        libArmeFr
+        commandement {
+            id
+            libCommandementAr
+            libCommandementFr
+        }
+    }
+}
+query allArmes{
+    allArmes {
+        id
+        libArmeFr
+        libArmeAr
+    }
+}
+query commandementById($id : BigInteger){
+    commandementById(id: $id){
+        id
+        libCommandementFr
+        libCommandementAr
+        RArmes {
+            id
+            libArmeAr
+            libArmeFr
+        }
+    }
+}
+query allCommandemnets{
+    allCommandements {
+        id
+        libCommandementAr
+        libCommandementFr
+    }
+}

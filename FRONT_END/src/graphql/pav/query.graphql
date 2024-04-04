@@ -1,0 +1,290 @@
+query findByMatricule($matricule : String){
+    findByMatricule(matricule:  $matricule){
+        noteDiplome {
+            note
+            lib
+            id
+        }
+        ancienneteDansLeGrade
+        felicitations {
+           nombre
+            felicitation {
+                autorite
+                note
+            }
+        }
+        sanctions {
+            nombre
+            sanctions {
+                lib
+                note
+            }
+        }
+        anne
+        chef
+        dureeExcercice
+        ancienneteDansLeGrade
+        nombreDeProposition
+        noteArme
+        noteRegionale
+        personnel {
+            matricule
+            noma
+            pnoma
+            nom
+            pnom
+            grade {
+                grade
+                libGradeAr
+                libGradeFr
+            }
+            arme {
+                id
+                libArmeAr
+                libArmeFr
+            }
+        }
+        noteRegionale
+
+    }
+}
+query findAllPav ($pageable : PaginationInput , $idGrade : Long){
+    findAllPav(pageable:$pageable , idGrade: $idGrade ){
+      content {
+          noteDiplome {
+              note
+              lib
+              id
+          }
+          noteGlobale
+          ancienneteDansLeGrade
+          dureeExcerciceUnite
+          ponderation {
+              id
+          }
+          felicitations {
+              nombre
+              felicitation {
+                  autorite
+                  note
+              }
+              id {
+                  felicitationsId
+                  pavId
+              }
+          }
+          sanctions {
+              nombre
+              sanctions {
+                  lib
+                  note
+                  id
+              }
+              id {
+                  pavId
+                  sanctionsId
+              }
+          }
+          anne
+          chef
+          dureeExcercice
+          ancienneteDansLeGrade
+          nombreDeProposition
+          noteArme
+          noteRegionale
+          personnel {
+              matricule
+              noma
+              pnoma
+              nom
+              pnom
+              grade {
+                  grade
+                  libGradeAr
+                  libGradeFr
+              }
+              arme {
+                  id
+                  libArmeAr
+                  libArmeFr
+              }
+              pamOff2024 {
+                  grade
+                  g
+                  noma
+                  pnoma
+                  libArmeAr
+                  arme
+                  matricule
+                  personnelNotes {
+                      id
+                  }
+                  structureSn {
+                      id
+                      typeStructureSn {
+                          id
+                      }
+                      runite {
+                          id
+                          libUniteeAr
+                          abreviationAr
+                          abreviationFr
+                          regionMilitaire {
+                              id
+                              libRegionFr
+                              libRegionAr
+                              libAbrRegionAr
+                              libAbrRegionFr
+                          }
+                      }
+                  }
+                  dureeN
+                  dureeS
+                  libArmeAr
+                  fonction
+                  ensFonction
+                  ens
+                  NMutation
+                  NDureeS
+                  poste
+                  csn
+                  promotionNumber
+                  DUREE_FONCT
+                  ficheVoeuxes {
+                      id {
+                          matricule
+                          annee
+                      }
+                      rhRunite1 {
+                          id
+                          regionMilitaire {
+                              id
+                              libAbrRegionFr
+                              libAbrRegionAr
+                              libRegionAr
+                              libRegionFr
+                          }
+                          libUniteeAr
+                          abreviationFr
+                          abreviationAr
+                      }
+                      rhRunite2 {
+                          id
+                          regionMilitaire {
+                              id
+                              libAbrRegionFr
+                              libAbrRegionAr
+                              libRegionAr
+                              libRegionFr
+                          }
+                          libUniteeAr
+                          abreviationFr
+                          abreviationAr
+                      }
+                      rhRunite3 {
+                          id
+                          regionMilitaire {
+                              id
+                              libAbrRegionFr
+                              libAbrRegionAr
+                              libRegionAr
+                              libRegionFr
+                          }
+                          libUniteeAr
+                          abreviationFr
+                          abreviationAr
+                      }
+                  }
+                  demandeRadiations {
+                      dateDemande
+                      id
+                  }
+                  dip_civ
+                  dip_mil
+                  code_dip_civ
+                  code_dip_mil
+                  formation
+                  obs
+                  dip_mil
+                  dipmil {
+                      abrFr
+                      codeDipMil
+                  }
+                  dipcivil {
+                      abrFr
+                  }
+                  trieAnciennete
+              }
+          }
+          noteRegionale
+          id
+          costumSort
+      }
+        pageable {
+            pageNumber
+            pageSize
+        }
+        totalElements
+        totalPages
+    }
+}
+
+query findAllSanctions($pageable : PaginationInput){
+    findAllRSanctions(pageable: $pageable){
+        content {
+            id
+            lib
+            note
+        }
+    }
+}
+query findCritereDePonderation($chef : Boolean!, $grade : Long , $poste : String){
+    findCritereDePonderation(chef : $chef , grade: $grade , poste: $poste  ){
+        note
+        id
+        grade {
+            grade
+            libGradeAr
+        }
+        poste {
+            idPoste
+        }
+    }
+}
+query findAllNoteDiplome($pageable : PaginationInput){
+    findAllNoteDiplome(pageable: $pageable){
+        content {
+            grade {
+                grade
+                libGradeAr
+                libGradeFr
+            }
+            id
+            index_
+            lib
+            note
+        }
+    }
+}
+
+query findAllFelicitions($pageable : PaginationInput){
+    findAllFelicitions(pageable: $pageable){
+        content {
+            autorite
+            id
+            note
+        }
+    }
+}
+
+mutation addPav($pav : PavDtoInput){
+    savePav(pavDto: $pav){
+        id
+    }
+}
+mutation deletePav($pavId : String){
+    deleteNote(pavId: $pavId)
+}
+mutation updateCostumSort($costumSort : Int , $pavId : String){
+    updateCostumSort(costumSort: $costumSort , pavId: $pavId)
+}

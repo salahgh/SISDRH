@@ -1,0 +1,49 @@
+
+
+query GetPhotoByMatriculeAndSize($matricule : String , $size : Int!){
+    getThumbnailByMatriculeAndSize(matricule: $matricule , size : $size){
+        thumbData ,
+        id ,
+        photo {
+            format
+        }
+        thumbSize
+    }
+}
+
+mutation generateThumbnails{
+    generateThumbnails
+}
+
+
+query photoByMatricule($matricule : String) {
+    photoByMatricule(matricule: $matricule){
+        id
+        format
+        translateX
+        translateY
+        height
+        width
+        rotation
+        photoData
+        personnel {
+            matricule
+            noma
+            pnoma
+            grade {
+                grade
+                libGradeAr
+                libGradeArDetermine
+            }
+            arme {
+                id
+                libArmeAr
+            }
+        }
+        thumbnails {
+            id
+            thumbSize
+            thumbData
+        }
+    }
+}

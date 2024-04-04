@@ -1,0 +1,191 @@
+{
+  "name": "",
+  "children": [
+    {
+      "name": "ocr_page",
+      "children": [
+        {
+          "name": "ocr_carea",
+          "children": [
+            {
+              "name": "ocr_par",
+              "children": [
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "ocr_par",
+              "children": [
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "ocr_par",
+              "children": [
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    },
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "ocr_line",
+                  "children": [
+                    {
+                      "name": "ocrx_word",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

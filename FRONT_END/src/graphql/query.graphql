@@ -1,0 +1,698 @@
+query GetOwnedFolders($username_ : String!) {
+    ownedFolders(username_: $username_) {
+        id,
+        name ,
+        description
+    }
+}
+query findAllOcrResultEntityByFoldersContaining ( $folderId : Long ,    $pagination : PaginationInput){
+    findAllOcrResultEntityByFoldersContaining(
+        pageable: $pagination , folderId: $folderId
+    ) {
+        content {
+            id ,
+            numberOfPapers ,
+            originalFileName ,
+            ocrDone,
+            ocrResultUserGrants {
+                id {
+                    type
+                    userId
+                    ocrResultId
+                }
+                user {
+                    id
+                    personnel {
+                        matricule
+                        noma
+                        pnoma
+                        nom
+                        pnom
+                    }
+                }
+            }
+            typeTexteReglementaire {
+                id ,
+                libTypeTexteAr ,
+                libTypeTexteFr
+            }
+            folders {
+                id ,
+                description,
+                name
+            }
+            ocrResultPinned {
+                id
+            }
+            confidentialite {
+                id
+                libConfidentialiteAr
+                libConfidentialiteFr
+            }
+        }
+        totalElements
+        pageable {
+            pageSize
+            pageNumber
+        }
+    }
+}
+query GetFovoriteFolder{
+    favoriteFolder(userName: "ddf"){
+        id ,
+        description ,
+    }
+}
+query GetFolder($folderId : Long){
+    folder(folderId: $folderId){
+        id,
+        description,
+
+    }
+}
+query GetPdfFile($fileSignatue : String){
+    ocrResultByid(fileSignatue: $fileSignatue){
+        originalFileName ,
+        id ,
+        folders {
+            id ,
+            name ,
+            description
+        },
+        ocrDone ,
+        numberOfPapers ,
+        typeTexteReglementaire {
+            libTypeTexteFr ,
+            libTypeTexteAr
+        },
+        confidentialite {
+            libConfidentialiteAr
+            libConfidentialiteFr
+            id
+        }
+        reference,
+        dateReference,
+        executedAt ,
+        terminatedAt ,
+    }
+}
+query FindAllOcrResultsPaged($pageable : PaginationInput){
+    findAllOcrResultsPaged(pageable: $pageable){
+        pageable {
+            pageNumber ,
+            pageSize,
+        }
+        totalElements ,
+        numberOfElements ,
+        totalPages ,
+        content {
+            owner {
+                id ,
+                personnel {
+                    matricule,
+                    id,
+                    nom ,
+                    noma ,
+                    pnom ,
+                    pnoma
+                }
+            }
+            terminatedAt ,
+            originalFileName ,
+            dateReference ,
+            createdDate ,
+            executedAt ,
+            terminatedAt ,
+            ocrDone ,
+            folders {
+                id ,
+                createdDate
+            },
+        }
+    }
+}
+
+query CpuUsage{
+    cpuUsage_
+}
+query ThreadInfo{threadInfo}
+query MemoryUsage{
+    memoryUsage_ {
+        committed
+        init
+        max
+        used
+    }}
+query AllTypeTexteReglementaires {
+    allTypeTexteReglementaires {
+        id ,
+        libTypeTexteAr ,
+        libTypeTexteFr
+    }
+}
+query TypeTexteReglementaireByLibFr($libFr : String){
+    typeTexteReglementaireByLibFr(libFr: $libFr){
+        libTypeTexteFr ,
+        libTypeTexteAr ,
+        id
+    }
+}
+query AllConfidentialites{
+    allConfidentialites {
+        id ,
+        libConfidentialiteAr ,
+        libConfidentialiteFr
+    }
+}
+query IsOcrJobRunning{
+    isOcrJobRunning
+}
+query OcrResultImagePrepared( $id : String , $pageIndex : Int , $size : Int) {
+    ocrResultImagePrepared(ocrResultid:$id , pageIndex: $pageIndex , size: $size )
+}
+query OcrResultPdf($id : String){
+    ocrResultPdf(ocrResultid: $id)
+}
+query FindPinnedOcrResults{
+    findPinnedOcrResults {
+        ocrResult {
+            typeTexteReglementaire {
+                id ,
+                libTypeTexteFr ,
+                libTypeTexteAr
+            },
+            confidentialite {
+                id ,
+                libConfidentialiteFr ,
+                libConfidentialiteAr
+            },
+            dateReference ,
+            dateReference ,
+            originalFileName ,
+            numberOfPapers ,
+        }
+    }
+}
+query _FindAllOcrResultsPaged($pageable : PaginationInput){
+    findAllOcrResultsPaged(pageable: $pageable){
+        content {
+            ocrDone
+            originalFileName
+            createdDate
+        }
+    }
+}
+query FindAllPinnedFiles{
+    findPinnedOcrResults {
+        ocrResult {
+            id ,
+            originalFileName,
+            dateReference,
+            reference,
+            typeTexteReglementaire {
+                id ,
+                libTypeTexteAr ,
+                libTypeTexteFr
+            }
+            numberOfPapers
+            objects {
+                subject {
+                    id ,
+                    typeTexteReglementaire {
+                        id
+                        libTypeTexteAr
+                        libTypeTexteFr
+                    }
+                    reference
+                    dateReference
+                    numberOfPapers
+                }
+                relationType {
+                    id
+                    libTypeRelationAr
+                    libTypRelationFr
+                }
+            }
+            subjects {
+                object {
+                    typeTexteReglementaire {
+                        id
+                        libTypeTexteFr
+                        libTypeTexteAr
+                    }
+                    reference
+                    dateReference
+                    numberOfPapers
+                }
+                relationType {
+                    id
+                    libTypRelationFr
+                    libTypeRelationAr
+                }
+            }
+            confidentialite {
+                id
+                libConfidentialiteAr
+                libConfidentialiteFr
+            }
+        }
+    }
+}
+query getLoggedInUser($userName : String){
+    user(matricule: $userName){
+        id ,
+        accountNonExpired ,
+        accountNonLocked ,
+        authorities {
+            authority
+        }
+        demandeInscription {
+            dateDemande
+        }
+        folders {
+            id
+        }
+        habilitation {
+            id
+            abbreviation
+            libHabilitationAr
+            libHabilitationFr
+            confidentialites {
+                id
+                libConfidentialiteFr
+                libConfidentialiteAr
+            }
+        }
+        personnel {
+            matricule
+            nom
+            pnom
+            noma
+            pnoma
+            grade {
+                libGradeAr
+                grade
+            }
+            arme {
+                libArmeAr
+                id
+            }
+        }
+    }
+}
+query getHablitations{
+    habilitations {
+        libHabilitationAr ,
+        libHabilitationFr ,
+        id
+        confidentialites {
+            libConfidentialiteAr
+            libConfidentialiteFr
+        }
+    }
+}
+query allOcrResultConfidentialteNotDefined {
+    allOcrResultConfidentialteNotDefined {
+        id
+        originalFileName
+        typeTexteReglementaire {
+            id
+            libTypeTexteAr
+            libTypeTexteFr
+        }
+        reference
+        dateReference
+        numberOfPapers
+        confidentialite {
+            id
+            libConfidentialiteAr
+            libConfidentialiteFr
+        }
+    }
+}
+query enumsWrapperForCodeGeneration ($enum : EnumsWrapperInput){
+    enumsWrapperForCodeGeneration(enumsWrapper: $enum){
+        privilegesEnum
+        rolesEnum
+    }
+}
+query Users{
+    getUsers {
+        personnel {
+            matricule,
+            noma
+            pnoma
+            nom
+            pnom
+        }
+        habilitation {
+            libHabilitationFr
+            libHabilitationAr
+        }
+    }
+}
+query OcrResultUserGrants($fileSignatue: String){
+    ocrResultByid(fileSignatue: $fileSignatue){
+        id
+        reference
+        dateReference
+        typeTexteReglementaire {
+            libTypeTexteFr
+            libTypeTexteFr
+        }
+        confidentialite {
+            libConfidentialiteAr
+            libConfidentialiteFr
+        }
+        ocrResultUserGrants {
+            user {
+                personnel {
+                    matricule
+                    nom
+                    pnom
+                    noma
+                    pnoma
+                }
+                habilitation {
+                    libHabilitationFr
+                    confidentialites {
+                        libConfidentialiteFr
+                        libConfidentialiteAr
+                    }
+                }
+            }id {
+                type
+                ocrResultId
+                userId
+            }
+
+        }
+    }
+}
+query AllOcrResultUsersGrantsPaged($pageable : PaginationInput){
+    allOcrResultUsersGrantsPaged(pageable: $pageable){
+        pageable {
+            pageNumber
+            pageSize
+        }
+        content {
+            id
+            confidentialite {
+                libConfidentialiteFr
+                libConfidentialiteAr
+                id
+            }
+            typeTexteReglementaire {
+                id
+                libTypeTexteFr
+                libTypeTexteAr
+            }
+            dateReference
+            reference
+            numberOfPapers
+            originalFileName
+            ocrResultUserGrants {
+                id {
+                    userId
+                    ocrResultId
+                    type
+                }
+                user {
+                    personnel {
+                        nom
+                        pnom
+                        noma
+                        pnoma
+                        matricule
+                    }
+                }
+            }
+        }
+        totalElements
+        totalPages
+    }
+}
+query userConfidentialites($matricule : String){
+    user(matricule: $matricule){
+        habilitation {
+            libHabilitationFr
+            confidentialites {
+                id
+                libConfidentialiteFr
+                libConfidentialiteAr
+            }
+        }
+    }
+}
+query User($matricule : String){
+    user(matricule: $matricule){
+        id
+        personnel {
+            matricule
+            nom
+            pnom
+            noma
+            pnoma
+        }
+        habilitation {
+            id
+            libHabilitationAr
+            libHabilitationFr
+        }
+        enabled
+        demandeInscription {
+            dateDemande
+        }
+        authorities {
+            authority
+        }
+        accountNonLocked
+        accountNonLocked
+        privileges {
+            id
+            description
+            name
+        }
+        privileges_restriction {
+            name
+            description
+            id
+        }
+        roles {
+            id
+            description
+            name
+            privileges {
+                name
+                description
+                id
+            }
+        }
+    }
+}
+query allUsersPaged($pageable : PaginationInput){
+    allUsersPaged(pageable: $pageable){
+        content {
+            id ,
+            personnel {
+                matricule,
+                noma,
+                pnoma
+                nom
+                pnom
+            }
+        }
+        totalElements
+    }
+}
+query UserAuthorities($matricule : String) {
+    user(matricule: $matricule){
+        authorities {
+            authority
+        }
+        personnel {
+            matricule
+            noma
+            pnoma
+            nom
+            pnom
+        }
+    }
+}
+query findAllRoles{
+    findAllRoles{
+        id
+        description
+        name
+        privileges {
+            id
+            name
+            description
+        }
+    }
+}
+query findAllRolesPaged($paginationInput : PaginationInput){
+    allRolesPaged(pageable: $paginationInput){
+        totalElements
+        content {
+            id
+            name
+            description
+            privileges {
+                id
+                name
+                description
+            }
+        }
+    }
+}
+query findRoleById($roleId : String){
+    findRoleById(roleId: $roleId){
+        id
+        name
+        description
+        privileges {
+            name
+            description
+            id
+        }
+    }
+}
+query allPrivileges{
+    allPrivileges {
+        id
+        description
+        name
+    }
+}
+query privilegeById($privilegeById : Long){
+    privilegeById(PrivilegeId: $privilegeById){
+        name
+        description
+        id
+    }
+}
+query allPrivilegesPaged ($paginationInput : PaginationInput){
+    allPrivilegesPaged(pageable: $paginationInput){
+        totalElements
+        content {
+            id
+            description
+            name
+        }
+    }
+}
+query findAllDemandeInscriptionRemaining{
+    findAllDemandeInscriptionRemaining {
+        id
+        personnel {
+            matricule
+            noma
+            pnoma
+            nom
+            pnom
+        }
+        dateDemande
+    }
+}
+mutation validateUserDemande($matricule : String){
+    validateUserDemande(matricule: $matricule){
+        personnel {
+            matricule
+            noma
+            pnomA
+            pnom
+            nom
+        }
+    }
+}
+mutation AddOcrResultToFolder($folderId: Long!, $ocrResultId: [String]!) {
+    addOcrResultsToFolder(folderId: $folderId, ocrResultIds: $ocrResultId) {
+        id ,
+        name ,
+        pdfFiles {
+            id ,
+            originalFileName
+        }
+    }
+}
+mutation CreateFolder($folder : FolderInput , $username : String){
+    createFolder(folder: $folder , username: $username){
+        name ,
+        description ,
+        id ,
+        color
+    }
+}
+mutation DeleteFolder($folder_id : Long){
+    deleteFolder(folderId: $folder_id)
+}
+
+mutation DeletePdfFileFromFolder($folderId : Long , $pdfId : String){
+    deletePdfFileFromFolder(folderId: $folderId , pdfId: $pdfId)
+}
+
+mutation StartScheduler{
+    startScheduler
+}
+mutation StopScheduler{
+    stopScheduler
+}
+mutation PinOcrResult($ocrResultId : String){
+    pinOcrResult(ocrResultId: $ocrResultId ){
+        id
+    }
+}
+mutation UnpinOcrResult($id : String){
+    unpinOcrResult(id: $id)
+}
+mutation SetHabilitation($habilitaitonId : String , $userName : String ){
+    setHablitation(habilitaitonId: $habilitaitonId, userName: $userName )
+}
+mutation changeOcrResultGrant($ocrResultUserGrantKeys :  [OcrResultUserGrantKeyInputInput] , $ocrResultId :String){
+    changeOcrResultGrant(ocrResultId:$ocrResultId , ocrResultUserGrantKeysInput: $ocrResultUserGrantKeys ){
+        id {
+            ocrResultId
+            type
+            userId
+        }
+        user {
+            personnel {
+                matricule
+                id
+                noma
+                pnoma
+            }
+        }
+    }
+}
+mutation updateConfidentialite($ocrResultId : String , $confidentialiteId : String ) {
+    updateConfidentialite(ocrResultId: $ocrResultId , confidentailteId: $confidentialiteId)
+}
+mutation UserAddPrivilege($username : String , $privilegeName : String){
+    userAddPrivilege(userName: $username , privilegeName: $privilegeName)
+}
+mutation UserAddPrivilegeRestriction($privilegeName : String , $userName : String){
+    userAddPrivilegeRestriction(privilegeName: $privilegeName , userName: $userName)
+}
+mutation UserAddRole($userName : String , $roleName : String){
+    userAddRole(userName:$userName , roleName: $roleName)
+}
+mutation UserDeletePrivilege($userName : String , $privilegeName : String){
+    userDeletePrivilege(userName:$userName , privilegeName: $privilegeName)
+}
+mutation UserDeletePrivilegeRestriction($userName : String , $privilegeName : String){
+    userDeletePrivilegeRestriction(userName:$userName , privilegeName: $privilegeName)
+}
+mutation UserDeleteRole($userName : String , $roleName : String){
+    userDeleteRole(userName:$userName , roleName: $roleName)
+}
+mutation addPrivilegeToRole($roleId : String , $privilegeId : String ){
+    addPrivilegeToRole(roleId: $roleId , privilegeId: $privilegeId)
+}
+mutation deletePrivilegeFromRole($roleId : String , $privilegeId : String ){
+    deletePrivilegeFromRole(privilegeId: $privilegeId , roleId: $roleId)
+}
+mutation generateThumbnails{
+    generateThumbnails
+}

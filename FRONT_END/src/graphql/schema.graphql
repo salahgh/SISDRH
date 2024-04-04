@@ -1,0 +1,2166 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Attachment {
+    fileData: Base64String
+    id: Long
+    issue: Issue
+    mimeType: String
+    originalFileName: String
+    size_: Long
+}
+
+type AttachmentDto {
+    base64FileData: String
+    id: Long
+    issueId: Long
+    mimeType: String
+    originalFileName: String
+    size: Long
+}
+
+type BBox {
+    x1: String
+    x2: String
+    y1: String
+    y2: String
+}
+
+type Comment {
+    createdBy: User
+    createdDate: LocalDateTime
+    id: Long
+    issue: Issue
+    text: String
+}
+
+type Confidentialite {
+    habilitations: [Habilitation]
+    id: String
+    libConfidentialiteAr: String
+    libConfidentialiteFr: String
+}
+
+type CountParArme {
+    count_: Long
+    idArme: BigInteger
+    libArme: String
+}
+
+type CountParCsn {
+    c: String
+    count_: Long
+    csn: String
+}
+
+type CountParDiplomeCivile {
+    abrAr: String
+    abrFr: String
+    codeDipCiv: String
+    count_: Long
+    libAr: String
+    libFr: String
+}
+
+type CountParDiplomeMilitaire {
+    abrAr: String
+    abrFr: String
+    codeDipMil: String
+    count_: Long
+    libAr: String
+    libFr: String
+}
+
+type CountParGradeDto {
+    count_: Long
+    g: BigInteger
+    grade: String
+}
+
+type CountParPostes {
+    count_: Long
+    poste: String
+    trie_: Int
+}
+
+type CritereDePonderation {
+    chef: Boolean!
+    grade: RhRGrade
+    id: String
+    note: Int
+    poste: RhPoste
+}
+
+type DPersonnel {
+    arme: RhRArme
+    grade: RhRGrade
+    id: String
+    matricule: String
+    nom: String
+    noma: String
+    pamOff2024: PamOff2024
+    photos: [Photo]
+    pnom: String
+    pnoma: String
+    poste: RhPoste
+}
+
+type DPersonnelDto {
+    id: String
+    matricule: String
+    nom: String
+    noma: String
+    pnom: String
+    pnomA: String
+}
+
+type DemandeInscriptionUser {
+    dateDemande: LocalDateTime
+    id: String
+    password: String
+    personnel: DPersonnel
+    user: User
+}
+
+type DemandeRadiation {
+    dateDemande: LocalDate
+    id: Long
+    pamOff2024: PamOff2024
+}
+
+type EnumsWrapper {
+    privilegesEnum: PrivilegesEnum
+    rolesEnum: RolesEnum
+}
+
+type FelicitationsPav {
+    felicitation: RFelicitation
+    id: FelicitationsPavId
+    nombre: Long
+    pav: Pav
+}
+
+type FelicitationsPavId {
+    felicitationsId: String
+    pavId: String
+}
+
+type FicheVoeux {
+    id: FicheVoeuxId
+    mvCsn: String
+    obs1: String
+    obs2: String
+    obs3: String
+    obsBsn: String
+    obsChef: String
+    obsDrsn: String
+    obsDsn: String
+    obsSdrh: String
+    pamOff2024: PamOff2024
+    rhRunite1: RhRunite
+    rhRunite2: RhRunite
+    rhRunite3: RhRunite
+}
+
+type FicheVoeuxId {
+    annee: String
+    matricule: String
+}
+
+type Folder {
+    color: String
+    createdDate: LocalDateTime
+    description: String
+    id: Long
+    name: String
+    owner: User
+    pdfFiles: [OcrResultEntityJpa]
+    usersGranted: [User]
+}
+
+type GrantedAuthority {
+    authority: String
+}
+
+type Habilitation {
+    abbreviation: String
+    confidentialites: [Confidentialite]
+    getrTeds: [RhRTed]
+    id: String
+    libHabilitationAr: String
+    libHabilitationFr: String
+    users: [User]
+}
+
+type ImageInfo {
+    height: Float
+    rotation: Float
+    translateX: Float
+    translateY: Float
+    width: Float
+}
+
+type Issue {
+    assignee: User
+    attachments: [Attachment]
+    comments: [Comment]
+    creator: User
+    dateCreation: LocalDateTime
+    description: String
+    history: [IssueHistory]
+    id: Long
+    issueType: IssueType
+    priority: Priority
+    project: Project
+    sevirity: Sevirity
+    status: Status
+    tags: [Tag]
+    title: String
+}
+
+type IssueHistory {
+    action: String
+    id: Long
+    issue: Issue
+    newValue: String
+    oldValue: String
+    timestamp: Date
+    user: User
+}
+
+type IssueType {
+    id: Long
+    issues: [Issue]
+    typeAn: String
+    typeAr: String
+    typeFr: String
+}
+
+type Line {
+    bbox: BBox
+    fsize: Int
+    id_line: String
+    text: String
+    type: String
+}
+
+type MemoryUsage {
+    committed: Long!
+    init: Long!
+    max: Long!
+    used: Long!
+}
+
+"Mutation root"
+type Mutation {
+    addDemandeRadiation(matricule: String): Boolean!
+    addIssueTag(issueId: Long, tagname: String): Boolean!
+    addOcrResultsToFolder(folderId: Long, ocrResultIds: [String]): Folder
+    addPrivilegeToRole(privilegeId: String, roleId: String): Boolean!
+    changeNotificationState(notificationId: Long, notificationState: NotificationState): Boolean!
+    changeOcrResultGrant(ocrResultId: String, ocrResultUserGrantKeysInput: [OcrResultUserGrantKeyInputInput]): [OcrResultUserGrant]
+    createFolder(folder: FolderInput, username: String): Folder
+    createIssue(issueInputDto: IssueInputDtoInput): Issue
+    createIssueComment(issueId: Long, text: String): Comment
+    createOcrResultRelation(objectId: String, subjectId: String, typeId: String): OcrResultRelation
+    createPersonnelNote(note: PersonnelNoteInput): Boolean!
+    createPhoto(photoInput: PhotoInput): PhotoWithFaces
+    createProject(project: ProjectInput): Project
+    createRecrutement(recrutementDto: RecrutementDtoInput): Recrutement
+    createRecrutementV2(recrutementV2Dto: RecrutementV2DtoInput): RecrutementV2
+    createRole(role: RoleDtoInput): Role
+    createSimAgent(simAgentDto: SimAgentDtoInput): SimAgent
+    createSimulation(simulationDto: SimulationDtoInput): Simulation
+    delete(id: String): Boolean!
+    deleteAttachment(id: Long): Boolean!
+    deleteAuthorizedUser(noteId: Long, userName: String): Boolean!
+    deleteDemandeInscription(demandeInscriptionUser: DemandeInscriptionUserInput): Boolean!
+    deleteDemandeRadiation(id: Long): Boolean!
+    deleteFolder(folderId: Long): Long
+    deleteIssue(id: Long): Boolean!
+    deleteIssueComment(commentId: Long): Boolean!
+    deleteNote(pavId: String): Boolean!
+    deleteOcrResultRelation(ocrResultRelationKey: OcrResultRelationKeyInput): Boolean!
+    deleteOcrResultsFromFolder(folderId: Long, ocrResultIds: [String]): Folder
+    deletePdfFileFromFolder(folderId: Long, pdfId: String): Boolean!
+    deletePersonnelNote(id: Long): Boolean!
+    deletePrivilegeFromRole(privilegeId: String, roleId: String): Boolean!
+    deleteProject(id: Long): Boolean!
+    deleteRecrutement(recrutementId: Long): Boolean!
+    deleteRecrutementV2(recrutementId: Int): Boolean!
+    deleteSimAgent(simAgentId: SimAgentIdInput): Boolean!
+    deleteSimulation(simulationId: Long): Boolean!
+    evaluatePav(pavId: String): Int
+    generateThumbnails: Boolean!
+    grantFolderAccessToUser(folderId: Long, username: String): Boolean!
+    pinOcrResult(ocrResultId: String): OcrResultPinned
+    revokeFolderAccessToUser(folderId: Long, username: String): Boolean!
+    savePav(pavDto: PavDtoInput): Pav
+    setHablitation(habilitaitonId: String, userName: String): Boolean!
+    setNumberOfSteps(simulationId: Long, steps: Int!): Boolean!
+    startScheduler: Boolean!
+    startSimulation(simulationId: Long): Boolean!
+    stopScheduler: Boolean!
+    toggleFavorite(ocrResultId: String): Int
+    unpinOcrResult(id: String): Boolean!
+    updateAttachment(id: Long, updatedAttachment: AttachmentInput): Attachment
+    updateConfidentialite(confidentailteId: String, ocrResultId: String): Boolean!
+    updateCostumSort(costumSort: Int, pavId: String): Boolean!
+    updateIssue(id: Long, updatedIssue: IssueInput): Issue
+    updateIssueComment(commentId: Long, text: String): Comment
+    updateIssueSevirity(issueId: Long, sevirityId: Long): Issue
+    updateIssueStatus(issueId: Long, statusId: Long): Issue
+    updateIssueType(issueId: Long, typeId: Long): Issue
+    updatePersonnelNote(note: PersonnelNoteInput): Boolean!
+    updatePersonnelNoteContent(noteContent: String, personnelNoteId: Long): Boolean!
+    updatePersonnelNoteGrantedUsers(PsesonnelNoteId: Long, userIds: [String]): Boolean!
+    updateProject(id: Long, updatedProject: ProjectInput): Project
+    updateRecrutemntNombre(nomber: Int, recrutemntId: Long): Boolean!
+    updateRecrutemntV2(recrutementV2Dto: RecrutementV2DtoInput): Boolean!
+    userAddPrivilege(privilegeName: String, userName: String): Boolean!
+    userAddPrivilegeRestriction(privilegeName: String, userName: String): Boolean!
+    userAddRole(roleName: String, userName: String): Boolean!
+    userDeletePrivilege(privilegeName: String, userName: String): Boolean!
+    userDeletePrivilegeRestriction(privilegeName: String, userName: String): Boolean!
+    userDeleteRole(roleName: String, userName: String): Boolean!
+    validateUserDemande(matricule: String): UserDto
+}
+
+type NoteDiplome {
+    grade: RhRGrade
+    id: String
+    index_: Int
+    lib: String
+    note: Int
+}
+
+type Notification {
+    dateTime: LocalDateTime
+    emmitter: User
+    id: Long
+    issue: Issue
+    notificationType: NotificationType
+    owner: User
+    state: NotificationState
+}
+
+type NotificationType {
+    id: String
+    libAr: String
+    libFr: String
+}
+
+type OcrResultEntityElastic_2 {
+    dateReference: LocalDate
+    id: String
+    libConfidentialiteAr: String
+    libConfidentialiteFr: String
+    libTypeTexteAr: String
+    libTypeTexteFr: String
+    libUrgenceAr: String
+    libUrgenceFr: String
+    numberOfPapers: Int
+    originalFileName: String
+    owner: String
+    pages: [Page]
+    reference: String
+}
+
+type OcrResultEntityJpa {
+    confidentialite: Confidentialite
+    createdDate: LocalDateTime
+    dateReference: LocalDate
+    executedAt: LocalDateTime
+    folders: [Folder]
+    id: String
+    numberOfPapers: Int
+    objects: [OcrResultRelation]
+    ocrDone: String
+    ocrResultPagesAsImages: [OcrResultPageAsImage]
+    ocrResultPinned: OcrResultPinned
+    ocrResultUserGrants: [OcrResultUserGrant]
+    originalFileName: String
+    owner: User
+    pdf: Base64String
+    reference: String
+    subjects: [OcrResultRelation]
+    terminatedAt: LocalDateTime
+    typeTexteReglementaire: TypeTexteReglementaire
+    urgence: Urgence
+}
+
+type OcrResultPageAsImage {
+    base64PngImage: Base64String
+    id: OcrResultPageAsImageEmbeddedId
+    ocrResultEntityJpa: OcrResultEntityJpa
+}
+
+type OcrResultPageAsImageEmbeddedId {
+    ocrResultId: String
+    pageIndex: Int
+    size: Int
+}
+
+type OcrResultPinned {
+    id: String
+    ocrResult: OcrResultEntityJpa
+}
+
+type OcrResultRelation {
+    id: OcrResultRelationKey
+    object: OcrResultEntityJpa
+    relationType: OcrResultRelationType
+    subject: OcrResultEntityJpa
+}
+
+type OcrResultRelationKey {
+    object: String
+    subject: String
+    typeRelation: String
+}
+
+type OcrResultRelationType {
+    id: String
+    libTypRelationFr: String
+    libTypeRelationAr: String
+}
+
+type OcrResultUserGrant {
+    id: OcrResultUserGrantKey
+    ocrResultEntityJpa: OcrResultEntityJpa
+    user: User
+}
+
+type OcrResultUserGrantKey {
+    ocrResultId: String
+    type: String
+    userId: String
+}
+
+type Order {
+    direction: Direction
+    ignoreCase: Boolean
+    nullHandlingHint: NullHandling
+    property: String!
+}
+
+type Page {
+    bbox: BBox
+    id_page: String
+    paragraphs: [Paragraph]
+    type: String
+}
+
+type Page_CritereDePonderation {
+    content: [CritereDePonderation]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_DemandeInscriptionUser {
+    content: [DemandeInscriptionUser]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_Folder {
+    content: [Folder]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_Issue {
+    content: [Issue]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_NoteDiplome {
+    content: [NoteDiplome]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_Notification {
+    content: [Notification]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_OcrResultEntityJpa {
+    content: [OcrResultEntityJpa]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_OcrResultUserGrant {
+    content: [OcrResultUserGrant]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_PamOff2024 {
+    content: [PamOff2024]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_Pav {
+    content: [Pav]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_PersonnelNote {
+    content: [PersonnelNote]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_Privilege {
+    content: [Privilege]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_Project {
+    content: [Project]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_RFelicitation {
+    content: [RFelicitation]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_RSanction {
+    content: [RSanction]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_Role {
+    content: [Role]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_SimAgent {
+    content: [SimAgent]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Page_User {
+    content: [User]
+    first: Boolean!
+    hasContent: Boolean!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+    last: Boolean!
+    nextOrLastPageable: Pagination
+    nextPageable: Pagination
+    number: Int!
+    numberOfElements: Int!
+    pageable: Pagination
+    previousOrFirstPageable: Pagination
+    previousPageable: Pagination
+    size: Int!
+    sort: Sorting
+    totalElements: Long!
+    totalPages: Int!
+}
+
+type Pagination {
+    pageNumber: Int!
+    pageSize: Int
+    sort: Sort
+}
+
+type PamOff2024 {
+    DUREE_FONCT: String
+    NDureeS: Int
+    NMutation: BigInteger
+    arme: BigInteger
+    code_dip_civ: String
+    code_dip_mil: String
+    csn: String
+    demandeRadiations: [DemandeRadiation]
+    dip_civ: String
+    dip_mil: String
+    dipcivil: RDiplomeCivile
+    dipmil: RDiplomeMilitaire
+    dureeN: BigInteger
+    dureeS: String
+    ens: BigInteger
+    ensFonction: BigInteger
+    ficheVoeuxes: [FicheVoeux]
+    fonction: String
+    formation: String
+    g: BigInteger
+    grade: String
+    libArmeAr: String
+    matricule: String
+    noma: String
+    obs: String
+    personnel: DPersonnel
+    personnelNotes: [PersonnelNote]
+    pnoma: String
+    poste: String
+    promotionNumber: Int
+    structureSn: RhRStructureSn
+    trieAnciennete: String
+}
+
+type Paragraph {
+    bbox: BBox
+    id_par: String
+    lang: String
+    lines: [Line]
+    type: String
+}
+
+type Pav {
+    ancienneteDansLeGrade: Int
+    anne: Int
+    chef: Boolean
+    costumSort: Int
+    dureeExcercice: Int
+    dureeExcerciceUnite: Int
+    felicitations: [FelicitationsPav]
+    id: String
+    nombreDeProposition: Int
+    noteArme: Int
+    noteDiplome: NoteDiplome
+    noteGlobale: Int
+    noteRegionale: Int
+    personnel: DPersonnel
+    ponderation: CritereDePonderation
+    sanctions: [SanctionsPav]
+}
+
+type PersonnelNote {
+    authorizedUsers: [User]
+    color: String
+    dateCreation: LocalDateTime
+    id: Long
+    observation: String
+    pamOff2024: PamOff2024
+    user: User
+}
+
+type Photo {
+    dateTaken: LocalDateTime
+    format: String
+    grade: RhRGrade
+    height: Float
+    id: Long
+    personnel: DPersonnel
+    photoData: Base64String
+    rotation: Float
+    thumbnails: [Thumbnail]
+    translateX: Float
+    translateY: Float
+    width: Float
+}
+
+type PhotoWithFaces {
+    photo: Photo
+    rect: Rect
+}
+
+type Priority {
+    id: Long
+    issues: [Issue]
+    priorityAR: String
+    priorityFR: String
+}
+
+type Privilege {
+    description: String
+    id: String
+    name: String
+    roles: [Role]
+    users: [User]
+}
+
+type PrivilegeDto {
+    description: String
+    id: Long
+    name: String
+}
+
+type Project {
+    description: String
+    id: Long
+    issues: [Issue]
+    members: [User]
+    name: String
+    nameAr: String
+}
+
+"Query root"
+type Query {
+    allArmes: [RhRArme]
+    allCatGrades: [RhRCatGrade]
+    allCommandements: [RhRCommandement]
+    allConfidentialites: [Confidentialite]
+    allFolders: [Folder]
+    allFoldersPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_Folder
+    allGrades: [RhRGrade]
+    allIssueTypes: [IssueType]
+    allIssueTypesCount(projectId: Long): [TypesCountDto]
+    allIssues(pageRequest: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_Issue
+    allIssuesByProject(pageRequest: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, projectId: Long): Page_Issue
+    allIssuesByUser(pageRequest: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, userId: String): Page_Issue
+    allNotifications(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, userName: String): Page_Notification
+    allOcrResultConfidentialteNotDefined: [OcrResultEntityJpa]
+    allOcrResultRelatios: [OcrResultRelation]
+    allOcrResultUsersGrantsPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_OcrResultEntityJpa
+    allPriorities: [Priority]
+    allPrivileges: [Privilege]
+    allPrivilegesByName(name: String): [Privilege]
+    allPrivilegesByNamePaged(name: String, pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_Privilege
+    allPrivilegesPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_Privilege
+    allProjects: [Project]
+    allProjectsPaged(pageRequest: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_Project
+    allRecrutemnts: [Recrutement]
+    allRecrutemntsBySimulation(simulationId: Long): [Recrutement]
+    allRecrutemntsV2: [RecrutementV2]
+    allRecrutemntsV2BySimulation(simulationId: Long): [RecrutementV2]
+    allRegionsMilitaires: [RhRRegionMilitaire]
+    allReports: [ReportsNames]
+    allRolesPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_Role
+    allSeverities: [Sevirity]
+    allStatus: [Status]
+    allStatuseCount(projectId: Long): [StatusCountDto]
+    allTags: [Tag]
+    allTypeTexteReglementaires: [TypeTexteReglementaire]
+    allUsersPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_User
+    armeById(armeId: Long): RhRArme
+    attachmentById(id: Long): AttachmentDto
+    attachmentsByIssue(issueId: Long): [AttachmentDto]
+    authorities(matricule: String): [GrantedAuthority]
+    catGradById(id: Long): RhRCatGrade
+    commandementById(id: BigInteger): RhRCommandement
+    cpuUsage_: [String]
+    createDemandeInscription(demandeInscriptionUser: DemandeInscriptionUserInput): DemandeInscriptionUser
+    diskUsage: [[String]]
+    enumsWrapperForCodeGeneration(enumsWrapper: EnumsWrapperInput): EnumsWrapper
+    favorite(ocrResultId: String, userName: String): Boolean!
+    favoriteFolder(userName: String): Folder
+    findAllCritereDePonderation(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_CritereDePonderation
+    findAllDemande: [DemandeInscriptionUser]
+    findAllDemandeInscriptionRemaining: [DemandeInscriptionUser]
+    findAllDemandesPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_DemandeInscriptionUser
+    findAllFelicitions(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_RFelicitation
+    findAllNoteDiplome(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_NoteDiplome
+    findAllOcrResultByIds(ids: [String]): [OcrResultEntityJpa]
+    findAllOcrResultEntityByFoldersContaining(folderId: Long, pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_OcrResultEntityJpa
+    findAllOcrResultsPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_OcrResultEntityJpa
+    findAllPamOff2024: [PamOff2024]
+    findAllPav(idGrade: Long, pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_Pav
+    findAllPersonnelNotesPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, searchParams: PersonnelNoteSearchParamsInput): Page_PersonnelNote
+    findAllRSanctions(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_RSanction
+    findAllRoles: [Role]
+    findById(id: String): Pav
+    findByMatricule(matricule: String): Pav
+    findCritereDePonderation(chef: Boolean!, grade: Long, poste: String): CritereDePonderation
+    findDistinctArmes: [CountParArme]
+    findDistinctCsn: [CountParCsn]
+    findDistinctDiplomesCiviles: [CountParDiplomeCivile]
+    findDistinctDiplomesMilitaires: [CountParDiplomeMilitaire]
+    findDistinctGrade: [CountParGradeDto]
+    findDistinctPostes: [CountParPostes]
+    findNoteDiplome(idGrade: Long, index_: Int): NoteDiplome
+    findOcrResultEntityESbyId(fileId: String): OcrResultEntityElastic_2
+    findPam2024(filteringParams: FilteringParamsInput, pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_PamOff2024
+    findPamOff2024ById(id: String): PamOff2024
+    findPersonnelNoteById(id: Long): PersonnelNote
+    findPersonnelNotes: [PersonnelNote]
+    findPersonnelNotesByUser(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, userId: String): Page_PersonnelNote
+    findPersonnelNotesByUserAndPersonnel(includeAllNotes: Boolean!, personnelId: String, userId: String): [PersonnelNote]
+    findPinnedOcrResults: [OcrResultPinned]
+    findRStructureSnById(id: String): RhRStructureSn
+    findReportById(name: ReportNames): ReportsNames
+    findRoleById(roleId: String): Role
+    findeDemandeById(id: String): DemandeInscriptionUser
+    folder(folderId: Long): Folder
+    getThumbnailByMatriculeAndSize(matricule: String, size: Int!): Thumbnail
+    getUsers: [User]
+    gradeById(gradeId: Long): RhRGrade
+    habilitations: [Habilitation]
+    isOcrJobRunning: Boolean!
+    issueById(id: Long): Issue
+    issueTypeById(typeId: Long): IssueType
+    loggedInAuthorities: [GrantedAuthority]
+    memoryUsage_: MemoryUsage
+    ocrResultByid(fileSignatue: String): OcrResultEntityJpa
+    ocrResultImagePrepared(ocrResultid: String, pageIndex: Int, size: Int): String
+    ocrResultPdf(ocrResultid: String): String
+    ocrResultRelation(ocrResultRelationKey: OcrResultRelationKeyInput): OcrResultRelation
+    ocrResultUserGrantsPaged(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_OcrResultUserGrant
+    ownedFolders(username_: String): [Folder]
+    photoById(id: Long): Photo
+    photoByMatricule(matricule: String): [Photo]
+    photoDetails(format: String, photoData: String): ImageInfo
+    privilegeById(PrivilegeId: Long): Privilege
+    projectById(id: Long): Project
+    recrutementByClass(class_: Int, simulationId: Long): [Recrutement]
+    recrutementByTypeRecrutement(simulationId: Long, typeRecrutement: TypeRecrutement): [Recrutement]
+    recrutementByTypeRecrutementAndClass(classe_: Int, simulationId: Long, typeRecrutement: TypeRecrutement): [Recrutement]
+    recrutementV2ByClass(class_: Int, simulationId: Long): [RecrutementV2]
+    report(format: ReportFormats, reportName: ReportNames, reportsSubFolder: ReportsSubFolder): String
+    reportPam(filteringParams: FilteringParamsInput, format: ReportFormats): String
+    reportPosteRealise: [ReportPosteRealise]
+    satusById(satusId: Long): Status
+    searchIssues(issueStatusId: Long, issueTypeId: Long, pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, priorityId: Long, projectId: Long): Page_Issue
+    searchUsersByToken(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, searchToken: String): Page_User
+    sevirityById(sevirityId: Long): Sevirity
+    simAgentsByStepAndSimulation(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}, simulationId: Long, step: Int): Page_SimAgent
+    simulationById(simulationId: Long): Simulation
+    simulations: [Simulation]
+    tag(tagId: Long): Tag
+    threadInfo: [String]
+    typeTexteReglementaireByLibFr(libFr: String): TypeTexteReglementaire
+    user(matricule: String): User
+    waitingForOcrAll(pageable: PaginationInput = {pageNumber: 0, pageSize: 20, sort: {orders: []}}): Page_OcrResultEntityJpa
+}
+
+type RDiplomeCivile {
+    abrAr: String
+    abrFr: String
+    codeDipCiv: String
+    libAr: String
+    libFr: String
+}
+
+type RDiplomeMilitaire {
+    abrAr: String
+    abrFr: String
+    codeDipMil: String
+    libAr: String
+    libFr: String
+}
+
+type RFelicitation {
+    autorite: String
+    id: String
+    note: Int
+}
+
+type RSanction {
+    id: String
+    lib: String
+    note: Int
+}
+
+type Recrutement {
+    anneDeRecrutemnt: Int
+    id: Long
+    nombre: Int
+    simulation: Simulation
+    typeRecrutement: TypeRecrutement
+}
+
+type RecrutementV2 {
+    EMP: String
+    FF: String
+    FS_L: String
+    FS_M: String
+    anneDeRecrutemnt: Int
+    simulation: Simulation
+}
+
+type Rect {
+    height: Int!
+    width: Int!
+    x: Int!
+    y: Int!
+}
+
+type ReportPosteRealise {
+    poste: String
+    pourcentage: BigInteger
+    realise: BigInteger
+    ted: BigInteger
+}
+
+type ReportsNames {
+    fileName: String
+    get_order: Int
+    nomAR: String
+    nomFR: String
+    obs: String
+}
+
+type RhPoste {
+    idPoste: String
+    trie_: Int
+}
+
+type RhRArme {
+    commandement: RhRCommandement
+    getrTeds: [RhRTed]
+    id: Long
+    libArmeAr: String
+    libArmeFr: String
+}
+
+type RhRArmementTed {
+    getrTeds: [RhRTed]
+    id: BigInteger
+    libArmementAr: String
+    libArmementFr: String
+}
+
+type RhRCatGrade {
+    cat: String
+    catGrade: String
+    getrGrades: [RhRGrade]
+    getrTeds: [RhRTed]
+    libCatAr: String
+    libCatFr: String
+    libCatGradeAr: String
+    libCatGradeFr: String
+}
+
+type RhRCodeGeo {
+    id: Long
+    libApcAr: String
+    libApcFr: String
+    libWilaya: String
+    runites: [RhRunite]
+    trans: String
+}
+
+type RhRCommandement {
+    RArmes: [RhRArme]
+    id: BigInteger
+    libCommandementAr: String
+    libCommandementFr: String
+}
+
+type RhRGrade {
+    abrGradeAr: String
+    abrGradeFr: String
+    grade: Long
+    gradeInf: BigInteger
+    libGradeAr: String
+    libGradeArDetermine: String
+    libGradeFr: String
+    rhRCatGrade: RhRCatGrade
+}
+
+type RhRQualification {
+    getrTeds: [RhRTed]
+    id: Long
+    libQualificatinFr: String
+    libQualificationAr: String
+    tri: Long
+}
+
+type RhRRegionMilitaire {
+    id: Long
+    libAbrRegionAr: String
+    libAbrRegionFr: String
+    libRegionAr: String
+    libRegionFr: String
+    runites: [RhRunite]
+    trie: String
+}
+
+type RhRSpecialiteTed {
+    getrTeds: [RhRTed]
+    id: BigInteger
+    libSpecialiteAr: String
+    libSpecialiteFr: String
+}
+
+type RhRStructureSn {
+    fils: [RhRStructureSn]
+    id: String
+    pere: RhRStructureSn
+    runite: RhRunite
+    typeStructureSn: RhRTypeStructureSn
+}
+
+type RhRTed {
+    arme: RhRArme
+    armementTed: RhRArmementTed
+    catGrade: RhRCatGrade
+    habilitation: Habilitation
+    id: Long
+    nombre: Int
+    observation: String
+    qualification: RhRQualification
+    specialiteTed: RhRSpecialiteTed
+    typeStructureSn: RhRTypeStructureSn
+}
+
+type RhRTypeStructureSn {
+    abrAr: String
+    abrFr: String
+    id: String
+    libAr: String
+    libFr: String
+    structureSn: [RhRStructureSn]
+}
+
+type RhRunite {
+    abreviationAr: String
+    abreviationFr: String
+    dessoute: String
+    id: Long
+    libUniteeAr: String
+    libUniteeFr: String
+    lieuUnite: RhRCodeGeo
+    regionMilitaire: RhRRegionMilitaire
+}
+
+type Role {
+    compositeRoles: [Role]
+    description: String
+    id: String
+    name: String
+    privileges: [Privilege]
+    users: [User]
+}
+
+type RoleDto {
+    description: String
+    id: Long
+    name: String
+}
+
+type SanctionsPav {
+    id: SanctionsPavId
+    nombre: Long
+    pav: Pav
+    sanctions: RSanction
+}
+
+type SanctionsPavId {
+    pavId: String
+    sanctionsId: String
+}
+
+type Sevirity {
+    id: Long
+    issues: [Issue]
+    sevirityAR: String
+    sevirityFR: String
+}
+
+type SimAgent {
+    age: Int
+    anicenneteGrade: Int
+    anneDeService: Int
+    arme: RhRArme
+    class_: Int
+    grade: RhRGrade
+    nom: String
+    noma: String
+    nombreDeProposition: Int
+    pnom: String
+    pnoma: String
+    simAgentId: SimAgentId
+    simulation: Simulation
+    typeRecrutement: TypeRecrutement
+}
+
+type SimAgentId {
+    id: Long
+    step: Int
+}
+
+type Simulation {
+    dateDebut: LocalDateTime
+    dateFin: LocalDateTime
+    description: String
+    id: Long
+    name: String
+    numberOfSteps: Int
+    recrutements: [Recrutement]
+    simAgents: [SimAgent]
+}
+
+type Sort {
+    orders: [Order!]!
+}
+
+type Sorting {
+    orders: [Order!]!
+}
+
+type Status {
+    id: Long
+    issueList: [Issue]
+    statusAn: String
+    statusAr: String
+    statusFr: String
+}
+
+type StatusCountDto {
+    count_: Long
+    id: Long
+    statusAn: String
+    statusAr: String
+    statusFr: String
+}
+
+type Tag {
+    id: Long
+    issues: [Issue]
+    name: String
+}
+
+type Thumbnail {
+    id: Long
+    photo: Photo
+    thumbData: Base64String
+    thumbSize: Int!
+}
+
+type TypeTexteReglementaire {
+    id: String
+    libTypeTexteAr: String
+    libTypeTexteFr: String
+}
+
+type TypesCountDto {
+    count_: Long
+    id: Long
+    typeAn: String
+    typeAr: String
+    typeFr: String
+}
+
+type Urgence {
+    id: String
+    libUrgenceAr: String
+    libUrgenceFr: String
+}
+
+type User {
+    accountNonExpired: Boolean!
+    accountNonLocked: Boolean!
+    authorities: [GrantedAuthority]
+    comments: [Comment]
+    credentialsNonExpired: Boolean!
+    demandeInscription: DemandeInscriptionUser
+    enabled: Boolean!
+    folders: [Folder]
+    foldersGranted: [Folder]
+    habilitation: Habilitation
+    id: String
+    locked: String
+    ocrResultUserGrants: [OcrResultUserGrant]
+    password: String
+    personnel: DPersonnel
+    personnelNotes: [PersonnelNote]
+    privileges: [Privilege]
+    privileges_restriction: [Privilege]
+    roles: [Role]
+    username: String
+}
+
+type UserDto {
+    id: String
+    locked: String
+    personnel: DPersonnelDto
+    privileges: [PrivilegeDto]
+    privileges_restriction: [PrivilegeDto]
+    roles: [RoleDto]
+}
+
+enum Direction {
+    ASC
+    DESC
+}
+
+enum NotificationState {
+    ARCHIVED
+    NEW
+    READ
+}
+
+enum NullHandling {
+    NATIVE
+    NULLS_FIRST
+    NULLS_LAST
+}
+
+enum PrivilegesEnum {
+    APPLICATION_BUG_TRACKER
+    APPLICATION_PAM
+    APPLICATION_PAM_DASHBOARD
+    APPLICATION_PAM_ETATS
+    APPLICATION_PAM_NOTE
+    APPLICATION_PAM_PAM
+    APPLICATION_PAM_PAV
+    APPLICATION_PAM_PHOTO_EDITOR
+    APPLICATION_RECRUTEMENT
+    APPLICATION_SIMULATION
+    APPLICATION_TEXT_REGLEMENTAIRE
+    ELASTIC_SEARCH
+    GESTION_COMPTE
+    HABILITAIONS_PROFILE_INFO
+    NOTIFICATIONS
+    OCR_MONITORING
+    OCR_RESULT_DIRECT_GRANT
+    OCR_RESULT_PIN
+    PERSONNEL_NOTES_SEE_ALL
+    PRINT
+    TEXT_REGLEMENTAIRE_PREF
+    TEXT_REGLEMENTAIRE_PREF111111
+    UPDATE_CONFIDENTIALITE
+    UPDATE_HABILITATION
+    UPLOAD
+}
+
+enum ReportFormats {
+    PDF
+    WORD
+}
+
+enum ReportNames {
+    CountPosteGradeCrossTab
+    PamRetretable
+    TedPostes
+    listPam
+    listPav
+    pavNotminatifParGrade
+}
+
+enum ReportsSubFolder {
+    pam
+    recrutement
+    rh
+    texteReglementaire
+}
+
+enum RolesEnum {
+    ROLE_BF
+    ROLE_HDT
+    ROLE_OFF
+    ROLE_PCA
+    ROLE_SDRH
+    ROLE_SOFF
+}
+
+enum TypeRecrutement {
+    EMP
+    FF
+    FS_L
+    FS_M
+}
+
+enum UserGrants {
+    GRANT
+    NO
+    REVOKE
+}
+
+"Base64-encoded binary"
+scalar Base64String
+
+"An arbitrary precision signed integer"
+scalar BigInteger
+
+"Built-in scalar representing an instant in time"
+scalar Date
+
+"Built-in scalar representing a local date"
+scalar LocalDate
+
+"Built-in scalar representing a local date-time"
+scalar LocalDateTime
+
+"A 64-bit signed integer"
+scalar Long
+
+input AttachmentDtoInput {
+    base64FileData: String
+    id: Long
+    issueId: Long
+    mimeType: String
+    originalFileName: String
+    size: Long
+}
+
+input AttachmentInput {
+    fileData: Base64String
+    id: Long
+    issue: IssueInput
+    mimeType: String
+    originalFileName: String
+    size_: Long
+}
+
+input CommentInput {
+    createdBy: UserInput
+    createdDate: LocalDateTime
+    id: Long
+    issue: IssueInput
+    text: String
+}
+
+input ConfidentialiteInput {
+    habilitations: [HabilitationInput]
+    id: String
+    libConfidentialiteAr: String
+    libConfidentialiteFr: String
+}
+
+input DPersonnelInput {
+    arme: RhRArmeInput
+    grade: RhRGradeInput
+    id: String
+    matricule: String
+    nom: String
+    noma: String
+    pamOff2024: PamOff2024Input
+    photos: [PhotoInput]
+    pnom: String
+    pnoma: String
+    poste: RhPosteInput
+}
+
+input DemandeInscriptionUserInput {
+    dateDemande: LocalDateTime
+    id: String
+    password: String
+    personnel: DPersonnelInput
+    user: UserInput
+}
+
+input DemandeRadiationInput {
+    dateDemande: LocalDate
+    id: Long
+    pamOff2024: PamOff2024Input
+}
+
+input EnumsWrapperInput {
+    privilegesEnum: PrivilegesEnum
+    rolesEnum: RolesEnum
+}
+
+input FelicitationDtoInput {
+    idFelicitation: String
+    idPav: String
+    nombre: Long
+}
+
+input FicheVoeuxIdInput {
+    annee: String
+    matricule: String
+}
+
+input FicheVoeuxInput {
+    id: FicheVoeuxIdInput
+    mvCsn: String
+    obs1: String
+    obs2: String
+    obs3: String
+    obsBsn: String
+    obsChef: String
+    obsDrsn: String
+    obsDsn: String
+    obsSdrh: String
+    pamOff2024: PamOff2024Input
+    rhRunite1: RhRuniteInput
+    rhRunite2: RhRuniteInput
+    rhRunite3: RhRuniteInput
+}
+
+input FilteringParamsInput {
+    armes: [BigInteger]
+    csn: String
+    diplomesCiviles: [String]
+    diplomesMilitaires: [String]
+    formation: String
+    grades: [BigInteger]
+    idStructure: String
+    pam: [String]
+    pav: [String]
+    postes: [String]
+    searchToken: String
+    suds: [Int]
+    title: String
+}
+
+input FolderInput {
+    color: String
+    createdDate: LocalDateTime
+    description: String
+    id: Long
+    name: String
+    owner: UserInput
+    pdfFiles: [OcrResultEntityJpaInput]
+    usersGranted: [UserInput]
+}
+
+input HabilitationInput {
+    abbreviation: String
+    confidentialites: [ConfidentialiteInput]
+    id: String
+    libHabilitationAr: String
+    libHabilitationFr: String
+    rTeds: [RhRTedInput]
+    users: [UserInput]
+}
+
+input IssueHistoryInput {
+    action: String
+    id: Long
+    issue: IssueInput
+    newValue: String
+    oldValue: String
+    timestamp: Date
+    user: UserInput
+}
+
+input IssueInput {
+    assignee: UserInput
+    attachments: [AttachmentInput]
+    comments: [CommentInput]
+    creator: UserInput
+    dateCreation: LocalDateTime
+    description: String
+    history: [IssueHistoryInput]
+    id: Long
+    issueType: IssueTypeInput
+    priority: PriorityInput
+    project: ProjectInput
+    sevirity: SevirityInput
+    status: StatusInput
+    tags: [TagInput]
+    title: String
+}
+
+input IssueInputDtoInput {
+    attachmentDtos: [AttachmentDtoInput]
+    description: String
+    projectId: Long
+    sevirityId: Long
+    tagNames: [String]
+    title: String
+    typeId: Long
+}
+
+input IssueTypeInput {
+    id: Long
+    issues: [IssueInput]
+    typeAn: String
+    typeAr: String
+    typeFr: String
+}
+
+input OcrResultEntityJpaInput {
+    confidentialite: ConfidentialiteInput
+    createdDate: LocalDateTime
+    dateReference: LocalDate
+    executedAt: LocalDateTime
+    folders: [FolderInput]
+    id: String
+    numberOfPapers: Int
+    objects: [OcrResultRelationInput]
+    ocrDone: String
+    ocrResultPagesAsImages: [OcrResultPageAsImageInput]
+    ocrResultPinned: OcrResultPinnedInput
+    ocrResultUserGrants: [OcrResultUserGrantInput]
+    originalFileName: String
+    owner: UserInput
+    pdf: Base64String
+    reference: String
+    subjects: [OcrResultRelationInput]
+    terminatedAt: LocalDateTime
+    typeTexteReglementaire: TypeTexteReglementaireInput
+    urgence: UrgenceInput
+}
+
+input OcrResultPageAsImageEmbeddedIdInput {
+    ocrResultId: String
+    pageIndex: Int
+    size: Int
+}
+
+input OcrResultPageAsImageInput {
+    base64PngImage: Base64String
+    id: OcrResultPageAsImageEmbeddedIdInput
+    ocrResultEntityJpa: OcrResultEntityJpaInput
+}
+
+input OcrResultPinnedInput {
+    id: String
+    ocrResult: OcrResultEntityJpaInput
+}
+
+input OcrResultRelationInput {
+    id: OcrResultRelationKeyInput
+    object: OcrResultEntityJpaInput
+    relationType: OcrResultRelationTypeInput
+    subject: OcrResultEntityJpaInput
+}
+
+input OcrResultRelationKeyInput {
+    object: String
+    subject: String
+    typeRelation: String
+}
+
+input OcrResultRelationTypeInput {
+    id: String
+    libTypRelationFr: String
+    libTypeRelationAr: String
+}
+
+input OcrResultUserGrantInput {
+    id: OcrResultUserGrantKeyInput
+    ocrResultEntityJpa: OcrResultEntityJpaInput
+    user: UserInput
+}
+
+input OcrResultUserGrantKeyInput {
+    ocrResultId: String
+    type: String
+    userId: String
+}
+
+input OcrResultUserGrantKeyInputInput {
+    ocrResultId: String
+    type: UserGrants
+    userId: String
+}
+
+input OrderInput {
+    direction: Direction
+    ignoreCase: Boolean
+    nullHandlingHint: NullHandling
+    property: String!
+}
+
+input PaginationInput {
+    pageNumber: Int!
+    pageSize: Int = 20
+    sort: SortInput
+}
+
+input PamOff2024Input {
+    arme: BigInteger
+    code_dip_civ: String
+    code_dip_mil: String
+    csn: String
+    demandeRadiations: [DemandeRadiationInput]
+    dip_civ: String
+    dip_mil: String
+    dipcivil: RDiplomeCivileInput
+    dipmil: RDiplomeMilitaireInput
+    dureeN: BigInteger
+    dureeS: String
+    ens: BigInteger
+    ensFonction: BigInteger
+    ficheVoeuxes: [FicheVoeuxInput]
+    fonction: String
+    formation: String
+    g: BigInteger
+    grade: String
+    libArmeAr: String
+    matricule: String
+    noma: String
+    obs: String
+    personnel: DPersonnelInput
+    personnelNotes: [PersonnelNoteInput]
+    pnoma: String
+    poste: String
+    promotionNumber: Int
+    structureSn: RhRStructureSnInput
+    trieAnciennete: String
+}
+
+input PavDtoInput {
+    ancienneteDansLeGrade: Int!
+    anne: Int!
+    chef: Boolean!
+    dureeExcercice: Int!
+    dureeExcerciceUnite: Int!
+    felicitationsPavs: [FelicitationDtoInput]
+    id: String
+    idNoteDiplome: String
+    idPonderation: String
+    matricule: String
+    nombreDeProposition: Int!
+    noteArme: Int!
+    noteGlobale: Int!
+    noteRegionale: Int!
+    sanctionsPavs: [SanctionDtoInput]
+}
+
+input PersonnelNoteInput {
+    authorizedUsers: [UserInput]
+    color: String
+    dateCreation: LocalDateTime
+    id: Long
+    observation: String
+    pamOff2024: PamOff2024Input
+    user: UserInput
+}
+
+input PersonnelNoteSearchParamsInput {
+    ownership: String
+    searchToken: String
+}
+
+input PhotoInput {
+    dateTaken: LocalDateTime
+    format: String
+    grade: RhRGradeInput
+    height: Float
+    id: Long
+    personnel: DPersonnelInput
+    photoData: Base64String
+    rotation: Float
+    thumbnails: [ThumbnailInput]
+    translateX: Float
+    translateY: Float
+    width: Float
+}
+
+input PriorityInput {
+    id: Long
+    issues: [IssueInput]
+    priorityAR: String
+    priorityFR: String
+}
+
+input PrivilegeInput {
+    description: String
+    id: String
+    name: String
+    roles: [RoleInput]
+    users: [UserInput]
+}
+
+input ProjectInput {
+    description: String
+    id: Long
+    issues: [IssueInput]
+    members: [UserInput]
+    name: String
+    nameAr: String
+}
+
+input RDiplomeCivileInput {
+    abrAr: String
+    abrFr: String
+    codeDipCiv: String
+    libAr: String
+    libFr: String
+}
+
+input RDiplomeMilitaireInput {
+    abrAr: String
+    abrFr: String
+    codeDipMil: String
+    libAr: String
+    libFr: String
+}
+
+input RecrutementDtoInput {
+    anneDeRecrutemnt: Int
+    id: Long
+    nombre: Int
+    simulationId: Long
+    typeRecrutement: TypeRecrutement
+}
+
+input RecrutementV2DtoInput {
+    anneDeRecrutemnt: Int
+    emp: String
+    ff: String
+    fs_L: String
+    fs_M: String
+    simulationId: Long
+}
+
+input RhPosteInput {
+    idPoste: String
+    trie_: Int
+}
+
+input RhRArmeInput {
+    commandement: RhRCommandementInput
+    id: Long
+    libArmeAr: String
+    libArmeFr: String
+    rTeds: [RhRTedInput]
+}
+
+input RhRArmementTedInput {
+    id: BigInteger
+    libArmementAr: String
+    libArmementFr: String
+    rTeds: [RhRTedInput]
+}
+
+input RhRCatGradeInput {
+    cat: String
+    catGrade: String
+    libCatAr: String
+    libCatFr: String
+    libCatGradeAr: String
+    libCatGradeFr: String
+    rGrades: [RhRGradeInput]
+    rTeds: [RhRTedInput]
+}
+
+input RhRCodeGeoInput {
+    id: Long
+    libApcAr: String
+    libApcFr: String
+    libWilaya: String
+    runites: [RhRuniteInput]
+    trans: String
+}
+
+input RhRCommandementInput {
+    id: BigInteger
+    libCommandementAr: String
+    libCommandementFr: String
+    rarmes: [RhRArmeInput]
+}
+
+input RhRGradeInput {
+    abrGradeAr: String
+    abrGradeFr: String
+    grade: Long
+    gradeInf: BigInteger
+    libGradeAr: String
+    libGradeArDetermine: String
+    libGradeFr: String
+    rhRCatGrade: RhRCatGradeInput
+}
+
+input RhRQualificationInput {
+    id: Long
+    libQualificatinFr: String
+    libQualificationAr: String
+    rTeds: [RhRTedInput]
+    tri: Long
+}
+
+input RhRRegionMilitaireInput {
+    id: Long
+    libAbrRegionAr: String
+    libAbrRegionFr: String
+    libRegionAr: String
+    libRegionFr: String
+    runites: [RhRuniteInput]
+    trie: String
+}
+
+input RhRSpecialiteTedInput {
+    id: BigInteger
+    libSpecialiteAr: String
+    libSpecialiteFr: String
+    rTeds: [RhRTedInput]
+}
+
+input RhRStructureSnInput {
+    fils: [RhRStructureSnInput]
+    id: String
+    pere: RhRStructureSnInput
+    runite: RhRuniteInput
+    typeStructureSn: RhRTypeStructureSnInput
+}
+
+input RhRTedInput {
+    arme: RhRArmeInput
+    armementTed: RhRArmementTedInput
+    catGrade: RhRCatGradeInput
+    habilitation: HabilitationInput
+    id: Long
+    nombre: Int
+    observation: String
+    qualification: RhRQualificationInput
+    specialiteTed: RhRSpecialiteTedInput
+    typeStructureSn: RhRTypeStructureSnInput
+}
+
+input RhRTypeStructureSnInput {
+    abrAr: String
+    abrFr: String
+    id: String
+    libAr: String
+    libFr: String
+    structureSn: [RhRStructureSnInput]
+}
+
+input RhRuniteInput {
+    abreviationAr: String
+    abreviationFr: String
+    dessoute: String
+    id: Long
+    libUniteeAr: String
+    libUniteeFr: String
+    lieuUnite: RhRCodeGeoInput
+    regionMilitaire: RhRRegionMilitaireInput
+}
+
+input RoleDtoInput {
+    description: String
+    id: Long
+    name: String
+}
+
+input RoleInput {
+    compositeRoles: [RoleInput]
+    description: String
+    id: String
+    name: String
+    privileges: [PrivilegeInput]
+    users: [UserInput]
+}
+
+input SanctionDtoInput {
+    idPav: String
+    idSanction: String
+    nombre: Long
+}
+
+input SevirityInput {
+    id: Long
+    issues: [IssueInput]
+    sevirityAR: String
+    sevirityFR: String
+}
+
+input SimAgentDtoInput {
+    age: Int
+    anicenneteGrade: Int
+    anneDeService: Int
+    class_: Int
+    idArme: Long
+    idGrade: Long
+    idSimulation: Long
+    nom: String
+    noma: String
+    nombreDeProposition: Int
+    pnom: String
+    pnoma: String
+    simAgentId: SimAgentIdInput
+    typeRecrutement: TypeRecrutement
+}
+
+input SimAgentIdInput {
+    id: Long
+    step: Int
+}
+
+input SimulationDtoInput {
+    dateDebut: LocalDateTime
+    dateFin: LocalDateTime
+    description: String
+    id: Long
+    name: String
+    numberOfSteps: Int
+}
+
+input SortInput {
+    orders: [OrderInput!]!
+}
+
+input StatusInput {
+    id: Long
+    issueList: [IssueInput]
+    statusAn: String
+    statusAr: String
+    statusFr: String
+}
+
+input TagInput {
+    id: Long
+    issues: [IssueInput]
+    name: String
+}
+
+input ThumbnailInput {
+    id: Long
+    photo: PhotoInput
+    thumbData: Base64String
+    thumbSize: Int!
+}
+
+input TypeTexteReglementaireInput {
+    id: String
+    libTypeTexteAr: String
+    libTypeTexteFr: String
+}
+
+input UrgenceInput {
+    id: String
+    libUrgenceAr: String
+    libUrgenceFr: String
+}
+
+input UserInput {
+    comments: [CommentInput]
+    demandeInscription: DemandeInscriptionUserInput
+    folders: [FolderInput]
+    foldersGranted: [FolderInput]
+    habilitation: HabilitationInput
+    id: String
+    locked: String
+    ocrResultUserGrants: [OcrResultUserGrantInput]
+    password: String
+    personnel: DPersonnelInput
+    personnelNotes: [PersonnelNoteInput]
+    privileges: [PrivilegeInput]
+    privileges_restriction: [PrivilegeInput]
+    roles: [RoleInput]
+}

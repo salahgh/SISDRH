@@ -1,0 +1,480 @@
+query findPam2024 (
+    $pageable : PaginationInput ,
+    $filteringParams : FilteringParamsInput
+){
+    findPam2024(
+        pageable: $pageable ,
+        filteringParams: $filteringParams
+    ){
+        pageable {
+            pageSize
+            pageNumber
+            sort {
+                orders {
+                    property
+                    direction
+                }
+            }
+        }
+        totalElements
+        totalPages
+        content {
+            grade
+            g
+            noma
+            pnoma
+            libArmeAr
+            arme
+            matricule
+            personnelNotes {
+                id
+            }
+            structureSn {
+                id
+                typeStructureSn {
+                    id
+                }
+                runite {
+                    id
+                    libUniteeAr
+                    abreviationAr
+                    abreviationFr
+                    regionMilitaire {
+                        id
+                        libRegionFr
+                        libRegionAr
+                        libAbrRegionAr
+                        libAbrRegionFr
+                    }
+                }
+            }
+            dureeN
+            dureeS
+            libArmeAr
+            fonction
+            ensFonction
+            ens
+            NMutation
+            NDureeS
+            poste
+            csn
+            promotionNumber
+            DUREE_FONCT
+            ficheVoeuxes {
+                id {
+                    matricule
+                    annee
+                }
+                rhRunite1 {
+                    id
+                    regionMilitaire {
+                        id
+                        libAbrRegionFr
+                        libAbrRegionAr
+                        libRegionAr
+                        libRegionFr
+                    }
+                    libUniteeAr
+                    abreviationFr
+                    abreviationAr
+                }
+                rhRunite2 {
+                    id
+                    regionMilitaire {
+                        id
+                        libAbrRegionFr
+                        libAbrRegionAr
+                        libRegionAr
+                        libRegionFr
+                    }
+                    libUniteeAr
+                    abreviationFr
+                    abreviationAr
+                }
+                rhRunite3 {
+                    id
+                    regionMilitaire {
+                        id
+                        libAbrRegionFr
+                        libAbrRegionAr
+                        libRegionAr
+                        libRegionFr
+                    }
+                    libUniteeAr
+                    abreviationFr
+                    abreviationAr
+                }
+            }
+            demandeRadiations {
+                dateDemande
+                id
+            }
+            dip_civ
+            dip_mil
+            code_dip_civ
+            code_dip_mil
+            formation
+            obs
+            dip_mil
+            dipmil {
+                abrFr
+                codeDipMil
+            }
+            dipcivil {
+                abrFr
+            }
+        }
+    }
+}
+query findPamOff2024ById($id : String) {
+    findPamOff2024ById(id: $id){
+        grade
+        g
+        noma
+        pnoma
+        libArmeAr
+        arme
+        matricule
+        personnelNotes {
+            id
+        }
+        structureSn {
+            id
+            typeStructureSn {
+                id
+            }
+            runite {
+                id
+                libUniteeAr
+                abreviationAr
+                abreviationFr
+                regionMilitaire {
+                    id
+                    libRegionFr
+                    libRegionAr
+                    libAbrRegionAr
+                    libAbrRegionFr
+                }
+            }
+        }
+        dureeN
+        dureeS
+        libArmeAr
+        fonction
+        ensFonction
+        ens
+        NMutation
+        NDureeS
+        poste
+        csn
+        promotionNumber
+        DUREE_FONCT
+        ficheVoeuxes {
+            id {
+                matricule
+                annee
+            }
+            rhRunite1 {
+                id
+                regionMilitaire {
+                    id
+                    libAbrRegionFr
+                    libAbrRegionAr
+                    libRegionAr
+                    libRegionFr
+                }
+                libUniteeAr
+                abreviationFr
+                abreviationAr
+            }
+            rhRunite2 {
+                id
+                regionMilitaire {
+                    id
+                    libAbrRegionFr
+                    libAbrRegionAr
+                    libRegionAr
+                    libRegionFr
+                }
+                libUniteeAr
+                abreviationFr
+                abreviationAr
+            }
+            rhRunite3 {
+                id
+                regionMilitaire {
+                    id
+                    libAbrRegionFr
+                    libAbrRegionAr
+                    libRegionAr
+                    libRegionFr
+                }
+                libUniteeAr
+                abreviationFr
+                abreviationAr
+            }
+        }
+        demandeRadiations {
+            dateDemande
+            id
+        }
+        dip_civ
+        dip_mil
+        code_dip_civ
+        code_dip_mil
+        formation
+        obs
+        dipmil {
+            abrFr
+        }
+        dipcivil {
+            abrFr
+        }
+    }
+}
+query findDistinctArmes{
+    findDistinctArmes {
+        idArme
+        libArme
+        count_
+    }
+}
+query findDistinctGrade{
+    findDistinctGrade {
+        grade
+        g
+        count_
+    }
+}
+query findDistinctPostes{
+    findDistinctPostes {
+        poste ,
+        count_,
+        trie_
+    }
+}
+query findDistinctDiplomesCiviles {
+    findDistinctDiplomesCiviles {
+        codeDipCiv ,
+        abrFr ,
+        abrAr,
+        libFr ,
+        libFr,
+        count_
+    }
+}
+query findDistinctDiplomesMilitaires{
+    findDistinctDiplomesMilitaires {
+        codeDipMil ,
+        abrAr ,
+        abrFr ,
+        libFr ,
+        libAr ,
+        count_
+    }
+}
+
+query findBy($name : ReportNames){
+    findReportById(name: $name){
+        obs
+        fileName
+        nomAR
+        nomFR
+    }
+}
+
+query allReports{
+    allReports {
+        nomFR
+        nomAR
+        fileName
+        obs
+        get_order
+    }
+}
+
+query findDistinctCsn{
+    findDistinctCsn {
+        count_
+        c
+        csn
+    }
+}
+
+query reportPosteRealise{
+    reportPosteRealise {
+        poste
+        realise
+        ted
+        pourcentage
+    }
+}
+
+query getReport($reportName : ReportNames , $format : ReportFormats , $reportsSubFolder : ReportsSubFolder){
+    report(reportName: $reportName , format: $format , reportsSubFolder: $reportsSubFolder )
+}
+
+query allRegionsMilitaires{
+    allRegionsMilitaires {
+        id
+        libRegionFr
+        libRegionAr
+        libAbrRegionAr
+        libAbrRegionFr
+        trie
+    }
+}
+
+query findRStructureSnById($id : String){
+    findRStructureSnById(id:  $id){
+        id
+        pere {
+            id
+        }
+        typeStructureSn {
+            id ,
+            libAr ,
+        }
+        runite {
+            id
+            abreviationAr
+            abreviationFr
+            libUniteeAr
+            libUniteeFr
+            regionMilitaire {
+                id
+                libAbrRegionAr
+                libAbrRegionFr
+            }
+        }
+        fils {
+            id
+            pere {
+                id
+            }
+            typeStructureSn {
+                id ,
+                libAr ,
+            }
+            runite {
+                id
+                abreviationAr
+                abreviationFr
+                libUniteeAr
+                libUniteeFr
+                regionMilitaire {
+                    id
+                    libAbrRegionAr
+                    libAbrRegionFr
+                }
+            }
+            fils {
+                id
+                pere {
+                    id
+                }
+                typeStructureSn {
+                    id ,
+                    libAr ,
+                }
+                runite {
+                    id
+                    abreviationAr
+                    abreviationFr
+                    libUniteeAr
+                    libUniteeFr
+                    regionMilitaire {
+                        id
+                        libAbrRegionAr
+                        libAbrRegionFr
+                    }
+                }
+                fils {
+                    id
+                    pere {
+                        id
+                    }
+                    typeStructureSn {
+                        id ,
+                        libAr ,
+                    }
+                    runite {
+                        id
+                        abreviationAr
+                        abreviationFr
+                        libUniteeAr
+                        libUniteeFr
+                        regionMilitaire {
+                            id
+                            libAbrRegionAr
+                            libAbrRegionFr
+                        }
+                    }
+                    fils {
+                        id
+                    }
+                }
+            }
+        }}}
+
+mutation addDemandeRadiation($matricule : String){
+    addDemandeRadiation(matricule: $matricule)
+}
+
+mutation deleteDemandeRadiation($id : Long){
+    deleteDemandeRadiation(id:$id )
+}
+
+
+query photoByMaticuleWithThumbs($matricule : String){
+    photoByMatricule(matricule: $matricule){
+        id
+        photoData
+        format
+        translateX
+        translateY
+        rotation
+        width
+        height
+        personnel {
+            id
+            matricule
+            noma
+            pnoma
+        }
+        thumbnails {
+            thumbData
+            id
+            thumbSize
+        }
+    }
+}
+
+mutation createPhoto($ff : PhotoInput){
+    createPhoto(photoInput: $ff){
+        photo {
+            photoData
+            format
+            width
+            height
+            translateY
+            translateY
+            rotation
+            id
+        }
+        rect {
+            x
+            y
+            width
+            height
+        }
+    }
+}
+
+mutation updatePersonnelNoteGrantedUsers($PsesonnelNoteId : Long , $userIds : [String]){
+    updatePersonnelNoteGrantedUsers(PsesonnelNoteId: $PsesonnelNoteId , userIds: $userIds)
+}
+
+mutation createPersonnelNote($note : PersonnelNoteInput){
+    createPersonnelNote(note: $note)
+}

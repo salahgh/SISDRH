@@ -1,0 +1,51 @@
+{
+  "200": {
+    "code": "200",
+    "message": "OK",
+    "description": "indique que la requête a réussi.",
+    "spec_title": "RFC7231#6.3.1",
+    "spec_href": "https://tools.ietf.org/html/rfc7231#section-6.3.1"
+  },
+  "201": {
+    "code": "201",
+    "message": "Créé",
+    "description": "indique que la requête a été exécutée avec succès et a entraîné la création d'une ou plusieurs nouvelles ressources.",
+    "spec_title": "RFC7231#6.3.2",
+    "spec_href": "https://tools.ietf.org/html/rfc7231#section-6.3.2"
+  },
+  "202": {
+    "code": "202",
+    "message": "Accepté",
+    "description": "indique que la requête a été acceptée pour traitement, mais que le traitement n'est pas encore terminé.",
+    "spec_title": "RFC7231#6.3.3",
+    "spec_href": "https://tools.ietf.org/html/rfc7231#section-6.3.3"
+  },
+  "203": {
+    "code": "203",
+    "message": "Information non autorisée",
+    "description": "indique que la requête a réussi mais que la charge utile incluse a été modifiée par un proxy de transformation par rapport à la réponse 200 (OK) du serveur d'origine.",
+    "spec_title": "RFC7231#6.3.4",
+    "spec_href": "https://tools.ietf.org/html/rfc7231#section-6.3.4"
+  },
+  "204": {
+    "code": "204",
+    "message": "Pas de contenu",
+    "description": "indique que le serveur a rempli la demande avec succès et qu'il n'y a pas de contenu supplémentaire à envoyer dans le corps de la réponse.",
+    "spec_title": "RFC7231#6.3.5",
+    "spec_href": "https://tools.ietf.org/html/rfc7231#section-6.3.5"
+  },
+  "205": {
+    "code": "205",
+    "message": "Contenu réinitialisé",
+    "description": "indique que le serveur a rempli la demande et souhaite que l'agent utilisateur réinitialise la vue du document, qui a entraîné l'envoi de la demande, à son état d'origine tel que reçu du serveur d'origine.",
+    "spec_title": "RFC7231#6.3.6",
+    "spec_href": "https://tools.ietf.org/html/rfc7231#section-6.3.6"
+  },
+  "206": {
+    "code": "206",
+    "message": "Contenu partiel",
+    "description": "indique que le serveur remplit avec succès une demande de plage pour la ressource cible en transférant une ou plusieurs parties de la représentation sélectionnée qui correspondent aux plages satisfaisantes trouvées dans le champ d'en-tête Range de la demande.",
+    "spec_title": "RFC7233#4.1",
+    "spec_href": "https://tools.ietf.org/html/rfc7233#section-4.1"
+  }
+}
