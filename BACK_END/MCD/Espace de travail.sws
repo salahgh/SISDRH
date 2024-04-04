@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?PowerDesigner signature="Workspace" version="16.6.6.5721"?>
+<!-- Veuillez ne pas modifier ce fichier -->
+
+<Workspace>
+	<Local Expanded="Yes">
+		<Model Expanded="Yes" ID="{3AD18A03-C730-41E6-A463-73FF87D6DC26}" Name="GRH_DSN" Type="{1E597170-9350-11D1-AB3C-0020AF71E433}" URL="GRH_DSN_.mcd"/>
+	</Local>
+	<BrowserModule Name="Repository"/>
+</Workspace>

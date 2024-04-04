@@ -1,0 +1,142 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "originalFileName": {
+        "type": "keyword"
+      },
+      "dateReference": {
+        "type": "date" ,
+        "format"  : "yyyy-MM-dd"
+      },
+      "reference": {
+        "type": "keyword"
+      },
+      "libTypeTexteAr": {
+        "type": "keyword"
+      },
+      "libTypeTexteFr": {
+        "type": "keyword"
+      },
+      "libConfidentialiteAr": {
+        "type": "keyword"
+      },
+      "libConfidentialiteFr": {
+        "type": "keyword"
+      },
+      "libUrgenceAr": {
+        "type": "keyword"
+      },
+      "libUrgenceFr": {
+        "type": "keyword"
+      },
+      "numberOfPapers": {
+        "type": "integer"
+      },
+      "owner": {
+        "type": "keyword"
+      },
+      "pages": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "id_page": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
+          "bbox": {
+            "properties": {
+              "x1": {
+                "type": "text"
+              },
+              "y1": {
+                "type": "text"
+              },
+              "x2": {
+                "type": "text"
+              },
+              "y2": {
+                "type": "text"
+              }
+            }
+          },
+          "paragraphs": {
+            "type": "nested",
+            "properties": {
+              "id": {
+                "type": "keyword"
+              },
+              "id_par": {
+                "type": "keyword"
+              },
+              "type": {
+                "type": "keyword"
+              },
+              "lang": {
+                "type": "keyword"
+              },
+              "bbox": {
+                "properties": {
+                  "x1": {
+                    "type": "text"
+                  },
+                  "y1": {
+                    "type": "text"
+                  },
+                  "x2": {
+                    "type": "text"
+                  },
+                  "y2": {
+                    "type": "text"
+                  }
+                }
+              },
+              "lines": {
+                "type": "nested",
+                "properties": {
+                  "id": {
+                    "type": "keyword"
+                  },
+                  "id_line": {
+                    "type": "text"
+                  },
+                  "type": {
+                    "type": "text"
+                  },
+                  "bbox": {
+                    "properties": {
+                      "x1": {
+                        "type": "text"
+                      },
+                      "y1": {
+                        "type": "text"
+                      },
+                      "x2": {
+                        "type": "text"
+                      },
+                      "y2": {
+                        "type": "text"
+                      }
+                    }
+                  },
+                  "text": {
+                    "type": "text"
+                  },
+                  "fsize": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

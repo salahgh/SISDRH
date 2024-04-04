@@ -1,0 +1,4 @@
+entity UserJdl {
+	name String,
+	familyname Long,
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_COMMIT</OriginalElement>
+  <nodes>
+    <node x="439.5" y="-84.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_GLOBAL_ID</node>
+    <node x="34.5" y="-58.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_COMMIT</node>
+    <node x="-35.0" y="277.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_COMMIT_PROPERTY</node>
+    <node x="410.25" y="222.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_SNAPSHOT</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_GLOBAL_ID" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_GLOBAL_ID" relationship="REFERENCES">
+      <point x="-43.75" y="71.5" />
+      <point x="483.25" y="79.0" />
+      <point x="419.5" y="79.0" />
+      <point x="419.5" y="-12.5" />
+      <point x="-87.5" y="-0.0" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_SNAPSHOT" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_COMMIT" relationship="REFERENCES">
+      <point x="-49.75" y="-104.5" />
+      <point x="460.0" y="173.0" />
+      <point x="155.0" y="173.0" />
+      <point x="0.0" y="71.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_SNAPSHOT" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_GLOBAL_ID" relationship="REFERENCES">
+      <point x="49.75" y="-104.5" />
+      <point x="559.5" y="173.0" />
+      <point x="570.75" y="173.0" />
+      <point x="43.75" y="71.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_COMMIT_PROPERTY" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_COMMIT" relationship="REFERENCES">
+      <point x="0.0" y="-49.5" />
+      <point x="69.0" y="195.5" />
+      <point x="114.5" y="195.5" />
+      <point x="-40.5" y="73.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="305.5" y="201.0" />
+  <SelectedNodes>
+    <node>2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.JV_GLOBAL_ID</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

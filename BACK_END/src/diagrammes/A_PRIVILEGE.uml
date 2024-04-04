@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_PRIVILEGE</OriginalElement>
+  <nodes>
+    <node x="509.09601496848745" y="128.8172268907563">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_PRIVILEGE</node>
+    <node x="907.60546875" y="410.8067226890756">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER</node>
+    <node x="740.5907628676471" y="215.69957983193274">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_DEMANDE_INSCRIPTION_USER</node>
+    <node x="851.8125" y="0.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.D_PERSONNELS</node>
+    <node x="138.9016872373949" y="349.29064609695695">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE</node>
+    <node x="406.8596704306723" y="497.0945378151263">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_ROLE</node>
+    <node x="202.3795299369749" y="88.26470588235294">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE_PRIVILEGE</node>
+    <node x="668.5943828781512" y="607.3046218487394">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_PRIVILEGE_RESTRICTION</node>
+    <node x="-83.13192620798318" y="497.09453781512633">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE_COMPOSITE</node>
+    <node x="541.5907628676471" y="347.29726890756314">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_PRIVILEGE</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE_COMPOSITE" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE" relationship="REFERENCES">
+      <point x="108.49978335084035" y="-2.600232683107606E-4" />
+      <point x="211.0" y="535.0942777918581" />
+      <point x="211.0" y="398.79037815126054" />
+      <point x="104.99977494747904" y="-2.679456964074234E-4" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE_PRIVILEGE" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE" relationship="REFERENCES">
+      <point x="-87.00045194327743" y="0.0" />
+      <point x="211.0" y="126.26470588235294" />
+      <point x="211.0" y="398.79037815126054" />
+      <point x="104.99977494747904" y="-2.679456964074234E-4" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_ROLE" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" relationship="REFERENCES">
+      <point x="-4.687499999818101E-4" y="-38.0" />
+      <point x="506.3592016806723" y="563.0" />
+      <point x="818.0" y="563.0" />
+      <point x="818.0" y="482.3067226890756" />
+      <point x="-144.50046874999998" y="0.0" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.D_PERSONNELS" relationship="REFERENCES">
+      <point x="-4.687499999818101E-4" y="-71.5" />
+      <point x="1052.105" y="355.5" />
+      <point x="1063.0" y="355.5" />
+      <point x="1063.0" y="199.5" />
+      <point x="951.313" y="199.5" />
+      <point x="4.999999999881766E-4" y="82.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_PRIVILEGE_RESTRICTION" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" relationship="REFERENCES">
+      <point x="14.999531250000018" y="-38.0" />
+      <point x="811.0939141281513" y="563.0" />
+      <point x="818.0" y="563.0" />
+      <point x="818.0" y="482.3067226890756" />
+      <point x="-144.50046874999998" y="0.0" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_ROLE" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE" relationship="REFERENCES">
+      <point x="-99.50046874999998" y="0.0" />
+      <point x="211.0" y="535.0945378151263" />
+      <point x="211.0" y="398.79037815126054" />
+      <point x="104.99977494747904" y="-2.679456964074234E-4" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_PRIVILEGE" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" relationship="REFERENCES">
+      <point x="99.49953125000002" y="-5.882352951402936E-5" />
+      <point x="818.0" y="385.2972100840336" />
+      <point x="818.0" y="482.3067226890756" />
+      <point x="-144.50046874999998" y="0.0" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_ROLE_PRIVILEGE" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_PRIVILEGE" relationship="REFERENCES">
+      <point x="86.99954805672257" y="0.0" />
+      <point x="444.0" y="126.26470588235294" />
+      <point x="444.0" y="178.317" />
+      <point x="-104.99998975840344" y="-2.268907562950062E-4" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_PRIVILEGE" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_PRIVILEGE" relationship="REFERENCES">
+      <point x="-99.50046874999998" y="-5.882352951402936E-5" />
+      <point x="444.0" y="385.2972100840336" />
+      <point x="444.0" y="178.317" />
+      <point x="-104.99998975840344" y="-2.268907562950062E-4" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_DEMANDE_INSCRIPTION_USER" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.D_PERSONNELS" relationship="REFERENCES">
+      <point x="128.99953125000002" y="0.0" />
+      <point x="1063.0" y="276.19957983193274" />
+      <point x="1063.0" y="199.5" />
+      <point x="951.313" y="199.5" />
+      <point x="4.999999999881766E-4" y="82.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_DEMANDE_INSCRIPTION_USER" relationship="REFERENCES">
+      <point x="-72.25" y="-71.5" />
+      <point x="979.85546875" y="364.0" />
+      <point x="869.5907628676471" y="364.0" />
+      <point x="0.0" y="60.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_PRIVILEGE_RESTRICTION" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_PRIVILEGE" relationship="REFERENCES">
+      <point x="-4.687499999818101E-4" y="-38.0" />
+      <point x="796.0939141281513" y="472.397" />
+      <point x="444.0" y="472.397" />
+      <point x="444.0" y="178.317" />
+      <point x="-104.99998975840344" y="-2.268907562950062E-4" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7689822294022617" showDependencies="false" x="531.0" y="382.0" />
+  <SelectedNodes>
+    <node>2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER_PRIVILEGE_RESTRICTION</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

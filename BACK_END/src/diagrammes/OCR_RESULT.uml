@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.OCR_RESULT</OriginalElement>
+  <nodes>
+    <node x="198.75" y="974.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.PDF_FOLDER_OCR_RESULT</node>
+    <node x="219.75" y="217.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_DEMANDE_INSCRIPTION_USER</node>
+    <node x="318.7344632768361" y="390.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER</node>
+    <node x="319.0" y="0.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.D_PERSONNELS</node>
+    <node x="565.6398305084745" y="671.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.PDF_FOLDER</node>
+    <node x="0.0" y="412.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.R_TYPE_TEXT_REGLEMENTAIRE</node>
+    <node x="50.25" y="583.0">2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.OCR_RESULT</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.D_PERSONNELS" relationship="REFERENCES">
+      <point x="72.25" y="-71.5" />
+      <point x="535.4844632768361" y="364.0" />
+      <point x="488.25" y="364.0" />
+      <point x="488.25" y="191.0" />
+      <point x="418.5" y="191.0" />
+      <point x="0.0" y="82.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.OCR_RESULT" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.R_TYPE_TEXT_REGLEMENTAIRE" relationship="REFERENCES">
+      <point x="-64.0" y="-170.5" />
+      <point x="114.25" y="558.0" />
+      <point x="127.0" y="558.0" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.PDF_FOLDER" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" relationship="REFERENCES">
+      <point x="0.0" y="-82.5" />
+      <point x="670.6398305084745" y="558.0" />
+      <point x="463.2344632768361" y="558.0" />
+      <point x="0.0" y="71.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.OCR_RESULT" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" relationship="REFERENCES">
+      <point x="64.0" y="-170.5" />
+      <point x="242.25" y="558.0" />
+      <point x="463.2344632768361" y="558.0" />
+      <point x="0.0" y="71.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.PDF_FOLDER_OCR_RESULT" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.OCR_RESULT" relationship="REFERENCES">
+      <point x="-53.0" y="-38.0" />
+      <point x="251.75" y="949.0" />
+      <point x="178.25" y="949.0" />
+      <point x="0.0" y="170.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_DEMANDE_INSCRIPTION_USER" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.D_PERSONNELS" relationship="REFERENCES">
+      <point x="0.0" y="-60.5" />
+      <point x="348.75" y="191.0" />
+      <point x="418.5" y="191.0" />
+      <point x="0.0" y="82.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.PDF_FOLDER_OCR_RESULT" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.PDF_FOLDER" relationship="REFERENCES">
+      <point x="53.0" y="-38.0" />
+      <point x="357.75" y="949.0" />
+      <point x="670.6398305084745" y="949.0" />
+      <point x="0.0" y="82.5" />
+    </edge>
+    <edge source="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_USER" target="2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.A_DEMANDE_INSCRIPTION_USER" relationship="REFERENCES">
+      <point x="-72.25" y="-71.5" />
+      <point x="390.9844632768361" y="364.0" />
+      <point x="348.75" y="364.0" />
+      <point x="0.0" y="60.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8271028037383178" showDependencies="false" x="293.6384180790962" y="657.994350282486" />
+  <SelectedNodes>
+    <node>2ff2cee7-7dba-4c86-b66c-1027c6525760.TABLE:GRH_N.PDF_FOLDER</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
