@@ -11,9 +11,9 @@ export const ConfidentialiteChip = ({
   confidentialite,
 }: {
   confidentialite?: {
-    id: string;
+    id?: string;
     libConfidentialiteAr?: string;
-    libConfidentialiteFr: string;
+    libConfidentialiteFr?: string;
   };
 }) => {
   if (!confidentialite) return null;
