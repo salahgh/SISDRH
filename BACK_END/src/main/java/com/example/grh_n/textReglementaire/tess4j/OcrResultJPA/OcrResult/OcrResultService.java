@@ -9,7 +9,6 @@ import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsI
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageEmbeddedId;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageRepository;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.Folder;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.FolderRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -35,26 +34,23 @@ import java.util.stream.StreamSupport;
 public class OcrResultService {
 
     private final OCRResultCrudRepository ocrResultRepository;
-    private final FolderRepository folderRepository;
     private final TypeTexteReglementaireRepository typeTexteReglementaireRepository;
     private final ConfidentialiteRepository confidentialiteRepository;
     private final UserService userService;
 
     // todo discuss security issues when using the userService ;
     MyElasticSearchRepository_2 myElasticSearchRepository_2;
-
     private final OcrResultPageAsImageRepository ocrResultPageAsImageRepository;
     static Logger logger = LoggerFactory.getLogger(HOCRToJSON.class);
 
     public OcrResultService
             (
                     OCRResultCrudRepository ocrResultRepository,
-                    FolderRepository folderRepository1,
-                    TypeTexteReglementaireRepository typeTexteReglementaireRepository, ConfidentialiteRepository confidentialiteRepository, UserService userService,
+                    TypeTexteReglementaireRepository typeTexteReglementaireRepository,
+                    ConfidentialiteRepository confidentialiteRepository, UserService userService,
                     MyElasticSearchRepository_2 myElasticSearchRepository_2,
                     OcrResultPageAsImageRepository ocrResultPageAsImageRepository) {
         this.ocrResultRepository = ocrResultRepository;
-        this.folderRepository = folderRepository1;
         this.typeTexteReglementaireRepository = typeTexteReglementaireRepository;
         this.confidentialiteRepository = confidentialiteRepository;
         this.userService = userService;
@@ -64,7 +60,6 @@ public class OcrResultService {
 
     public Optional<OcrResultEntityJpa> doesFileExist(byte[] file) {
         String signature = generateSignature(file);
-        logger.info("Signature " + signature);
         return ocrResultRepository.findById(signature);
     }
 
@@ -92,12 +87,8 @@ public class OcrResultService {
 
     @GraphQLQuery(name = "ocrResultByid")
     public OcrResultEntityJpa findById(String fileSignatue) {
-        Optional<OcrResultEntityJpa> optionalOcrResultEntityJpa = ocrResultRepository.findById(fileSignatue);
-        if (optionalOcrResultEntityJpa.isPresent()) {
-            return optionalOcrResultEntityJpa.get();
-        } else {
-            return null;
-        }
+        return ocrResultRepository.findById(fileSignatue)
+                .orElse(null);
     }
 
     @GraphQLQuery(name = "waitingForOcrAll")
@@ -108,32 +99,15 @@ public class OcrResultService {
     public OcrResultEntityElastic_2 save(OcrResultEntityElastic_2 ocrResultEntityElastic_2) {
         return myElasticSearchRepository_2.save(ocrResultEntityElastic_2);
     }
+
     public OcrResultEntityJpa save(OcrResultEntityJpa result) {
         return ocrResultRepository.save(result);
     }
+
     @GraphQLQuery
     public Page<OcrResultEntityJpa> findAllOcrResultsPaged(Pageable pageable) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info("username = {}", username);
         return ocrResultRepository.findAll_(pageable);
-    }
-    @GraphQLQuery
-    public Page<OcrResultEntityJpa> findAllOcrResultEntityByFoldersContaining(
-            Long folderId,
-            Pageable pageable
-    ) {
-        if (folderId == -1) {
-            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-            User user = userService.getByMatricule(userName);
-            return ocrResultRepository.findAllByOwner(user, pageable);
-        }
-        if(folderId == -2) {
-            return ocrResultRepository.findAll_(pageable);
-        }
-        Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new EntityNotFoundException(
-                "Folder not found for id " + folderId
-        ));
-        return ocrResultRepository.findAllPagedByFoldersContaining(folder, pageable);
     }
 
     @GraphQLMutation
@@ -141,16 +115,6 @@ public class OcrResultService {
         ocrResultRepository.deleteById(id);
     }
 
-    @GraphQLMutation
-    public boolean deletePdfFileFromFolder(String pdfId, Long folderId) {
-        Folder folder = folderRepository.findById(folderId).orElseThrow(
-                () -> new EntityNotFoundException("Folder " + folderId + " does not exist")
-        );
-        OcrResultEntityJpa pdfFile = this.findById(pdfId);
-        pdfFile.getFolders().remove(folder);
-        this.save(pdfFile);
-        return true;
-    }
 
     @GraphQLQuery
     public List<OcrResultEntityJpa> findAllOcrResultByIds(List<String> ids) {
@@ -227,6 +191,24 @@ public class OcrResultService {
         ocrResultEntityElastic_2.setLibConfidentialiteAr(confidentialite.getLibConfidentialiteAr());
         myElasticSearchRepository_2.save(ocrResultEntityElastic_2);
     }
+
+    @GraphQLQuery
+    public OcrResultEntityElastic_2 findOcrResultEntityESbyId(String fileId) {
+        return myElasticSearchRepository_2.findById(fileId).orElseThrow(() -> new EntityNotFoundException("file with id = " + fileId + " does not exist"));
+    }
+
+    public Page<OcrResultEntityJpa> findAllByOwner(User user , Pageable pageable){
+        return ocrResultRepository.findAllByOwner(user,pageable);
+    }
+
+    public Page<OcrResultEntityJpa> findAll_(Pageable pageable){
+        return ocrResultRepository.findAll_(pageable);
+    }
+
+    public Page<OcrResultEntityJpa> findAllPagedByFoldersContaining(Folder folder , Pageable pageable){
+        return ocrResultRepository.findAllPagedByFoldersContaining(folder , pageable);
+    }
+
 }
 
 

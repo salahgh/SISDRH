@@ -80,13 +80,9 @@ public class OcrResultEntityJpa {
    @JoinColumn(name = "owner")
    private User owner ;
 
-   @ManyToMany(fetch = FetchType.LAZY)
-   @JoinTable(
-           name = "PDF_FOLDER_OCR_RESULT",
-           joinColumns = @JoinColumn(name = "PDF_ID"),
-           inverseJoinColumns = @JoinColumn(name = "FOLDER_ID"))
+   @ManyToMany(mappedBy = "pdfFiles" , fetch = FetchType.LAZY)
    @ToString.Exclude
-   private Set<Folder> folders ;
+   private List<Folder> folders ;
 
    @Override
    public int hashCode() {
