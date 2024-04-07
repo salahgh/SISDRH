@@ -5,6 +5,7 @@ import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.OcrResu
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,7 @@ public class Folder {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-   private LocalDateTime createdDate;
+    private LocalDateTime createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
@@ -30,14 +31,20 @@ public class Folder {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-   private String description;
+    private String description;
 
-   private String color;
+    private String color;
 
-    @ManyToMany(mappedBy = "folders" , fetch = FetchType.LAZY)
-    private Set<OcrResultEntityJpa> pdfFiles ;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "PDF_FOLDER_OCR_RESULT",
+            joinColumns = @JoinColumn(name = "FOLDER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PDF_ID"))
+    @ToString.Exclude
+    private List<OcrResultEntityJpa> pdfFiles ;
 
     @ManyToMany(mappedBy = "foldersGranted")
-    private Set<User> usersGranted;
+    private List<User> usersGranted;
 
 }
