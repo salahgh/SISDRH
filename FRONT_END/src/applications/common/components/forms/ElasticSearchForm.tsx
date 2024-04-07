@@ -22,10 +22,14 @@ import {
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { ConfidentialiteChip } from "../../../textReglementaire/pages/FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip.tsx";
 import { arraysContainSameElements } from "../../utilities/utilities.ts";
+import { AutoSubmit } from "../formik/AutoSubmit.tsx";
+
 
 // todo choose icons for type texte reglmentaire and for confidentialite
 
 export default function ElasticSearchForm({ handleSubmit, isLoading }) {
+
+
   const values = useSelector(selectelasticSearchInput);
   const loggedInUser = useSelector(selectLoggedInUser);
 
@@ -84,7 +88,7 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
 
   //todo try using one button for select all and select none
 
-  // @ts-ignore
+
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       {({
@@ -101,6 +105,7 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
         return (
           <Form>
             <div className={"shadow-lg drop-shadow-lg p-2 space-y-2"}>
+              <AutoSubmit></AutoSubmit>
               <Stack
                 direction={"row"}
                 alignItems={"center"}

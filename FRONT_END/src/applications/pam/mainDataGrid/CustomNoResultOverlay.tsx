@@ -1,9 +1,7 @@
 import ASSETS from "../../../resources/ASSETS";
 import {Stack} from "@mui/material";
 
-export const CustomNoResultOverlay = (props) => {
-   console.log(props)
-
+export const CustomNoResultOverlay = () => {
 
 
    return(

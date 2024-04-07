@@ -8,7 +8,6 @@ export const emptySplitApi = createApi({
    baseQuery: fetchBaseQuery({
       baseUrl: baseUrl_,
       prepareHeaders: (headers, {getState}) => {
-         console.log(headers)
          // @ts-ignore
          const token = getState().loggedInUser?.user?.token
          headers.set('Access-Control-Allow-Origin', '*')

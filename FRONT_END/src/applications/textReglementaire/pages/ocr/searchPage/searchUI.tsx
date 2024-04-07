@@ -64,8 +64,6 @@ const SearchUI = () => {
   );
 
   const handleSubmit = (values: FormikValues, helpers: FormikHelpers<any>) => {
-    console.log("handle submit ");
-    console.log(values);
     helpers.setSubmitting(true);
     dispatch(
       setelasticSearchInput({

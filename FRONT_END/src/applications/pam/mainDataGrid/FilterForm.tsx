@@ -26,7 +26,6 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import { PostChip } from "../PostChip";
 import { SudChipFilter } from "../SudChip";
 import { Theme } from "@mui/material/styles";
-import { AutoSubmitForm } from "../AutoSubmitForm";
 import ExportToExcel from "./ExportToExcel";
 import { useSelector } from "react-redux";
 import {
@@ -45,6 +44,7 @@ import { MuiFormikTextField } from "../../common/components/formik/MuiFormikText
 import { FiltersOnOff } from "../../common/components/FiltersOnOff.tsx";
 import GradeAvatar from "../../rh/GradeAvatar.tsx";
 import { ArmeAvatar } from "../../rh/ArmeAvatar.tsx";
+import { AutoSubmit } from "../../common/components/formik/AutoSubmit.tsx";
 
 // todo implement a costum toggle button
 
@@ -142,7 +142,7 @@ export const FilterForm = ({
 
         return (
           <Form>
-            <AutoSubmitForm values={values} />
+            <AutoSubmit></AutoSubmit>
               <Stack
                 direction={'row'}
                 spacing={1}
