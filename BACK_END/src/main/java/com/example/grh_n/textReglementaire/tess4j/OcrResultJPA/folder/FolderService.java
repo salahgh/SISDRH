@@ -17,50 +17,55 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
+
 
 @GraphQLApi
 @Service
 public class FolderService {
 
-   private final OcrResultService ocrResultService;
    private final FolderRepository folderRepository;
    private final UserService userService;
    final private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+   final private OcrResultService ocrResultService;
+
    public FolderService(FolderRepository folderRepository,
                         UserRepository_ userRepository,
                         OcrResultService ocrResultService,
-                        UserService userService) {
+                        UserService userService, OcrResultService ocrResultService1) {
       this.folderRepository = folderRepository;
-      this.ocrResultService = ocrResultService;
       this.userService = userService;
+      this.ocrResultService = ocrResultService1;
    }
 
    @GraphQLMutation
-   public Folder createFolder(Folder folder , String username) {
-      User authenticatedUser = userService.getByMatricule(username) ;
+   public Folder createFolder(Folder folder, String username) {
+      User authenticatedUser = userService.getByMatricule(username);
       folder.setOwner(authenticatedUser);
       folder.setCreatedDate(LocalDateTime.now());
       return folderRepository.save(folder);
    }
 
+   @GraphQLQuery
+   public Folder getFolder(Long folderId) {
+      return folderRepository.findById(folderId).orElseThrow(() -> new EntityNotFoundException("Folder with id " + folderId + " not found"));
+   }
+
    @GraphQLMutation
-   public boolean deleteFolder(Long folderId , String username) {
-      User authenticatedUser = userService.getByMatricule(username);
+   public Long deleteFolder(Long folderId) {
+      // todo security check
       // todo check for permissions and errors
-      Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new EntityNotFoundException("Folder not found"));
-      Set<OcrResultEntityJpa> pdfFiles = folder.getPdfFiles();
-      for (OcrResultEntityJpa pdfFile : pdfFiles) {
-         pdfFile.getFolders().remove(folder);
-         ocrResultService.save(pdfFile);
-      }
-      folderRepository.delete(folder);
-      return true;
+      Folder folder = this.getFolder(folderId);
+      folder.setPdfFiles(null);
+      folderRepository.save(folder);
+      folderRepository.deleteById(folderId);
+      return folderId;
    }
 
    @GraphQLQuery
@@ -74,28 +79,19 @@ public class FolderService {
       return (List<Folder>) folderRepository.findAll();
    }
 
+
    @GraphQLQuery
-   public Folder getFolder(Long folderId) {
-      Optional<Folder> folder = folderRepository.findById(folderId);
-      if (folder.isPresent()) {
-         return folder.get();
-      } else {
-         throw new EntityNotFoundException("Folder with id " + folderId + " not found");
-      }
-   }
-   @GraphQLQuery
-   public Folder getFavoriteFolder(String userName) {
+   public Optional<Folder> getFavoriteFolder(String userName) {
       // todo refine
-      String username_ = SecurityContextHolder.getContext().getAuthentication().getName();
-      User user = userService.getByMatricule(username_);
-      return folderRepository.findByDescriptionAndOwner("FAVORITE",user);
+      User user = userService.getByMatricule(userName);
+      return folderRepository.findByDescriptionAndOwner("FAVORITE", user);
    }
 
    @GraphQLQuery
    public List<Folder> getOwnedFolders(String username_) {
       String username = SecurityContextHolder.getContext().getAuthentication().getName();
-      if(!username.equals(username_))
-         throw new IllegalArgumentException("Invalid username: " + username) ;
+      if (!username.equals(username_))
+         throw new IllegalArgumentException("Invalid username: " + username);
       User user = userService.getByMatricule(username);
       List<Folder> folderList = folderRepository.findByOwner(user);
       Folder folder = Folder.builder()
@@ -145,24 +141,6 @@ public class FolderService {
       folderRepository.save(folder);
    }
 
-   @GraphQLMutation
-   public Folder addOcrResultsToFolder(Long folderId, List<String> ocrResultIds) {
-      Folder folder = this.getFolder(folderId);
-      logger.info("Adding OCR results " + ocrResultIds.toString() + " to folder " + folder.getId());
-      // todo security check
-      List<OcrResultEntityJpa> ocrResultEntityJpaToBeAdded = ocrResultService.findAllOcrResultByIds(ocrResultIds);
-      Set<OcrResultEntityJpa> ocrResultEntityJpas = folder.getPdfFiles();
-      ocrResultEntityJpas.addAll(ocrResultEntityJpaToBeAdded);
-      for(OcrResultEntityJpa i : ocrResultEntityJpas)
-      {
-         logger.info(i.getId());
-         Set<Folder> i_folders = i.getFolders() ;
-         i_folders.add(folder);
-         i.setFolders(i_folders);
-      }
-//      folder.setPdfFiles(ocrResultEntityJpas);
-      return folderRepository.save(folder);
-   }
 
    @GraphQLMutation
    public Folder deleteOcrResultsFromFolder(Long folderId, List<String> ocrResultIds) {
@@ -170,16 +148,95 @@ public class FolderService {
       logger.info("removig OCR results " + ocrResultIds.toString() + " from folder " + folder.getId());
       // todo security check
       List<OcrResultEntityJpa> ocrResultEntityJpaToBeDeleted = ocrResultService.findAllOcrResultByIds(ocrResultIds);
-      Set<OcrResultEntityJpa> ocrResultEntityJpas = folder.getPdfFiles();
+      List<OcrResultEntityJpa> ocrResultEntityJpas = folder.getPdfFiles();
       ocrResultEntityJpaToBeDeleted.forEach(ocrResultEntityJpas::remove);
-      for(OcrResultEntityJpa i : ocrResultEntityJpas)
-      {
+      for (OcrResultEntityJpa i : ocrResultEntityJpas) {
          logger.info(i.getId());
-         Set<Folder> i_folders = i.getFolders() ;
+         List<Folder> i_folders = i.getFolders();
          i_folders.remove(folder);
          i.setFolders(i_folders);
       }
 //      folder.setPdfFiles(ocrResultEntityJpas);
       return folderRepository.save(folder);
+   }
+
+   @GraphQLMutation
+   public Integer toggleFavorite(String ocrResultId) {
+
+      String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+      Folder favoriteFolder = this.getFavoriteFolder(userName).orElseThrow(
+              () -> new EntityNotFoundException("there is no favorite folder")
+      );
+      logger.info(favoriteFolder.getId().toString());
+      Optional<OcrResultEntityJpa> resultEntityJpa = favoriteFolder
+              .getPdfFiles().stream().filter((item) -> item.getId().equals(ocrResultId)).findFirst();
+      OcrResultEntityJpa entityJpa = ocrResultService.findById(ocrResultId);
+      if (resultEntityJpa.isEmpty()) {
+         List<OcrResultEntityJpa> pdfFiles = favoriteFolder.getPdfFiles();
+         pdfFiles.add(entityJpa);
+         favoriteFolder.setPdfFiles(pdfFiles);
+         folderRepository.save(favoriteFolder);
+         return 1;
+      } else {
+         List<OcrResultEntityJpa> pdfFiles = favoriteFolder.getPdfFiles();
+         pdfFiles.remove(entityJpa);
+         favoriteFolder.setPdfFiles(pdfFiles);
+         folderRepository.save(favoriteFolder);
+         return -1;
+      }
+   }
+
+   @GraphQLQuery
+   public Page<OcrResultEntityJpa> findAllOcrResultEntityByFoldersContaining(
+           Long folderId,
+           Pageable pageable
+   ) {
+      if (folderId == -1) {
+         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+         User user = userService.getByMatricule(userName);
+         return ocrResultService.findAllByOwner(user, pageable);
+      }
+      if (folderId == -2) {
+         return ocrResultService.findAll_(pageable);
+      }
+      Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new EntityNotFoundException(
+              "Folder not found for id " + folderId
+      ));
+      return ocrResultService.findAllPagedByFoldersContaining(folder, pageable);
+   }
+
+   @GraphQLMutation
+   public Folder addOcrResultsToFolder(Long folderId, List<String> ocrResultIds) {
+      Folder folder = this.getFolder(folderId);
+      // todo security check
+      List<OcrResultEntityJpa> ocrResultEntityJpaToBeAdded = ocrResultService.findAllOcrResultByIds(ocrResultIds);
+      List<OcrResultEntityJpa> ocrResultEntityJpas = folder.getPdfFiles();
+      ocrResultEntityJpas.addAll(ocrResultEntityJpaToBeAdded);
+      folder.setPdfFiles(ocrResultEntityJpas);
+      return folderRepository.save(folder);
+   }
+
+   @GraphQLQuery
+   public boolean isFavorite(String ocrResultId , String userName){
+      String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+      // todo security check
+      Optional<Folder> favoriteFolder = this.getFavoriteFolder(loggedInUser);
+      if (favoriteFolder.isEmpty()) {
+         throw new EntityNotFoundException("there is no favorite folder");
+      }
+      Optional<OcrResultEntityJpa> resultEntityJpa = favoriteFolder.get()
+              .getPdfFiles().stream().filter((item) -> item.getId().equals(ocrResultId)).findFirst();
+      return resultEntityJpa.isPresent();
+   }
+
+   @GraphQLMutation
+   public boolean deletePdfFileFromFolder(String pdfId, Long folderId) {
+      Folder folder = folderRepository.findById(folderId).orElseThrow(
+              () -> new EntityNotFoundException("Folder " + folderId + " does not exist")
+      );
+      OcrResultEntityJpa pdfFile = ocrResultService.findById(pdfId);
+      pdfFile.getFolders().remove(folder);
+//        this.save(pdfFile);
+      return true;
    }
 }
