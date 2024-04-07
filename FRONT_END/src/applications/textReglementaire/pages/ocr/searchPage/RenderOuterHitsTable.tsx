@@ -1,11 +1,9 @@
 import {
-  Badge,
-  LinearProgress,
-  ListItemButton,
+  Badge, Box,
+  LinearProgress, ListItem,
   ListItemIcon,
-  ListItemText,
   Paper,
-  Typography,
+  Typography
 } from "@mui/material";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -16,13 +14,10 @@ import {
   SearchHitsOcrResultEntityElastic2,
 } from "../../../../../redux/mainApi";
 import { orange } from "@mui/material/colors";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   selectelasticSearchInput,
-  selectselectedFileId,
-  setselectedFileId,
-  setselectedLine,
-  setselectedPageIndex,
+  selectselectedFileId, setselectedFileId
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { ConfidentialiteChip } from "../../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip";
 import { Theme } from "@mui/material/styles";
@@ -33,6 +28,8 @@ import { Dispatch, SetStateAction } from "react";
 import { Pagination } from "../../../../../_generated_gql_/graphql";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import { useAppDispatch } from "../../../../../redux/hooks.ts";
+
 
 const RenderOuterHitsTable = ({
   data,
@@ -48,24 +45,21 @@ const RenderOuterHitsTable = ({
 }) => {
   // todo change the display for the name
 
-  const dispatch = useDispatch();
+  const appDispatch = useAppDispatch();
   const selectedFileId = useSelector(selectselectedFileId);
   const searchInput = useSelector(selectelasticSearchInput);
 
+  const handleRowSelectionChange = (newSelection) => {
+    appDispatch(setselectedFileId(newSelection[0]))
+  }
+
   const columns: GridColDef[] = [
     {
-      field: "result",
-      headerName: "TEXT",
-      width: 600,
-      renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
-        <ListItemButton
-          onClick={() => {
-            dispatch(setselectedFileId(row.id));
-            dispatch(setselectedLine(null));
-            dispatch(setselectedPageIndex(1));
-          }}
-          selected={row.id === selectedFileId}
-        >
+      field: "icon",
+      headerName: "",
+      width: 75,
+      renderCell: () => (
+        <ListItem >
           <ListItemAvatar>
             <Avatar
               variant={"rounded"}
@@ -76,18 +70,51 @@ const RenderOuterHitsTable = ({
               />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText
-            sx={{ padding: 0, margin: 0, border: 0 }}
-            primary={
-              <Typography fontWeight={"bold"} fontSize={20}>
-                {row?.content?.libTypeTexteFr +
-                  "  " +
-                  row?.content?.reference +
-                  " du " +
-                  row?.content?.dateReference}
-              </Typography>
-            }
-          ></ListItemText>
+        </ListItem>
+      ),
+    },
+    {
+      field: "date reference",
+      headerName: "تاريخ المرجع",
+      width: 120,
+      renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
+        <Box className={''}>
+          <Typography sx={{fontWeight : 'bold'}}>{
+            row.content.dateReference
+          }</Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "reference",
+      headerName: "المرجع",
+      width: 80,
+      renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
+        <Box>
+          <Typography sx={{width : 100 , fontWeight : 'bold'}}>{
+            row.content.reference
+          }</Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "type",
+      headerName: "نوع النص القانوني",
+      width: 120,
+      renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
+        <Box>
+          <Typography sx={{width : 100 , fontWeight : 'bold'}}>{
+            row.content.libTypeTexteAr
+          }</Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "resultd",
+      headerName: "درجة السرية",
+      width: 150,
+      renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
+        <Box className={'flex flex-row items-center'}>
           <ConfidentialiteChip
             confidentialite={{
               libConfidentialiteAr: row?.content.libConfidentialiteAr,
@@ -115,10 +142,11 @@ const RenderOuterHitsTable = ({
               <ChevronLeft sx={{ width: 40, height: 40 }} />
             )}
           </ListItemIcon>
-        </ListItemButton>
+        </Box>
       ),
     },
   ];
+
 
   return (
     <Paper sx={{ width: 630, padding: 1 }}>
@@ -154,7 +182,7 @@ const RenderOuterHitsTable = ({
         getRowClassName={(params) =>
           params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
         }
-        onPaginationModelChange={(model, details) => {
+        onPaginationModelChange={(model) => {
           if (!model.page) {
             setHitsPage((old) => ({ ...old, pageSize: model.pageSize }));
           }
@@ -178,6 +206,8 @@ const RenderOuterHitsTable = ({
         paginationMode={"server"}
         rowCount={data?.totalHits ? data?.totalHits : 0}
         hideFooterSelectedRowCount={true}
+        rowSelectionModel={[selectedFileId]}
+        onRowSelectionModelChange={handleRowSelectionChange}
       />
     </Paper>
   );
