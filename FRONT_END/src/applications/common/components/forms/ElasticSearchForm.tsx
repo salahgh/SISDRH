@@ -134,6 +134,7 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
                     component={DatePicker}
                     name={"dateReferenceDebut"}
                     label={"Date reference inferieur"}
+                    format="dd/MM/yyyy"
                     inputProps={{
                       style: {
                         textAlign: "center",
@@ -150,6 +151,7 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
                     component={DatePicker}
                     name={"dateReferenceFin"}
                     label={"Date reference superieur"}
+                    format="dd/MM/yyyy"
                     inputProps={{
                       style: {
                         textAlign: "center",
