@@ -15,7 +15,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 
 @Configuration
-@EnableElasticsearchRepositories("com.example.grh_n.textReglementaire.tess4j")
+@EnableElasticsearchRepositories("com.example.grh_n.textReglementaire.tess4j.ElasticSearch")
 public class ElasticSearchConfig extends ElasticsearchConfiguration {
 
    @Autowired
@@ -47,7 +47,6 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
    public ClientConfiguration clientConfiguration() {
 
       // Print the variable name and value
-      printEnvironmentVariables();
 
       if (certFilePath == null) {
         throw new IllegalStateException("environement variable ELASTICSEARCH_CERT_PATH not defined");
