@@ -20,4 +20,13 @@ public class SimAgentId implements Serializable {
 
     @Column Integer step ;
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

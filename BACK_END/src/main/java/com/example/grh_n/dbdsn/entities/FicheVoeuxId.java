@@ -22,4 +22,13 @@ public class FicheVoeuxId implements Serializable {
     @Column(name = "ANNEE")
     String annee ;
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }
