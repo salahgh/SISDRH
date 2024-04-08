@@ -5,7 +5,6 @@ import {
   Form,
   Formik,
   FormikHelpers,
-  FormikProps,
   FormikValues,
 } from "formik";
 import {
@@ -35,6 +34,7 @@ import { format, getYear } from "date-fns";
 import * as yup from "yup";
 import { getOcrResultEntityJpaRequestFromFileName } from "./FileUploadInput";
 import useSnackBarNotifications from "../../../common/notifications/useSnackBarNotifications.tsx";
+import { DatePicker } from "formik-mui-x-date-pickers";
 
 export interface DiaglogError {
   errorResponse: ErrorResponse | undefined;
@@ -67,16 +67,19 @@ export default function EditFileNameForm({
   const { handleShowErrorSnackBar, handleShowInfoSnackBar } =
     useSnackBarNotifications();
 
+  // todo skeleton loader for type of documents toggle button groups
+
   const {
     data: allTypeTexteReglementaires,
     loading: loadingAllTypeTextReglementaires,
-    error: errorAllTextReglementaires,
   } = useQuery(AllTypeTexteReglementairesDocument);
+
+
+  // todo skeleton loader for confidentialites toggle button groups
 
   const {
     data: allConfidentialites,
     loading,
-    error,
   } = useQuery(AllConfidentialitesDocument);
 
   const handleSubmit = async (
@@ -145,16 +148,12 @@ export default function EditFileNameForm({
           submitForm,
           isSubmitting,
           isValid,
-          errors,
           handleReset,
-          handleChange,
-          handleBlur,
           values,
           dirty,
           setFieldValue,
         }) => {
-          // @ts-ignore
-          // @ts-ignore
+
           return (
             <Form style={{ padding: 0, width: "100%" }}>
               <Stack alignItems={"center"} spacing={3}>
@@ -171,18 +170,18 @@ export default function EditFileNameForm({
                     }}
                   />
 
-                  {/*<Field*/}
-                  {/*  component={DatePicker}*/}
-                  {/*  name={"dateReference"}*/}
-                  {/*  label={"Date reference"}*/}
-                  {/*  format="DD/MM/YYYY"*/}
-                  {/*  inputProps={{*/}
-                  {/*    style: {*/}
-                  {/*      textAlign: "center",*/}
-                  {/*      width: 200,*/}
-                  {/*    },*/}
-                  {/*  }}*/}
-                  {/*/>*/}
+                  <Field
+                    component={DatePicker}
+                    name={"dateReference"}
+                    label={"Date reference"}
+                    format="dd/MM/yyyy"
+                    inputProps={{
+                      style: {
+                        textAlign: "center",
+                        width: 200,
+                      },
+                    }}
+                  />
                 </Stack>
 
                 <ToggleButtonGroup
