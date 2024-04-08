@@ -1,18 +1,18 @@
 import { ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
 import React, { useRef } from "react";
-import { CircularProgress, Paper, Stack } from "@mui/material";
+import { LinearProgress, Paper, Stack } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectselectedFileId,
   selectselectedLine,
   selectselectedPageIndex,
-  setselectedPageIndex,
+  setselectedPageIndex
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import {
   GetFovoriteFolderDocument,
   GetPdfFileDocument,
-  OcrResultPdfDocument,
+  OcrResultPdfDocument
 } from "../../../../../_generated_gql_/graphql.ts";
 import useSnackBarNotifications from "../../../notifications/useSnackBarNotifications.tsx";
 import { PdfToolBar } from "../../../../textReglementaire/PdfToolBar.tsx";
@@ -24,7 +24,6 @@ import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/search
 const HOcrViewer = () => {
   const selctedFileId = useSelector(selectselectedFileId);
   const pageIndex = useSelector(selectselectedPageIndex);
-  const selectedLine = useSelector(selectselectedLine);
   const dispatch = useDispatch();
 
   const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
@@ -44,11 +43,11 @@ const HOcrViewer = () => {
   const {
     data: ocrResultJpa,
     error: ocrResultJpaError,
-    loading: ocrResultJpaLoading,
+    loading: ocrResultJpaLoading
   } = useQuery(GetPdfFileDocument, {
     variables: {
-      fileSignatue: selctedFileId ? selctedFileId : "-1",
-    },
+      fileSignatue: selctedFileId ? selctedFileId : "-1"
+    }
   });
 
   const numberOfPapers = ocrResultJpa?.ocrResultByid?.numberOfPapers
@@ -60,7 +59,7 @@ const HOcrViewer = () => {
 
   const isFavorite: boolean =
     ocrResultJpa?.ocrResultByid?.folders?.filter(
-      (item) => item?.description === "FAVORITE",
+      (item) => item?.description === "FAVORITE"
     ).length !== 0;
   //
   // const isSelectedLineInTheSelectedPage =
@@ -82,11 +81,11 @@ const HOcrViewer = () => {
   const {
     data: pdfFile,
     error: pdfFileError,
-    loading: pdfFileLoading,
+    loading: pdfFileLoading
   } = useQuery(OcrResultPdfDocument, {
     variables: {
-      id: selctedFileId,
-    },
+      id: selctedFileId
+    }
   });
 
   const selectedViewer = useSelector(selectselectedPdfViewer);
@@ -101,7 +100,9 @@ const HOcrViewer = () => {
       <Paper>
         <PdfToolBar showGoToPdf={true} ocrResultJpa={ocrResultJpa}></PdfToolBar>
       </Paper>
-      {selectedViewer === "PDF" && pdfFile && (
+      <LinearProgress sx={{ visibility: ocrResultJpaLoading ? "visible" : "hidden" }} />
+
+      {selectedViewer === "PDF" && (
         <iframe
           src={"data:application/pdf;base64," + pdfFile?.ocrResultPdf}
           width="100%"
@@ -115,21 +116,17 @@ const HOcrViewer = () => {
         alignItems={"center"}
         justifyContent={"center"}
       >
-        {ocrResultJpa?.ocrResultByid?.numberOfPapers && (
-          <Pagination
-            size={"large"}
-            sx={{ padding: 1 }}
-            page={pageIndex}
-            count={numberOfPapers ? numberOfPapers : 1}
-            variant="outlined"
-            color="secondary"
-            onChange={(e, page) => handlePageIndexChange(e, page)}
-          />
-        )}
-        {ocrResultJpaLoading && <CircularProgress />}
+        {selectedViewer !== "PDF" && <Pagination
+          sx={{ visibility: !ocrResultJpaLoading ? "visible" : "hidden", padding: 1 }}
+          size={"large"}
+          page={pageIndex}
+          count={numberOfPapers ? numberOfPapers : 1}
+          variant="outlined"
+          color="secondary"
+          onChange={(e, page) => handlePageIndexChange(e, page)}
+        />}
         {ocrResultJpaError && <NetWorkErrorComponent />}
       </Stack>
-      ;
     </Stack>
   );
 };
