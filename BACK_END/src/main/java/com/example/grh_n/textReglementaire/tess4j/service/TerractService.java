@@ -66,7 +66,7 @@ public class TerractService {
 
       public OcrResultEntityElastic_2 performOCR (OcrResultEntityJpa ocrResultEntityJpa){
 
-         logger.info("performOCR...");
+
 
          Tesseract instance = new Tesseract();
          instance.setDatapath(System.getenv("TESSDATA"));
@@ -84,17 +84,12 @@ public class TerractService {
          File pdfFile = new File("./" + fileName + ".pdf");
          try (FileOutputStream fos = new FileOutputStream(pdfFile)) {
             fos.write(pdfBuffer);
-            logger.info("file written to " + fileName + ".pdf");
          } catch (IOException e) {
-            logger.info("error while writing pdf file. message : {}", e.getMessage());
          }
 
          try {
-            logger.info("ocr...");
             hocrResult = instance.doOCR(pdfFile);
-            logger.info("cor_done");
          } catch (TesseractException e) {
-            logger.info("tesseract error no results. message : {} ", e.getMessage());
          }
 
          FileWriter writer = null;
@@ -102,49 +97,41 @@ public class TerractService {
 
             writer = new FileWriter("./" + fileName + ".html");
          } catch (IOException ex) {
-            logger.info("error opning the writer for html file. message : {} ", ex.getMessage());
          }
 
          try {
             assert hocrResult != null;
             assert writer != null;
-            logger.info("write html");
             writer.write(hocrResult);
          } catch (IOException e) {
-            logger.info("error writing html file. message : {} ", e.getMessage());
          }
 
          ObjectNode s = HOCRToJSON.convert(hocrResult);
 
-         logger.info("result converted to json succesfully ...");
 
          try {
             writer.close();
          } catch (IOException e) {
-            logger.info("error closing the file writer {}", e.getMessage());
          }
 
          try {
             writer = new FileWriter("./" + fileName + ".json");
          } catch (IOException ex) {
-            logger.info("error opening the writer for json file. message : {} ", ex.getMessage());
+
          }
 
          try {
             writer.write(s.toString());
          } catch (IOException e) {
-            logger.info("error  writing json file. message : {} ", e.getMessage());
          }
 
          try {
             writer.close();
          } catch (IOException e) {
-            logger.info("error closing the file writer {}", e.getMessage());
          }
 
          ObjectMapper mapper = new ObjectMapper();
          OcrResultEntityElastic_2 ocrResultEntityElastic_2 = mapper.convertValue(s, OcrResultEntityElastic_2.class);
-         logger.info("json converted to entity successfully ...");
          ocrResultEntityElastic_2.setId(ocrResultEntityJpa.getId());
          ocrResultEntityElastic_2.setOriginalFileName(ocrResultEntityJpa.getOriginalFileName());
          ocrResultEntityElastic_2.setDateReference(ocrResultEntityJpa.getDateReference());
@@ -206,7 +193,6 @@ public class TerractService {
          } catch (IOException e) {
             throw new RuntimeException(e);
          }
-         logger.info("ocr_result ......");
          return ocrResultEntityElastic_2;
 
       }

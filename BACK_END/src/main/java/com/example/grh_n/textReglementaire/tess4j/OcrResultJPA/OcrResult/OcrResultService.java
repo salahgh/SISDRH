@@ -134,7 +134,6 @@ public class OcrResultService {
     // todo Security preAuthorize by Id
     @GraphQLQuery
     public String getOcrResultPdf(String ocrResultid) {
-        logger.info("ocrResultPdf: " + ocrResultid);
         if (Objects.equals(ocrResultid, "-1")) {
             throw new IllegalArgumentException("ocrResultPdf is not a valid ");
         }
@@ -172,7 +171,6 @@ public class OcrResultService {
         Confidentialite confidentialite = confidentialiteRepository.findById("5").orElseThrow(
                 () -> new EntityNotFoundException("confidentialite not found")
         );
-        logger.info(String.valueOf(confidentialite));
         return ocrResultRepository.findAllByConfidentialite(confidentialite);
     }
 

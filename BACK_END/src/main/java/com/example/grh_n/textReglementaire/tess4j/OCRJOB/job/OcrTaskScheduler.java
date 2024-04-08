@@ -33,38 +33,31 @@ public class OcrTaskScheduler {
 
     //todo manage the stop and restart of the ocrTasks
     public OcrTaskScheduler(OcrJobService ocrJobService, OcrResultService ocrResultService) {
-        logger.info("creating OcrTaskScheduler");
         this.ocrJobService = ocrJobService;
         this.ocrResultService = ocrResultService;
         int availableProcessors = Runtime.getRuntime().availableProcessors();
       desiredThreads = (int) Math.ceil(availableProcessors * ThreadUtilizationPercentage);
 //        desiredThreads = 2;
         forkJoinPool = new ForkJoinPool(desiredThreads);
-        logger.info("Threads: {} ; BatchSize : {} ", desiredThreads, BatchSize);
     }
 
     @GraphQLMutation
     public void startScheduler() {
         running = true;
-        logger.info("starting the schedular ...");
         while (running) {
-            logger.info("an other round ...");
             Page<OcrResultEntityJpa> ocrResultEntityJpaList = ocrResultService.getWaitingPdfs(
                     PageRequest.of(0, BatchSize, Sort.by(Sort.Order.desc("createdDate")))
             );
-            logger.info("this time : " + ocrResultEntityJpaList.getNumberOfElements());
             if (!ocrResultEntityJpaList.isEmpty()) {
                 for (OcrResultEntityJpa ocrResultEntityJpa : ocrResultEntityJpaList) {
                     ocrResultEntityJpa.setOcrDone("p");
                     ocrResultService.save(ocrResultEntityJpa);
-                    logger.info(ocrResultEntityJpa.getOcrDone());
                     OcrRecursiveTask ocrTask = new OcrRecursiveTask(List.of(ocrResultEntityJpa));
                     forkJoinPool.submit(ocrTask);
                 }
             }
 
             try {
-                logger.info("sleeping for " + SCHEDULER_PERIOD_SECONDS + " seconds.");
                 TimeUnit.SECONDS.sleep(SCHEDULER_PERIOD_SECONDS);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -90,7 +83,6 @@ public class OcrTaskScheduler {
 
         public OcrRecursiveTask(List<OcrResultEntityJpa> jobs) {
             this.jobs = jobs;
-            logger.info("creating a job with jobs " + jobs.size());
         }
 
         // todo see if there is other optimisations ...
@@ -99,15 +91,12 @@ public class OcrTaskScheduler {
         protected String compute() {
 
             if (jobs.size() == 1) {
-                logger.info("size = 1 ocring ..." + jobs.get(0).getOriginalFileName());
                 ocrJobService.doOcr(jobs.get(0));
                 return jobs.get(0).getOriginalFileName();
             } else {
                 int mid = jobs.size() / 2;
                 List<OcrResultEntityJpa> leftJobs = jobs.subList(0, mid);
                 List<OcrResultEntityJpa> rightJobs = jobs.subList(mid, jobs.size());
-
-                logger.info("mid = " + mid + "size = " + jobs.size() + "leftJobs = " + leftJobs.size() + "rightJobs = " + rightJobs.size());
 
                 OcrRecursiveTask leftTask = new OcrRecursiveTask(leftJobs);
                 OcrRecursiveTask rightTask = new OcrRecursiveTask(rightJobs);

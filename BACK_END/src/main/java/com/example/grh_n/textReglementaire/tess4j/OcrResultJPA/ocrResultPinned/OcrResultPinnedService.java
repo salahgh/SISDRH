@@ -30,10 +30,10 @@ public class OcrResultPinnedService {
 
     @GraphQLMutation(name = "pinOcrResult")
     public OcrResultPinned save(String ocrResultId) {
-        logger.info(ocrResultId);
+
         OcrResultEntityJpa ocrResultEntityJpa = ocrResultCrudRepository.findById(ocrResultId)
                 .orElseThrow(() -> new EntityNotFoundException("entity ocr result with id " + ocrResultId + " not found")) ;
-        logger.info("entity found");
+
         OcrResultPinned ocrResultPinned = OcrResultPinned.builder()
                         .ocrResult(ocrResultEntityJpa)
                         .id(ocrResultId)

@@ -91,7 +91,6 @@ public class NotificationService {
                 .build();
 
         String destination = "/notification/" + issue.getCreator().getUsername();
-        logger.info(destination);
         simpMessagingTemplate.convertAndSend(destination, notificationDto);
     }
 

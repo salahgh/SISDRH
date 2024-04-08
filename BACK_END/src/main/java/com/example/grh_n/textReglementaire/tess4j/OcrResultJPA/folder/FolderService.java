@@ -145,7 +145,6 @@ public class FolderService {
    @GraphQLMutation
    public Folder deleteOcrResultsFromFolder(Long folderId, List<String> ocrResultIds) {
       Folder folder = this.getFolder(folderId);
-      logger.info("removig OCR results " + ocrResultIds.toString() + " from folder " + folder.getId());
       // todo security check
       List<OcrResultEntityJpa> ocrResultEntityJpaToBeDeleted = ocrResultService.findAllOcrResultByIds(ocrResultIds);
       List<OcrResultEntityJpa> ocrResultEntityJpas = folder.getPdfFiles();
@@ -167,7 +166,6 @@ public class FolderService {
       Folder favoriteFolder = this.getFavoriteFolder(userName).orElseThrow(
               () -> new EntityNotFoundException("there is no favorite folder")
       );
-      logger.info(favoriteFolder.getId().toString());
       Optional<OcrResultEntityJpa> resultEntityJpa = favoriteFolder
               .getPdfFiles().stream().filter((item) -> item.getId().equals(ocrResultId)).findFirst();
       OcrResultEntityJpa entityJpa = ocrResultService.findById(ocrResultId);

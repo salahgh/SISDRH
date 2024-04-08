@@ -78,7 +78,7 @@ public class UserService {
    public Collection
            <? extends GrantedAuthority> getAuthorities(String matricule) {
       User user = this.getByMatricule(matricule);
-      logger.info(user.getAuthorities().toString());
+
       return user.getAuthorities();
    }
 
@@ -87,7 +87,6 @@ public class UserService {
            <? extends GrantedAuthority> getLoggedInAuthorities() {
       String username = SecurityContextHolder.getContext().getAuthentication().getName();
       User user = this.getByMatricule(username);
-      logger.info(user.getAuthorities().toString());
       return user.getAuthorities();
    }
 
@@ -113,7 +112,6 @@ public class UserService {
 
    @GraphQLMutation
    public boolean setHablitation( String userName , String habilitaitonId){
-      logger.info("user name = {} , habilitation id = {}" , userName , habilitaitonId);
       User user = this.getByMatricule(userName) ;
       Habilitation habilitation = habilitationRepository.findById(habilitaitonId)
               .orElseThrow(() -> new EntityNotFoundException("habilitation does not exist"));
@@ -124,7 +122,6 @@ public class UserService {
 
    @GraphQLMutation
    public boolean userAddRole( String userName , String roleName){
-      logger.info(roleName);
       User user = this.getByMatricule(userName) ;
       Role role = roleRepository.findByName(roleName).orElseThrow(
               () -> new EntityNotFoundException("role does not exist role_id " + roleName)

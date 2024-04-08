@@ -184,8 +184,6 @@ public class IssueService {
     @GraphQLQuery
     public Optional<Issue> getIssueById(Long id) {
         Optional<Issue> optionalIssue = issueRepository.findById(id);
-        logger.info(String.valueOf(id));
-        logger.info(optionalIssue.get().getComments().toString());
         return optionalIssue;
     }
 
@@ -240,10 +238,7 @@ public class IssueService {
             Pageable pageable
     ) {
 
-        logger.info("issueStatusId :" + issueStatusId);
-        logger.info("issueTypeId " + issueTypeId);
-        logger.info("priorityId " + priorityId);
-        logger.info("projectId " + projectId);
+
 
         JPAQuery<Issue> query = new JPAQuery<Issue>(em);
         QIssue qIssue = QIssue.issue;

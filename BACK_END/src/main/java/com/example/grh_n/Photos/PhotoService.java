@@ -55,7 +55,7 @@ public class PhotoService {
 
     @GraphQLMutation
     public PhotoWithFaces createPhoto(Photo photoInput) throws IOException {
-        logger.info("creating photo ...");
+
         DPersonnel personnel = personnelsService.getPersonnelByMatricule(photoInput.getPersonnel().getMatricule());
         if (photoRepository.existsByPersonnel(personnel)) {
             photoRepository.delete(personnel.getPhotos().get(0));
@@ -153,7 +153,7 @@ public class PhotoService {
                         newRect.height
                 );
             }catch (Exception e){
-                logger.info(e.getMessage());
+
                 return new Rect() ;
             }
 
@@ -169,7 +169,6 @@ public class PhotoService {
                         newRect.height
                 );
             }catch (Exception e){
-                logger.info(e.getMessage());
                 return new Rect();
             }
         }
@@ -244,7 +243,7 @@ public class PhotoService {
             try {
                 generateFacesThumbnailsFromPhoto(photo , null);
             } catch (IOException e) {
-                logger.info(e.getMessage());
+
             }
         }
     }

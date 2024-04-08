@@ -33,11 +33,6 @@ public class PDFService {
     public List<PDDocument> splitPDFToPages(PDDocument document) {
 
         int page = 1;
-        logger.info(
-                "Logging from {} - {}",
-                this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[1].getMethodName()
-        );
         List<PDDocument> pages = new ArrayList<>();
         for (PDPage pdPage : document.getPages()) {
             // Create a new document for each page
@@ -69,7 +64,6 @@ public class PDFService {
         try {
             pdDocument = PDDocument.load(Base64.getDecoder().decode(s.getBytes(StandardCharsets.UTF_8)));
         } catch (IOException e) {
-            logger.info("Error decoding {}: {}", s, e);
             e.printStackTrace();
         }
         assert pdDocument != null;
@@ -78,7 +72,6 @@ public class PDFService {
         try {
             ImageIO.write(pdfRenderer.renderImageWithDPI(0, 400, ImageType.RGB), "JPEG", baos);
         } catch (IOException e) {
-            logger.info("Failed to write image to PDFRenderer {}", e.getMessage());
             e.printStackTrace();
         }
         return Base64.getEncoder().encodeToString(baos.toByteArray());

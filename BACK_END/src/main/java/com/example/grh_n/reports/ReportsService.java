@@ -110,14 +110,12 @@ public class ReportsService {
             case 3 : page = page.withSort(Sort.Direction.ASC , "personnel.pamOff2024.trieAnciennete") ; break;
         }
 
-        logger.info(page.toString());
 
         String reportHome = System.getenv("REPORTS_HOME");
         String fileName = reportHome + "/" + ReportsSubFolder.pam + "/" + ReportNames.listPav + ".jasper";
         File initialFile = new File(fileName);
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(initialFile);
         Page<Pav> pavPage = pavService.findAllPav(page,gradeId);
-        logger.info(pavPage.toList().toString());
         JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(pavPage.toList());
         JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, jrBeanCollectionDataSource);
 

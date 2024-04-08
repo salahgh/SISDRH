@@ -64,7 +64,6 @@ public class MySimulation {
     }
 
     public void step(Integer step_) {
-        logger.info("simulation step ... " + step_);
         for (Object agent : agents) {
             SimAgent simAgent = (SimAgent) agent;
             simAgent.step(this, logger);

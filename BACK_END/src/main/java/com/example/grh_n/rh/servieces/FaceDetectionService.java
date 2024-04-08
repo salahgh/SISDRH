@@ -20,16 +20,14 @@ public class FaceDetectionService {
 
     private final CascadeClassifier faceCascade;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public FaceDetectionService() {
         // Load the pre-trained face cascade classifier XML file
         faceCascade = new CascadeClassifier();
-        logger.info(System.getenv("OPENCV_TRAINED_DATA"));
         if (!faceCascade.load(System.getenv("OPENCV_TRAINED_DATA"))) {
             throw new RuntimeException("Failed to load face cascade classifier.");
         }else{
-            logger.info("traned data loaded....");
+
         }
     }
 

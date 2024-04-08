@@ -94,7 +94,6 @@ public class SimulationController {
         RhRGrade grade = gradeRepository.findById(simAgentDto.getIdGrade()).orElseThrow(() -> new EntityNotFoundException("grade nto found"));
 //        RhRArme arme = armeRepository.findById(simAgentDto.getIdArme()).orElseThrow(() -> new EntityNotFoundException("arme not found")) ;
         Simulation simulation = simulationRepository.findById(simAgentDto.getIdSimulation()).orElseThrow(() -> new EntityNotFoundException("not found"));
-        logger.info(simAgentDto.toString());
         SimAgent simAgent = SimAgent.builder()
                 .simAgentId(SimAgentId.builder().id(simAgentDto.getSimAgentId().getId()).step(0).build())
                 .anicenneteGrade(simAgentDto.getAnicenneteGrade())

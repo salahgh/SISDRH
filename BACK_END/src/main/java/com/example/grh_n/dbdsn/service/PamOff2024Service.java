@@ -196,7 +196,7 @@ public class PamOff2024Service {
         List<String> diplomesCiviles = filteringParams.getDiplomesCiviles();
         List<String> diplomesMilitaires = filteringParams.getDiplomesMilitaires();
 
-        logger.info(filteringParams.toString());
+
 
         // 1 sud , 2 non , 3 both
 
@@ -229,7 +229,7 @@ public class PamOff2024Service {
         }
 
         if (suds != null && suds.size() != 0) {
-            logger.info("suds.toString() " + suds);
+
             if (!(suds.contains(0) && suds.contains(1))) {
                 if (suds.contains(0)) {
                     query = query.where(qPamOff2024.nDureeS.loe(2.9));
@@ -241,18 +241,18 @@ public class PamOff2024Service {
         }
 
         if (diplomesCiviles != null && !diplomesCiviles.isEmpty()) {
-            logger.info("diplomesCiviles " + diplomesCiviles);
+
             query = query.where(qPamOff2024.code_dip_civ.in(diplomesCiviles));
         }
 
         if(diplomesMilitaires != null && !diplomesMilitaires.isEmpty()){
-            logger.info("diplomesMilitaires" + diplomesMilitaires);
+
             query = query.where(qPamOff2024.code_dip_mil.in(diplomesMilitaires));
         }
 
 
         if (pam != null && pam.size() != 0) {
-            logger.info("pam.toString() " + pam);
+
             if (!(pam.contains("0") && pam.contains("1"))) {
                 if (pam.contains("0")) {
                     query = query.where(qPamOff2024.dureeN.lt(3));
@@ -264,7 +264,7 @@ public class PamOff2024Service {
         }
 
         if (pav != null && pav.size() != 0) {
-            logger.info("pav.toString() " + pav);
+
             if (!(pav.contains("0") && pav.contains("1"))) {
                 if (pav.contains("0")) {
                     query = query.where(qPamOff2024.promotionNumber.loe(0));

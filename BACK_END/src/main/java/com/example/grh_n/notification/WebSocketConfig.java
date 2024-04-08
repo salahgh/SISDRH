@@ -27,7 +27,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @CrossOrigin
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // Configure the message broker
-        logger.info("configuring message broker..........");
         config.enableSimpleBroker("/notification"); // Use "/topic" to broadcast messages to all subscribers
         config.setApplicationDestinationPrefixes("/app"); // Use "/app" as the application destination prefix
     }
@@ -41,8 +40,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 
         // Enable SockJS for fallback options
-        logger.info("registerStompEndpoints ................");
-        logger.info(registry.toString());
     }
 
     @MessageMapping("/private/{recipient}")

@@ -49,10 +49,8 @@ public class GrhNApplication {
         Iterator<ImageReaderSpi> readerSpis = registry.getServiceProviders(javax.imageio.spi.ImageReaderSpi.class, true);
         while (readerSpis.hasNext()) {
             javax.imageio.spi.ImageReaderSpi readerSpi = readerSpis.next();
-            logger.info("Plugin: " + readerSpi.getDescription(Locale.ENGLISH));
         }
 
-        logger.info("loading open cv");
 
 
         for (RolesEnum value : RolesEnum.values()) {

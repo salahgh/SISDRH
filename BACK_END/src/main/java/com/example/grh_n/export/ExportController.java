@@ -36,7 +36,7 @@ public class ExportController {
 
     @PostMapping("/exportPhotos")
     public ResponseEntity<byte[]> exportImagesToZip(@RequestBody ExportImagesToZipRequestBody requestBody) {
-        logger.info(requestBody.toString());
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDispositionFormData("attachment", "photos " + LocalDateTime.now() + " .zip");
@@ -84,9 +84,7 @@ public class ExportController {
 
         // todo passing the pageable object as params
 
-        logger.info(gradId.toString());
-        logger.info(title);
-        logger.info(sort.toString());
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

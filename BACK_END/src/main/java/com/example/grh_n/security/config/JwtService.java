@@ -71,7 +71,6 @@ public class JwtService {
         Claims claims = this.extractAllClaims(currentToken);
         // Check if the token is expired
         if (isTokenExpired(currentToken)) {
-           logger.info("token is expired refreshing it ...");
             // For simplicity, let's assume you just extend the expiration date by a fixed time
             long expirationTime = System.currentTimeMillis() + tokenExpiration * 1000;
             claims.setExpiration(new Date(expirationTime));
@@ -82,7 +81,6 @@ public class JwtService {
                     .signWith(getSingingKey(),SignatureAlgorithm.HS256)
                     .compact();
         } else {
-            logger.info("token is still valid no need to refresh");
             return currentToken;
         }
     }
