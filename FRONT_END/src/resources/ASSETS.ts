@@ -28,6 +28,7 @@ import empty from "../resources/icons/allAps/empty.png";
 import retard from "../resources/gifs/en-retard.gif";
 import promotion from "../resources/icons/promotion-de-carriere.png";
 import reward from "../resources/icons/reward.png";
+import exemple_nom_document from "./exemple_nom_document.png"
 
 const ASSETS = {
   BIRTH_ICON: orphanage,
@@ -73,6 +74,7 @@ const ASSETS = {
   retard: retard,
   promotion: promotion,
   reward: reward,
+  exemple_nom_document : exemple_nom_document
 };
 
 export function getDiplomeIcon(idDiplome) {
