@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store.ts";
 
 interface InitialStateInterface {
-  user: { matricule?: string };
+  user: { matricule?: string , token? : string };
   expirationTime: string | null;
 }
 

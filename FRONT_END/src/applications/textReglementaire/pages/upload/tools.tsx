@@ -1,8 +1,8 @@
-import {UPLOAD_STATUS} from "./UploadMainPage";
 import {DownloadDone, Error, ErrorOutline, Upload} from "@mui/icons-material";
 import {CircularProgress} from "@mui/material";
 import {green, orange, red} from "@mui/material/colors";
 import * as React from "react";
+import { UPLOAD_STATUS } from "./uploadMainPage/constants.ts";
 
 export const getStatusIcon = (status: string) => {
     switch (status) {

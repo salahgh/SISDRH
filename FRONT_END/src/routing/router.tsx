@@ -14,7 +14,7 @@ import { PavHome } from "../applications/pav/PavHome.tsx";
 import HomePageTextReglementaire from "../applications/textReglementaire/pages/HomeTextReglementairePage/HomePageTextReglementaire.tsx";
 import FoldersTextReglementairePage from "../applications/textReglementaire/pages/FoldersTexteReglementaire/FoldersTextReglementairePage.tsx";
 import PdfFile from "../applications/textReglementaire/pages/PdfFile/PdfFile.tsx";
-import UploadMainPage from "../applications/textReglementaire/pages/upload/UploadMainPage.tsx";
+import UploadMainPage from "../applications/textReglementaire/pages/upload/uploadMainPage/UploadMainPage.tsx";
 import SearchUI from "../applications/textReglementaire/pages/ocr/searchPage/searchUI.tsx";
 import OcrJobMain from "../applications/textReglementaire/pages/OcrJobMonitoring/OcrJobMain.tsx";
 
