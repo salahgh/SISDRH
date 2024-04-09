@@ -29,12 +29,12 @@ import { TextField } from "formik-mui";
 import { ConfidentialiteChip } from "../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip";
 import {
   OcrResultEntityJpaRequest,
-} from "./UploadMainPage";
+} from "./uploadMainPage/UploadMainPage.tsx";
 import { format, getYear } from "date-fns";
 import * as yup from "yup";
-import { getOcrResultEntityJpaRequestFromFileName } from "./FileUploadInput";
 import useSnackBarNotifications from "../../../common/notifications/useSnackBarNotifications.tsx";
 import { DatePicker } from "formik-mui-x-date-pickers";
+import { getOcrResultEntityJpaRequestFromFileName } from "./fileUploadInput/tools.ts";
 
 export interface DiaglogError {
   errorResponse: ErrorResponse | undefined;

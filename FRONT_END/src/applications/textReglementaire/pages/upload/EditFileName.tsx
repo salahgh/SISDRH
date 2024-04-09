@@ -1,18 +1,15 @@
 import { SetStateAction, useRef, useState } from "react";
-import {
-  OcrResultEntityJpaRequest,
-  UPLOAD_STATUS,
-  UplodComponentData,
-} from "./UploadMainPage";
 import * as React from "react";
-import { getOcrResultEntityJpaRequestFromFileName } from "./FileUploadInput";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import {  Stack, TextField, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useQuery } from "@apollo/client";
 import { AllTypeTexteReglementairesDocument } from "../../../../_generated_gql_/graphql";
 import EditFileNameForm from "./EditFileNameForm";
 import { FormikProps, FormikValues } from "formik";
+import { OcrResultEntityJpaRequest, UplodComponentData } from "./uploadMainPage/types.ts";
+import { UPLOAD_STATUS } from "./uploadMainPage/constants.ts";
+import { getOcrResultEntityJpaRequestFromFileName } from "./fileUploadInput/tools.ts";
 
 export const EditFileName = (props: {
   indexToBeEdited: number;
