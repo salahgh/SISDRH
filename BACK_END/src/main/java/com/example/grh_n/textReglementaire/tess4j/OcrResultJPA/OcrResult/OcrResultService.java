@@ -1,17 +1,28 @@
 package com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult;
 
+import com.example.grh_n.dbdsn.entities.dto.CountParDiplomeCivile;
 import com.example.grh_n.security.user.User;
 import com.example.grh_n.security.user.UserService;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.MyElasticSearchRepository_2;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrResultEntityElastic_2;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.HOCRToJSON;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.ConfidentialiteCountDto;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.QConfidentialite;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.QOcrResultEntityJpa;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.QTypeTexteReglementaire;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImage;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageEmbeddedId;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageRepository;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.QConfidentialiteCountDto;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.QTypeTextReglementaireCountDto;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.TypeTextReglementaireCountDto;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.Folder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -43,19 +54,22 @@ public class OcrResultService {
     private final OcrResultPageAsImageRepository ocrResultPageAsImageRepository;
     static Logger logger = LoggerFactory.getLogger(HOCRToJSON.class);
 
+    final EntityManager em;
+
     public OcrResultService
             (
                     OCRResultCrudRepository ocrResultRepository,
                     TypeTexteReglementaireRepository typeTexteReglementaireRepository,
                     ConfidentialiteRepository confidentialiteRepository, UserService userService,
                     MyElasticSearchRepository_2 myElasticSearchRepository_2,
-                    OcrResultPageAsImageRepository ocrResultPageAsImageRepository) {
+                    OcrResultPageAsImageRepository ocrResultPageAsImageRepository, EntityManager em) {
         this.ocrResultRepository = ocrResultRepository;
         this.typeTexteReglementaireRepository = typeTexteReglementaireRepository;
         this.confidentialiteRepository = confidentialiteRepository;
         this.userService = userService;
         this.myElasticSearchRepository_2 = myElasticSearchRepository_2;
         this.ocrResultPageAsImageRepository = ocrResultPageAsImageRepository;
+        this.em = em;
     }
 
     public Optional<OcrResultEntityJpa> doesFileExist(byte[] file) {
@@ -207,6 +221,44 @@ public class OcrResultService {
         return ocrResultRepository.findAllPagedByFoldersContaining(folder , pageable);
     }
 
+    @GraphQLQuery
+    public List<TypeTextReglementaireCountDto> typeTextReglementaireCount(){
+        QTypeTexteReglementaire qTypeTexteReglementaire = QTypeTexteReglementaire.typeTexteReglementaire ;
+        QOcrResultEntityJpa qOcrResultEntityJpa = QOcrResultEntityJpa.ocrResultEntityJpa ;
+        JPAQuery<CountParDiplomeCivile> query = new JPAQuery<CountParDiplomeCivile>(em);
+        return query.from(qOcrResultEntityJpa)
+                .join(qTypeTexteReglementaire).on(qOcrResultEntityJpa.typeTexteReglementaire.id.eq(qTypeTexteReglementaire.id))
+                .groupBy(qTypeTexteReglementaire.libTypeTexteAr , qTypeTexteReglementaire.libTypeTexteFr , qTypeTexteReglementaire.id)
+                .orderBy(qTypeTexteReglementaire.id.asc())
+                .select(
+                        new QTypeTextReglementaireCountDto(
+                                qTypeTexteReglementaire.id ,
+                                qTypeTexteReglementaire.libTypeTexteAr ,
+                                qTypeTexteReglementaire.libTypeTexteFr ,
+                                qOcrResultEntityJpa.count()
+                        )
+                )
+                .fetch();
+    }
+
+    @GraphQLQuery
+    public List<ConfidentialiteCountDto> confidentialiteCount() {
+        QConfidentialite qConfidentialite = QConfidentialite.confidentialite ;
+        QOcrResultEntityJpa qOcrResultEntityJpa = QOcrResultEntityJpa.ocrResultEntityJpa ;
+        JPAQuery<CountParDiplomeCivile> query = new JPAQuery<CountParDiplomeCivile>(em);
+        return query.from(qOcrResultEntityJpa)
+                .join(qConfidentialite).on(qOcrResultEntityJpa.confidentialite.id.eq(qConfidentialite.id))
+                .groupBy(qConfidentialite.id , qConfidentialite.libConfidentialiteAr , qConfidentialite.libConfidentialiteFr)
+                .orderBy(qConfidentialite.id.asc())
+                .select(
+                        new QConfidentialiteCountDto(
+                                qConfidentialite.id ,
+                                qConfidentialite.libConfidentialiteAr ,
+                                qConfidentialite.libConfidentialiteFr ,
+                                qOcrResultEntityJpa.count()
+                        )
+                ).fetch() ;
+    }
 }
 
 

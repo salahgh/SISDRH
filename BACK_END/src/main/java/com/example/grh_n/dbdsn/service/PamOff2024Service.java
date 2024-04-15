@@ -2,6 +2,7 @@ package com.example.grh_n.dbdsn.service;
 
 import com.example.grh_n.dbdsn.entities.*;
 import com.example.grh_n.dbdsn.entities.dto.*;
+import com.example.grh_n.dbdsn.entities.dto.QCountParDiplomeCivile;
 import com.example.grh_n.dbdsn.repos.DemandeRadiationRepository;
 import com.example.grh_n.dbdsn.repos.PamOff2024Repository;
 import com.example.grh_n.dbdsn.repos.ReportPosteRealiseRepository;
