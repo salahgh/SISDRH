@@ -6,7 +6,7 @@ interface TexteReglementaireUiInitialState {
 }
 
 const initialState: TexteReglementaireUiInitialState = {
-  searchPanelOpen: false
+  searchPanelOpen: true
 };
 
 export const textReglemetaireUISlice = createSlice({

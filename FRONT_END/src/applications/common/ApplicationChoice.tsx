@@ -1,9 +1,8 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {
     Card,
     CardActionArea,
     LinearProgress,
-    Paper,
     Stack,
     Typography
 } from "@mui/material";
@@ -52,7 +51,6 @@ function MediaCard({image, title, titleProps, disabled, action, width}: {
                     <img src={image} style={{width: width * 0.8, height: width * 0.8, objectFit: 'contain'}}/>
                 </Stack>
                 {
-                    // @ts-ignore
                     <Typography gutterBottom variant="h5" fontWeight={'bold'}>
                         {title}
                     </Typography>

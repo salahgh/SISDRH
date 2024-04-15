@@ -5,3 +5,7 @@ BACK_END/GRH_N.iml
 BACK_END/.idea/vcs.xml
 
 BACK_END/.idea/dataSources/
+
+FRONT_END/src/_generated_gql_/
+
+FRONT_END/src/graphql/schema.graphql

@@ -136,8 +136,10 @@ public class OcrResultService {
     }
 
     @GraphQLQuery
-    public TypeTexteReglementaire getTypeTexteReglementaireByLibFr(String libFr) {
-        return typeTexteReglementaireRepository.findByLibTypeTexteFr(libFr);
+    public List<TypeTexteReglementaire> getTypeTexteReglementaireByLib(String lib) {
+        QTypeTexteReglementaire qTypeTexteReglementaire = QTypeTexteReglementaire.typeTexteReglementaire ;
+        BooleanExpression expression = qTypeTexteReglementaire.libTypeTexteAr.like(lib).or(qTypeTexteReglementaire.libTypeTexteAr.like(lib));
+        return (List<TypeTexteReglementaire>) typeTexteReglementaireRepository.findAll(expression);
     }
 
     @GraphQLQuery

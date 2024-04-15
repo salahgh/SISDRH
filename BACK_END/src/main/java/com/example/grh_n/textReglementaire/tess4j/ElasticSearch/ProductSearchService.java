@@ -5,6 +5,9 @@ import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.json.JsonData;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.MyElasticSearchRepository_2;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrResultEntityElastic_2;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.Confidentialite;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.OcrResultService;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.TypeTexteReglementaire;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -18,6 +21,7 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.SourceFilter;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @GraphQLApi
@@ -32,10 +36,13 @@ public class ProductSearchService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
     private final Integer PAGE_SIZE_LIMIt = 100;
 
-    public ProductSearchService(ElasticsearchOperations operations, MyElasticSearchRepository_2 myElasticSearchRepository2) {
+    private final OcrResultService ocrResultService ;
+
+    public ProductSearchService(ElasticsearchOperations operations, MyElasticSearchRepository_2 myElasticSearchRepository2, OcrResultService ocrResultService) {
         this.operations = operations;
 
         myElasticSearchRepository_2 = myElasticSearchRepository2;
+        this.ocrResultService = ocrResultService;
     }
 
     // todo see the posssiblity for eliminating the content field from the elastic result
@@ -57,6 +64,20 @@ public class ProductSearchService {
         if (elasticSearchInput.getSize() > PAGE_SIZE_LIMIt || elasticSearchInput.getInnerSize() > PAGE_SIZE_LIMIt) {
             throw new IllegalArgumentException("page too big");
         }
+
+        if(elasticSearchInput.getIsConfidentialite().isEmpty()){
+            List<String> confidentialities = ocrResultService.getAllConfidentialites().stream().map(Confidentialite::getLibConfidentialiteFr).toList();
+            elasticSearchInput.setIsConfidentialite(
+                    confidentialities
+            );
+        }
+
+        if(elasticSearchInput.getIdsTypeTextReglementaire().isEmpty()){
+            elasticSearchInput.setIdsTypeTextReglementaire(
+                    ocrResultService.getAllTypeTexteReglementaires().stream().map(TypeTexteReglementaire::getLibTypeTexteFr).toList()
+            );
+        }
+
 
         logger.info(elasticSearchInput.toString());
 
