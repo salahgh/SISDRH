@@ -1,8 +1,32 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { format } from "date-fns";
 import { RootState } from "../../store.ts";
+import { FilteringFieldsInterface } from "../../../applications/pam/mainDataGrid/types.ts";
 
-const initialState = {
+interface ElasticSearchInputInterface {
+  dateReferenceDebut: string,
+  dateReferenceFin: string,
+  reference: string,
+  searchToken: string,
+  idsTypeTextReglementaire: string[],
+  isConfidentialite: string[],
+}
+
+interface InitialStateInterface {
+  selectedOcrResult: {
+    selectedFileId: string,
+    selectedPageIndex: string,
+    selectedLine: string,
+  },
+  selectedSinglePdfViewer: {
+    selectedFileId: string,
+    selectedPageIndex: string,
+  },
+  elasticSearchInput: ElasticSearchInputInterface
+}
+
+
+const initialState : InitialStateInterface = {
   selectedOcrResult: {
     selectedFileId: null,
     selectedPageIndex: null,
@@ -17,22 +41,8 @@ const initialState = {
     dateReferenceFin: format(new Date(), "yyyy-MM-dd"),
     reference: "",
     searchToken: "",
-    idsTypeTextReglementaire: [
-      "DECRET",
-      "NOTE",
-      "INSTRUCTION",
-      "DECISION",
-      "ARRETE",
-      "BROJET_DECRET",
-    ],
-    isConfidentialite: [
-      "NORMAL",
-      "CONFIDENTIEL",
-      "SECRET",
-      "TRES SECRET",
-      "SECRET DEFENSE",
-      "NON ENCORE DEFINIE",
-    ],
+    idsTypeTextReglementaire: [],
+    isConfidentialite: [],
   },
 };
 
@@ -58,7 +68,7 @@ export const elasticSelectionSlice = createSlice({
     setselectedSinglePdfViewerPageIndex: (state, action) => {
       state.selectedSinglePdfViewer.selectedPageIndex = action.payload;
     },
-    setelasticSearchInput: (state, action) => {
+    setelasticSearchInput: (state, action : PayloadAction<ElasticSearchInputInterface>) => {
       state.elasticSearchInput = action.payload;
     },
   },
