@@ -25,8 +25,12 @@ import { useAppDispatch } from "../../../../../redux/hooks";
 import { selectLoggedInUser } from "../../../../../redux/features/auth/userSlice";
 import ElasticSearchForm from "../../../../common/components/forms/ElasticSearchForm.tsx";
 import HOcrViewer from "../../../../common/components/ocr/ocrSearchViewer/HOcrViewer.tsx";
+import {
+  selectTextReglementaireSearchPanelOpen
+} from "../../../../../redux/features/elasticSearch/textReglemetaireUISlice.ts";
 
 const SearchUI = () => {
+
   const selctedFileId = useSelector(selectselectedFileId);
 
   const [setPageIndex, setSetPageIndex] = useState(0);
@@ -43,19 +47,21 @@ const SearchUI = () => {
 
   const searchInputs = useSelector(selectelasticSearchInput);
   const dispatch = useAppDispatch();
+  const searchPanelOpen = useSelector(selectTextReglementaireSearchPanelOpen)
 
-  const { data: ocrResultJpa, error: ocrResultJpaError } = useQuery(
-    GetPdfFileDocument,
-    {
-      variables: {
-        fileSignatue: selctedFileId ? selctedFileId : "-1",
-      },
-    },
-  );
+  // const { data: ocrResultJpa, error: ocrResultJpaError } = useQuery(
+  //   GetPdfFileDocument,
+  //   {
+  //     variables: {
+  //       fileSignatue: selctedFileId ? selctedFileId : "-1",
+  //     },
+  //   },
+  // );
 
   const loggedInUser = useSelector(selectLoggedInUser);
   const [search, { isLoading, error, data }] =
     useFindElasticOcrResultsAllCriteriasMutation();
+
   const { data: userConfidentialities } = useQuery(
     UserConfidentialitesDocument,
     {
@@ -64,6 +70,8 @@ const SearchUI = () => {
   );
 
   const handleSubmit = (values: FormikValues, helpers: FormikHelpers<any>) => {
+    console.log('handle submit ...')
+    console.log(values)
     helpers.setSubmitting(true);
     dispatch(
       setelasticSearchInput({
@@ -71,6 +79,15 @@ const SearchUI = () => {
         dateReferenceFin: format(values.dateReferenceFin, "yyyy-MM-dd"),
         searchToken: values.searchToken,
         idsTypeTextReglementaire: values.idsTypeTextReglementaire,
+        // isConfidentialite: values?.isConfidentialite?.filter((item) => {
+        //   if (
+        //     userConfidentialities?.user?.habilitation?.confidentialites?.some(
+        //       (conf) => conf?.libConfidentialiteFr == item,
+        //     )
+        //   ) {
+        //     return true;
+        //   } else return false;
+        // }),
         isConfidentialite: values?.isConfidentialite?.filter((item) => {
           if (
             userConfidentialities?.user?.habilitation?.confidentialites?.some(
@@ -83,22 +100,22 @@ const SearchUI = () => {
         reference: values.reference,
       }),
     );
-    getResults({
-      dateReferenceDebut: format(values.dateReferenceDebut, "yyyy-MM-dd"),
-      dateReferenceFin: format(values.dateReferenceFin, "yyyy-MM-dd"),
-      searchToken: values.searchToken,
-      idsTypeTextReglementaire: values.idsTypeTextReglementaire,
-      isConfidentialite: values?.isConfidentialite?.filter((item) => {
-        if (
-          userConfidentialities?.user?.habilitation?.confidentialites?.some(
-            (conf) => conf?.libConfidentialiteFr == item,
-          )
-        ) {
-          return true;
-        } else return false;
-      }),
-      reference: values.reference,
-    });
+    // getResults({
+    //   dateReferenceDebut: format(values.dateReferenceDebut, "yyyy-MM-dd"),
+    //   dateReferenceFin: format(values.dateReferenceFin, "yyyy-MM-dd"),
+    //   searchToken: values.searchToken,
+    //   idsTypeTextReglementaire: values.idsTypeTextReglementaire,
+    //   isConfidentialite: values?.isConfidentialite?.filter((item) => {
+    //     if (
+    //       userConfidentialities?.user?.habilitation?.confidentialites?.some(
+    //         (conf) => conf?.libConfidentialiteFr == item,
+    //       )
+    //     ) {
+    //       return true;
+    //     } else return false;
+    //   }),
+    //   reference: values.reference,
+    // });
     helpers.setSubmitting(false);
   };
   // todo change color selection for toggle buttons
@@ -118,12 +135,14 @@ const SearchUI = () => {
           innerHitsPage.pageSize === null ? 10 : innerHitsPage.pageSize,
       },
     };
-    search(searchInput).then((result) => {});
+    search(searchInput).then(() => {});
   };
 
   useEffect(() => {
     getResults(searchInputs);
-  }, [JSON.stringify({ hitsPage, innerHitsPage })]);
+  }, [searchInputs , hitsPage]);
+
+  const height_ = searchPanelOpen ? 278 : 132
 
   return (
     <div>
@@ -132,7 +151,7 @@ const SearchUI = () => {
       </div>
       <Stack
         className={"bg-slate-200"}
-        height={"calc(100vh - 220px)"}
+        height={`calc(100vh - ${height_}px)`}
         direction={"row"}
         spacing={1}
         padding={1}
