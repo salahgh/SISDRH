@@ -151,7 +151,7 @@ query AllTypeTexteReglementaires {
     }
 }
 query TypeTexteReglementaireByLibFr($libFr : String){
-    typeTexteReglementaireByLibFr(libFr: $libFr){
+    typeTexteReglementaireByLib(lib: $libFr){
         libTypeTexteFr ,
         libTypeTexteAr ,
         id
@@ -338,6 +338,7 @@ query enumsWrapperForCodeGeneration ($enum : EnumsWrapperInput){
 }
 query Users{
     getUsers {
+        id
         personnel {
             matricule,
             noma
@@ -366,6 +367,7 @@ query OcrResultUserGrants($fileSignatue: String){
         }
         ocrResultUserGrants {
             user {
+                id
                 personnel {
                     matricule
                     nom
@@ -434,6 +436,7 @@ query AllOcrResultUsersGrantsPaged($pageable : PaginationInput){
 }
 query userConfidentialites($matricule : String){
     user(matricule: $matricule){
+        id
         habilitation {
             libHabilitationFr
             confidentialites {
@@ -507,6 +510,7 @@ query allUsersPaged($pageable : PaginationInput){
 }
 query UserAuthorities($matricule : String) {
     user(matricule: $matricule){
+        id
         authorities {
             authority
         }
