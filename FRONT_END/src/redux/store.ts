@@ -11,6 +11,7 @@ import { userAdministrationSlice } from "./features/userAdministration/userAdmin
 import { bugTrackerSlice } from "./features/bugTracker/bugTrackerSlice";
 import { darkModeSlice } from "./features/darkModeSlice";
 import pamSliceReducer from "./features/pam/pamSlice";
+import  textReglemetaireUIReducer  from "./features/elasticSearch/textReglemetaireUISlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     candidat: candidatReducer,
     loggedInUser: userReducer,
     elastic: elasticSelectionReducer,
+    textReglemetaireUI : textReglemetaireUIReducer ,
     job: OcrJobSlice.reducer,
     folder: foldersSlice.reducer,
     userAdministration: userAdministrationSlice.reducer,
