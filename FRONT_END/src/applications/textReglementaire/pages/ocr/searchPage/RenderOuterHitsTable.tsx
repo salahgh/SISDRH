@@ -49,8 +49,15 @@ const RenderOuterHitsTable = ({
   const selectedFileId = useSelector(selectselectedFileId);
   const searchInput = useSelector(selectelasticSearchInput);
 
+  console.log('selected file id ' + selectedFileId )
+
   const handleRowSelectionChange = (newSelection) => {
-    appDispatch(setselectedFileId(newSelection[0]))
+    console.log('handleRowSelectionChange' , newSelection)
+    if(newSelection[0]) {
+      console.log('newSelection[0]' , newSelection[0])
+      appDispatch(setselectedFileId(newSelection[0]))
+    }
+
   }
 
   const columns: GridColDef[] = [

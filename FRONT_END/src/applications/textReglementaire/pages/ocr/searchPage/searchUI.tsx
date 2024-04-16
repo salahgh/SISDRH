@@ -8,7 +8,6 @@ import {
 } from "../../../../../redux/mainApi";
 import { RenderResults } from "./RenderResults";
 import {
-  GetPdfFileDocument,
   Pagination,
   UserConfidentialitesDocument,
 } from "../../../../../_generated_gql_/graphql";
