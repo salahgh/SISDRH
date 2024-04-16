@@ -18,3 +18,6 @@ select count(*) , CODE_DIP_MIL , DIP_MIL from PAM_OFF_2024 P
 
 select BLOCKING_SESSION , BLOCKING_INSTANCE , SERIAL# , SID  from V$SESSION where BLOCKING_SESSION is not null;
 alter system kill session '245,140' ;
+
+
+test
