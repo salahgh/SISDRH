@@ -154,17 +154,18 @@ const SearchUI = () => {
         direction={"row"}
         spacing={1}
         padding={1}
-        width={"100%"}
       >
-        <RenderOuterHitsTable
-          setHitsPage={setHitsPage}
-          hitsPage={hitsPage}
-          data={data}
-          isFetching={isLoading}
-          error={error}
-        />
-        {searchInputs.searchToken !== "" && (
-          <>
+        <div>
+          <RenderOuterHitsTable
+            setHitsPage={setHitsPage}
+            hitsPage={hitsPage}
+            data={data}
+            isFetching={isLoading}
+            error={error}
+          />
+        </div>
+        <div>
+          {searchInputs.searchToken !== "" && (
             <RenderResults
               setInnerHitsPage={setInnerHitsPage}
               innerHitsPage={innerHitsPage}
@@ -173,9 +174,13 @@ const SearchUI = () => {
               isFetching={isLoading}
               error={error}
             />
-          </>
-        )}
-        <Stack justifyContent={"start"} alignItems={"center"} flex={1}>
+          )}
+        </div>
+        <Stack
+          flex={1}
+          justifyContent={"start"}
+          alignItems={"center"}
+        >
           <HOcrViewer></HOcrViewer>
         </Stack>
       </Stack>

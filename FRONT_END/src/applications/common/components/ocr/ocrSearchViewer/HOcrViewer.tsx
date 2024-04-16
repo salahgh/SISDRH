@@ -5,7 +5,6 @@ import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectselectedFileId,
-  selectselectedLine,
   selectselectedPageIndex,
   setselectedPageIndex
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
@@ -27,18 +26,10 @@ const HOcrViewer = () => {
   const dispatch = useDispatch();
 
   const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
-  const scale_ = 1;
 
   function handlePageIndexChange(e: React.ChangeEvent<unknown>, page: number) {
     dispatch(setselectedPageIndex(page));
   }
-
-  const zoomToImage = () => {
-    if (transformComponentRef.current) {
-      const { zoomToElement } = transformComponentRef.current;
-      zoomToElement("imgExample");
-    }
-  };
 
   const {
     data: ocrResultJpa,
@@ -53,17 +44,7 @@ const HOcrViewer = () => {
   const numberOfPapers = ocrResultJpa?.ocrResultByid?.numberOfPapers
     ? ocrResultJpa?.ocrResultByid?.numberOfPapers
     : 1;
-  const { data: fovoriteFolder } = useQuery(GetFovoriteFolderDocument);
-  const { handleShowGraphQlErrorSnackBar, handleShowInfoSnackBar } =
-    useSnackBarNotifications();
 
-  const isFavorite: boolean =
-    ocrResultJpa?.ocrResultByid?.folders?.filter(
-      (item) => item?.description === "FAVORITE"
-    ).length !== 0;
-  //
-  // const isSelectedLineInTheSelectedPage =
-  //   pageIndex == selectedLine?.content.id_line.split("_")[1];
 
   // todo implment the zoom to fit functionlity
 
@@ -79,8 +60,7 @@ const HOcrViewer = () => {
   // ]);
 
   const {
-    data: pdfFile,
-    error: pdfFileError,
+    data: pdfFile,,
     loading: pdfFileLoading
   } = useQuery(OcrResultPdfDocument, {
     variables: {
@@ -95,7 +75,7 @@ const HOcrViewer = () => {
       height={"100%"}
       width={"100%"}
       spacing={1}
-      style={{ background: "#d8dcdb" }}
+      style={{ background: "#e1e7ee" }}
     >
       <Paper>
         <PdfToolBar showGoToPdf={true} ocrResultJpa={ocrResultJpa}></PdfToolBar>
@@ -107,7 +87,9 @@ const HOcrViewer = () => {
           src={"data:application/pdf;base64," + pdfFile?.ocrResultPdf}
           width="100%"
           height="100%"
-        ></iframe>
+        >
+
+        </iframe>
       )}
       {selectedViewer == "IMAGE" && <PanAndZoomViewer></PanAndZoomViewer>}
       <Stack

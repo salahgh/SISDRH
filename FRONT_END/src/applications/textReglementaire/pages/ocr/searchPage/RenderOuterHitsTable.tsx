@@ -156,9 +156,9 @@ const RenderOuterHitsTable = ({
 
 
   return (
-    <Paper sx={{ width: 630, padding: 1 }}>
       <StripedDataGrid
         sx={{
+          padding: 1 ,
           boxShadow: 2,
           border: 2,
           borderColor: "primary.light",
@@ -216,7 +216,6 @@ const RenderOuterHitsTable = ({
         rowSelectionModel={[selectedFileId]}
         onRowSelectionModelChange={handleRowSelectionChange}
       />
-    </Paper>
   );
 };
 

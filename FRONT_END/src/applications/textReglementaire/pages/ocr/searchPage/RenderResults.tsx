@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import * as React from "react";
 import { DragHandle } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +23,6 @@ import {
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Pagination } from "../../../../../_generated_gql_/graphql";
-import { CustomPagination } from "../../../../pam/mainDataGrid/CustomPagination";
 import { CustomNoResultOverlay } from "../../../../pam/mainDataGrid/CustomNoResultOverlay";
 import { Theme } from "@mui/material/styles";
 import { StripedDataGrid } from "../../../../pam/mainDataGrid/StripedDataGrid";
@@ -32,9 +31,7 @@ export const RenderResults = ({
   data,
   error,
   isFetching,
-  setInnerHitsPage,
-  innerHitsPage,
-  setPageIndex,
+  setInnerHitsPage
 }: {
   data: SearchHitsOcrResultEntityElastic2;
   setPageIndex: Dispatch<SetStateAction<number>>;
@@ -119,20 +116,6 @@ export const RenderResults = ({
   };
 
   return (
-    <Stack direction={"column"} spacing={1}>
-      {/*<Paper>*/}
-      {/*    <Stack direction={'row'} padding={1} spacing={1} justifyItems={'center'} alignItems={'center'}>*/}
-      {/*        <Button onClick={() => handleGoLeft()} variant={'outlined'}>*/}
-      {/*            <ChevronLeft></ChevronLeft>*/}
-      {/*        </Button>*/}
-      {/*        <Button onClick={() => handleGoRight()} variant={'outlined'}>*/}
-      {/*            <ChevronRight></ChevronRight></Button>*/}
-      {/*        <Typography fontWeight={'bold'} fontSize={20}>*/}
-      {/*            {currentResult}/{selectedOuterHit?.innerHits ? selectedOuterHit?.innerHits?.['pages.paragraphs.lines'].totalHits : 0}*/}
-      {/*        </Typography>*/}
-      {/*    </Stack>*/}
-      {/*</Paper>*/}
-      <Paper sx={{ width: 220, height: "calc(100vh - 200px)" }}>
         <StripedDataGrid
           rowHeight={65}
           sx={{
@@ -191,7 +174,5 @@ export const RenderResults = ({
           }
           hideFooterSelectedRowCount={true}
         />
-      </Paper>
-    </Stack>
   );
 };
