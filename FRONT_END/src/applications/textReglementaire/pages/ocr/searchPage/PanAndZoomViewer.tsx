@@ -51,7 +51,7 @@ export const PanAndZoomViewer = () => {
 
   console.log(selectedLine);
 
-  const scale_ = 3;
+  const scale_ = 2.6;
 
   return (
     <TransformWrapper ref={transformComponentRef}>
@@ -101,11 +101,10 @@ export const PanAndZoomViewer = () => {
                             (selectedLine.content.bbox.y2 -
                               selectedLine.content.bbox.y1) /
                             scale_,
-                          border: "3px solid yellow", // Yellow bounding box
+                          border: "1px solid yellow", // Yellow bounding box
                           pointerEvents: "none", // Disable interaction with the overlay
                         }}
                       >
-                        {JSON.stringify(selectedLine.content.bbox)}{" "}
                       </div>
                     )}
                     <div
