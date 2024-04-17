@@ -2,8 +2,9 @@ import { Avatar, IconButton, Stack, Typography } from "@mui/material";
 import AddToFolderMenu from "./pages/FoldersTexteReglementaire/pdfFiles/AddToFolderMenu.tsx";
 import { useSelector } from "react-redux";
 import {
+  selectelasticSearchInput,
   selectselectedFileId,
-  selectselectedPageIndex,
+  selectselectedPageIndex
 } from "../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { GetPdfFileQuery } from "../../_generated_gql_/graphql.ts";
 import { FavoriteButton } from "./FavoriteButton.tsx";
@@ -12,19 +13,21 @@ import ASSETS from "../../resources/ASSETS.ts";
 import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../routing/routs.tsx";
 
+
 export const PdfToolBar = ({
   ocrResultJpa,
   showGoToPdf,
+  pdfToolBar
 }: {
   ocrResultJpa: GetPdfFileQuery | undefined;
   showGoToPdf?: boolean;
+  pdfToolBar : any
 }) => {
   const selectedFileId = useSelector(selectselectedFileId);
 
   // const toggleFavorite = useToggleFavorite(selectedFileId, []);
 
   const pageIndex = useSelector(selectselectedPageIndex);
-
   const navigate = useNavigate();
 
   return (
@@ -35,7 +38,7 @@ export const PdfToolBar = ({
       alignItems={"center"}
       justifyContent={"space-between"}
     >
-      <PdfViewerToggleButton></PdfViewerToggleButton>
+      {pdfToolBar}
       <div>
         <AddToFolderMenu pdfId={selectedFileId} />
         <FavoriteButton pdfFileId={selectedFileId}></FavoriteButton>

@@ -4,6 +4,7 @@ import { LinearProgress, Paper, Stack } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectelasticSearchInput,
   selectselectedFileId,
   selectselectedPageIndex,
   setselectedPageIndex
@@ -18,6 +19,7 @@ import { PdfToolBar } from "../../../../textReglementaire/PdfToolBar.tsx";
 import Pagination from "@mui/material/Pagination";
 import { NetWorkErrorComponent } from "../../errors/NetWorkErrorComponent.tsx";
 import { selectselectedPdfViewer } from "../../../../../redux/features/folderAndFiles/foldersSlice.ts";
+import PdfViewerToggleButton from "../../../../textReglementaire/pages/PdfFile/PdfViewerToggleButton.tsx";
 import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/searchPage/PanAndZoomViewer.tsx";
 
 const HOcrViewer = () => {
@@ -69,6 +71,7 @@ const HOcrViewer = () => {
   });
 
   const selectedViewer = useSelector(selectselectedPdfViewer);
+  const isOcrSearch = useSelector(selectelasticSearchInput).searchToken?.length > 0;
 
   return (
     <Stack
@@ -78,7 +81,10 @@ const HOcrViewer = () => {
       style={{ background: "#e1e7ee" }}
     >
       <Paper>
-        <PdfToolBar showGoToPdf={true} ocrResultJpa={ocrResultJpa}></PdfToolBar>
+        <PdfToolBar
+          pdfToolBar={<PdfViewerToggleButton
+            viewers={isOcrSearch ? ["IMAGE", "PDF"] : ["PDF"]}></PdfViewerToggleButton>}
+          showGoToPdf={true} ocrResultJpa={ocrResultJpa}></PdfToolBar>
       </Paper>
       <LinearProgress sx={{ visibility: ocrResultJpaLoading ? "visible" : "hidden" }} />
 
