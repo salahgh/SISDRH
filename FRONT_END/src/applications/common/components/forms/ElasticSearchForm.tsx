@@ -32,6 +32,7 @@ import { LoadingButton } from "@mui/lab";
 import {
   LoadingConfidentialiteButtons
 } from "../../../textReglementaire/pages/ocr/searchPage/LoadingConfidentialiteButtons.tsx";
+import { setSelectedPdfViewer } from "../../../../redux/features/folderAndFiles/foldersSlice.ts";
 
 // todo choose icons for type texte reglmentaire and for confidentialite
 
@@ -72,6 +73,14 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
   const dispatch = useAppDispatch();
 
   //todo try using one button for select all and select none
+  const searchToken = useSelector(selectelasticSearchInput).searchToken;
+  useEffect(() => {
+    if (searchToken?.length === 0) {
+      dispatch(setSelectedPdfViewer("PDF"));
+    }else{
+      dispatch(setSelectedPdfViewer('IMAGE'))
+    }
+  }, [searchToken]);
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -202,7 +211,7 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
                       type="checkbox"
                     >
                       {allConfidentialites?.confidentialiteCount?.map((option) => (
-                        <Tooltip title={option?.libConfidentialiteFr + ' au nombre de ' + option?.count_}>
+                        <Tooltip title={option?.libConfidentialiteFr + " au nombre de " + option?.count_}>
                           <ToggleButton
                             key={option?.id}
                             value={option?.libConfidentialiteFr}
