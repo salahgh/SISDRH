@@ -1,19 +1,21 @@
 import {
   Button,
-  IconButton, LinearProgress,
+  IconButton,
+  LinearProgress,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Paper,
   Stack,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
   GridEventListener,
-  GridRowId, GridSelectionModel
+  GridRowId,
+  GridSelectionModel,
 } from "@mui/x-data-grid";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -23,7 +25,7 @@ import {
   Error,
   PictureAsPdfOutlined,
   Star,
-  StarBorder
+  StarBorder,
 } from "@mui/icons-material";
 import BasicMenu from "./BasicMenu";
 import { useMutation, useQuery } from "@apollo/client";
@@ -33,15 +35,20 @@ import {
   FindAllOcrResultEntityByFoldersContainingDocument,
   GetFovoriteFolderDocument,
   OcrResultEntityJpa,
-  PrivilegesEnum
+  PrivilegesEnum,
 } from "../../../../../_generated_gql_/graphql";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSelectedFolder } from "../../../../../redux/features/folderAndFiles/foldersSlice";
+import {
+  selectSelectedFile,
+  selectSelectedFolder,
+} from "../../../../../redux/features/folderAndFiles/foldersSlice";
 import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../../../../routing/routs";
 import {
+  selectSelectedFileId,
+  setselectedFileId,
   setselectedSinglePdfViewerFileId,
-  setselectedSinglePdfViewerPageIndex
+  setselectedSinglePdfViewerPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { PagePreview } from "./PagePreview";
 import ASSETS from "../../../../../resources/ASSETS";
@@ -51,11 +58,18 @@ import ConfidentialiteForm from "../ConfidentialiteForm";
 import OcrResultUserGrantsAvatarGroup from "./OcrResultUserGrantsAvatarGroup";
 import UsersChoiceDialog from "./UsersChoice";
 import useSnackBarNotifications from "../../../../common/notifications/useSnackBarNotifications.tsx";
-import { useGetAuthories, useHasAuthorities } from "../../../../../security/useHasAuthoritie.ts";
+import {
+  useGetAuthories,
+  useHasAuthorities,
+} from "../../../../../security/useHasAuthoritie.ts";
 import { StripedDataGrid } from "../../../../pam/mainDataGrid/StripedDataGrid.tsx";
 import { Theme } from "@mui/material/styles";
 import { CustomPagination } from "../../../../pam/mainDataGrid/CustomPagination.tsx";
 import { CustomNoResultOverlay } from "../../../../pam/mainDataGrid/CustomNoResultOverlay.tsx";
+import { ActionBar } from "../folders/ActionBar.tsx";
+import { FavoriteButton } from "../../../FavoriteButton.tsx";
+import { PdfFileActions } from "./PdfFileActions.tsx";
+import { setSelectedUser } from "../../../../../redux/features/userAdministration/userAdministrationSlice.ts";
 
 const rowHeight = 60;
 
@@ -79,11 +93,12 @@ export function RenderPageOcrResultTable() {
   const [size, setSize] = useState(10);
   const [confidentialiteOpen, setConfidentialiteOpen] = useState(false);
   const selectedFolder = useSelector(selectSelectedFolder);
+  const selectedFileId = useSelector(selectSelectedFileId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const PRIVILIGES = useGetAuthories();
   const hasOcrResultDirectGrant = useHasAuthorities(
-    PrivilegesEnum.OcrResultDirectGrant
+    PrivilegesEnum.OcrResultDirectGrant,
   );
 
   const { data, error, loading, refetch } = useQuery(
@@ -93,10 +108,10 @@ export function RenderPageOcrResultTable() {
         folderId: selectedFolder?.id,
         pagination: {
           pageSize: size,
-          pageNumber: page
-        }
-      }
-    }
+          pageNumber: page,
+        },
+      },
+    },
   );
 
   const [deletePdfFromFolder, { loading: deletingPdfFromFolder }] = useMutation(
@@ -109,12 +124,12 @@ export function RenderPageOcrResultTable() {
             folderId: selectedFolder?.id,
             pagination: {
               pageSize: size,
-              pageNumber: page
-            }
-          }
-        }
-      ]
-    }
+              pageNumber: page,
+            },
+          },
+        },
+      ],
+    },
   );
 
   const [addOcrResultsToFolder, { loading: addingOcrResultsLoading }] =
@@ -126,56 +141,26 @@ export function RenderPageOcrResultTable() {
             folderId: selectedFolder?.id,
             pagination: {
               pageSize: size,
-              pageNumber: page
-            }
-          }
-        }
-      ]
+              pageNumber: page,
+            },
+          },
+        },
+      ],
     });
 
   const { data: fovoriteFolder } = useQuery(GetFovoriteFolderDocument);
 
-  useEffect(() => {
-    refetch();
-  }, [selectedFolder, refetch, page, size]);
+  useEffect(() => {}, [selectedFolder, refetch, page, size]);
 
-  const [rowSelectionModel, setRowSelectionModel] =
-    useState<GridSelectionModel>();
   const { handleShowGraphQlErrorSnackBar, handleShowInfoSnackBar } =
     useSnackBarNotifications();
 
-  function ActionBar() {
-    return (
-      <Stack
-        sx={{
-          height: 40
-        }}
-        justifyContent={"end"}
-        direction={"row"}
-        className={'pl-1'}
-      >
-        {/*<Button variant={'outlined'}> أضف إلى المجلد </Button>*/}
-        {PRIVILIGES.UpdateConfidentialite && (
-          <Button
-            onClick={() => setConfidentialiteOpen(true)}
-            variant={"outlined"}
-            size={'small'}
-          >
-            {" "}
-            حجز درجة السرية{" "}
-          </Button>
-        )}
-      </Stack>
-    );
-  }
-
-  // @ts-ignore
   const handleDeletePdfFromFolder = (row) => {
     deletePdfFromFolder({
       variables: {
         folderId: selectedFolder?.id,
-        pdfId: row?.id
-      }
+        pdfId: row?.id,
+      },
     })
       .then((result) => {
         handleShowInfoSnackBar("deleted");
@@ -189,7 +174,7 @@ export function RenderPageOcrResultTable() {
     e:
       | React.MouseEvent<HTMLAnchorElement>
       | React.MouseEvent<HTMLButtonElement>,
-    row: any
+    row: any,
   ) {
     const isFavorite =
       row.folders?.filter((item: any) => item?.description === "FAVORITE")
@@ -198,121 +183,57 @@ export function RenderPageOcrResultTable() {
       addOcrResultsToFolder({
         variables: {
           folderId: fovoriteFolder?.favoriteFolder?.id,
-          ocrResultId: row?.id
-        }
+          ocrResultId: row?.id,
+        },
       })
         .then((result) => {
           handleShowInfoSnackBar("ajouté avec succés");
         })
         .catch((error) =>
-          handleShowGraphQlErrorSnackBar(JSON.stringify(error))
+          handleShowGraphQlErrorSnackBar(JSON.stringify(error)),
         );
     } else {
       deletePdfFromFolder({
         variables: {
           folderId: fovoriteFolder?.favoriteFolder?.id,
-          pdfId: row?.id
-        }
+          pdfId: row?.id,
+        },
       })
         .then((result) => {
           handleShowInfoSnackBar("supprimé avec succés");
         })
         .catch((error) =>
-          handleShowGraphQlErrorSnackBar(JSON.stringify(error))
+          handleShowGraphQlErrorSnackBar(JSON.stringify(error)),
         );
     }
   }
 
-  function handleShowPdf(row: any) {
-    dispatch(setselectedSinglePdfViewerFileId(row.id));
-    dispatch(setselectedSinglePdfViewerPageIndex(1));
+  function handleShowPdf(row) {
+    dispatch(setselectedFileId(row.id));
     navigate(getLink(routs.PdfFilePage));
   }
 
   // todo add the privilege check for pin add
 
-  // @ts-ignore
-  function getRenderCell(
-    rowSelectionModel: GridRowId[] | undefined,
-    handleDeletePdfFromFolder: (row: any) => void,
-    toggleFavorite: (
-      e:
-        | React.MouseEvent<HTMLAnchorElement>
-        | React.MouseEvent<HTMLButtonElement>,
-      row: any
-    ) => void,
-    selectedFolder: any,
-    handleShowPdf: (row: any) => void
-  ) {
-    return ({ row }: { row: OcrResultEntityJpa }) => {
-      const isFavorite =
-        row.folders?.filter((item) => item?.description === "FAVORITE")
-          .length !== 0;
-      return (
-        <Stack direction={"row"}>
-          <BasicMenu row={row} selectedPdfIds={rowSelectionModel} />
-          <IconButton onClick={(e) => toggleFavorite(e, row)}>
-            {selectedFolder?.description !== "FAVORITE" ? (
-              isFavorite ? (
-                <Star
-                  sx={{
-                    width: 35,
-                    height: 35,
-                    color: "#ffcf00"
-                  }}
-                />
-              ) : (
-                <StarBorder
-                  sx={{
-                    width: 35,
-                    height: 35,
-                    color: "#ffcf00"
-                  }}
-                />
-              )
-            ) : null}
-          </IconButton>
-
-          <IconButton>
-            <PictureAsPdfOutlined
-              onClick={() => handleShowPdf(row)}
-              sx={{
-                width: 35,
-                height: 35,
-                color: "#fa7d15"
-              }}
-            />
-          </IconButton>
-          <ActionsMenu
-            handleDeletePdfFromFolder={handleDeletePdfFromFolder}
-            page={page}
-            size={size}
-            row={row}
-          />
-        </Stack>
-      );
-    };
-  }
-
   const columns: GridColDef[] = [
     {
       field: "originalFileName",
-      headerName: "file name",
-      width: 550,
+      headerName: "إسم الملف",
+      width: 400,
       renderCell: ({ row }: { row: any }) => (
         <>
           <ListItem
             sx={{
-              width: "100%"
+              width: "100%",
             }}
           >
             <Tooltip
               componentsProps={{
                 tooltip: {
                   sx: {
-                    bgcolor: "rgba(218,213,213,0.48)"
-                  }
-                }
+                    bgcolor: "rgba(218,213,213,0.48)",
+                  },
+                },
               }}
               title={
                 <PagePreview
@@ -328,34 +249,32 @@ export function RenderPageOcrResultTable() {
             >
               <ToolTipChildWrapper>
                 <ListItemAvatar>
-                  <img
-                    src={ASSETS.PDF_64}
-                    style={{
-                      width: "40px"
+                  <PictureAsPdfOutlined
+                    onClick={() => handleShowPdf(row)}
+                    sx={{
+                      width: 35,
+                      height: 35,
+                      color: "#fa7d15",
                     }}
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={
-                    <Typography fontWeight={"bold"}>
-                      {row.originalFileName}
-                    </Typography>
-                  }
+                  primary={<Typography>{row.originalFileName}</Typography>}
                   // secondary={row.numberOfPapers}
                 />
               </ToolTipChildWrapper>
             </Tooltip>
           </ListItem>
         </>
-      )
+      ),
     },
     {
       field: "ocrDone",
-      headerName: "info",
-      width: 350,
+      headerName: "عدد الصفحات",
+      width: 80,
       renderCell: (rowParams) => {
         return (
-          <Stack direction={"row"} spacing={4}>
+          <Stack direction={"row"} spacing={4} justifyContent={"left"}>
             <Stack
               sx={{ padding: 1, width: 60 }}
               direction={"row"}
@@ -363,14 +282,14 @@ export function RenderPageOcrResultTable() {
               spacing={1}
             >
               <AutoStoriesOutlined />
-              <Typography fontWeight={"bold"} fontSize={20}>
+              <Typography fontSize={20}>
                 {rowParams.row.numberOfPapers}
               </Typography>
             </Stack>
             {PRIVILIGES.OcrResultDirectGrant && (
               <OcrResultUserGrantsAvatarGroup
                 userIds={rowParams?.row?.ocrResultUserGrants?.map(
-                  (grant) => grant?.user?.personnel?.matricule
+                  (grant) => grant?.user?.personnel?.matricule,
                 )}
                 onClick={() => {
                   setOcrResultId(rowParams?.row?.id);
@@ -405,7 +324,7 @@ export function RenderPageOcrResultTable() {
             ></Stack>
           </Stack>
         );
-      }
+      },
     },
     {
       field: "confidentialite",
@@ -423,11 +342,11 @@ export function RenderPageOcrResultTable() {
             <ConfidentialiteChip confidentialite={row.confidentialite} />
           </Stack>
         );
-      }
+      },
     },
     {
       field: "ocrResultPinned",
-      headerName: "",
+      headerName: "يب",
       width: 50,
       renderCell: ({ row }: { row: any }) => {
         if (!PRIVILIGES.OcrResultPin) return <></>;
@@ -445,32 +364,34 @@ export function RenderPageOcrResultTable() {
                 alt={"pinned"}
                 style={{
                   width: 35,
-                  height: 35
+                  height: 35,
                 }}
               />
             )}
           </Stack>
         );
-      }
+      },
     },
     {
       field: "id",
       headerName: "actions",
       width: 300,
-      renderCell: getRenderCell(
-        rowSelectionModel,
-        handleDeletePdfFromFolder,
-        toggleFavorite,
-        selectedFolder,
-        handleShowPdf
-      )
-    }
+      renderCell: (row) => (
+        <PdfFileActions
+          handleDeletePdfFromFolder={handleDeletePdfFromFolder}
+          selectedFileId={row?.id}
+          handleShowPdf={handleShowPdf}
+          page={page}
+          size={size}
+          row={row}
+        ></PdfFileActions>
+      ),
+    },
   ];
 
   // todo display the actions only when the row is hoverd
 
-  const handleRowClick: GridEventListener<"rowMouseEnter"> = (params) => {
-  };
+  const handleRowClick: GridEventListener<"rowMouseEnter"> = (params) => {};
 
   const [usersChoiceDialogOpen, setUsersChoiceOpen] = useState<boolean>(false);
   const [ocrResultId, setOcrResultId] = useState<string>(null);
@@ -478,95 +399,101 @@ export function RenderPageOcrResultTable() {
   const [rowCount, setRowCount] = useState();
 
   useEffect(() => {
-
     if (data) {
-      setRowCount(data?.findAllOcrResultEntityByFoldersContaining?.totalElements)
+      setRowCount(
+        data?.findAllOcrResultEntityByFoldersContaining?.totalElements,
+      );
     }
   }, [data, setRowCount]);
 
+  const [rowSelectionModel, setRowSelectionModel] = useState();
+
   return (
     <div>
-        <UsersChoiceDialog
-          open={usersChoiceDialogOpen}
-          setOpen={setUsersChoiceOpen}
-          ocrResultId={ocrResultId}
+      <UsersChoiceDialog
+        open={usersChoiceDialogOpen}
+        setOpen={setUsersChoiceOpen}
+        ocrResultId={ocrResultId}
+      />
+      <ActionBar
+        PRIVILIGES={PRIVILIGES}
+        setConfidentialiteOpen={setConfidentialiteOpen}
+      />
+      <ConfidentialiteForm
+        open={confidentialiteOpen}
+        setOpen={setConfidentialiteOpen}
+      />
+      <Stack sx={{ height: "calc(100vh - 190px)" }} className={"p-1"}>
+        <StripedDataGrid
+          rowHeight={rowHeight}
+          rows={
+            data?.findAllOcrResultEntityByFoldersContaining?.content &&
+            data?.findAllOcrResultEntityByFoldersContaining?.content?.length > 0
+              ? data?.findAllOcrResultEntityByFoldersContaining?.content
+              : []
+          }
+          density={"standard"}
+          columns={columns}
+          error={error}
+          loading={loading}
+          autoPageSize={true}
+          paginationModel={{
+            page: page,
+            pageSize: size,
+          }}
+          onPaginationModelChange={(model) => {
+            setPage(model.page);
+            setSize(model.pageSize);
+          }}
+          // getRowId={(row) => row?.matricule}
+          paginationMode={"server"}
+          sortingMode={"server"}
+          rowCount={rowCount}
+          disableSelectionOnClick={true}
+          sx={{
+            boxShadow: 2,
+            border: 2,
+            borderColor: "primary.light",
+            "& .MuiDataGrid-cell:hover": {
+              color: "primary.main",
+            },
+            "& .MuiDataGrid-cell": {
+              // backgroundColor: (theme : Theme) => theme.palette.background.default,
+              borderColor: (theme: Theme) => theme.palette.divider,
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              // backgroundColor: (theme : Theme) => theme.palette.background.default,
+              borderColor: (theme: Theme) => theme.palette.divider,
+            },
+            "& .MuiDataGrid-footerContainer": {
+              // backgroundColor: (theme : Theme) => theme.palette.background.default,
+              borderColor: (theme: Theme) => theme.palette.divider,
+            },
+            "& .super-app-theme--header": {
+              backgroundColor: "#121212",
+            },
+          }}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+          }
+          // getCellClassName{(params) => 'allCels'}
+          slots={{
+            pagination: CustomPagination,
+            loadingOverlay: LinearProgress,
+            noRowsOverlay: CustomNoResultOverlay,
+          }}
+          slotsProps={{
+            loadingOverlay: {
+              pageSize: page,
+            },
+          }}
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            dispatch(setselectedFileId(newRowSelectionModel?.[0]));
+            setRowSelectionModel(rowSelectionModel);
+          }}
+          rowSelectionModel={rowSelectionModel}
         />
-        <ActionBar />
-        <ConfidentialiteForm
-          open={confidentialiteOpen}
-          setOpen={setConfidentialiteOpen}
-        />
-        <Stack sx={{ height: "calc(100vh - 190px)" }} className={'p-1'}>
-          <StripedDataGrid
-            rowHeight={rowHeight}
-            rows={
-              // @ts-ignore
-              data?.findAllOcrResultEntityByFoldersContaining?.content &&
-              data?.findAllOcrResultEntityByFoldersContaining?.content?.length >
-              0
-                ? data?.findAllOcrResultEntityByFoldersContaining?.content
-                : []
-            }
-
-            density={"standard"}
-            columns={columns}
-            error={error}
-            loading={loading}
-            autoPageSize={true}
-            paginationModel={{
-              page: page,
-              pageSize: size
-            }}
-            onPaginationModelChange={(model) => {
-              setPage(model.page)
-              setSize(model.pageSize)
-            }}
-
-            // getRowId={(row) => row?.matricule}
-            paginationMode={"server"}
-            sortingMode={"server"}
-            rowCount={rowCount}
-            disableSelectionOnClick={true}
-
-            sx={{
-              boxShadow: 2,
-              border: 2,
-              borderColor: "primary.light",
-              "& .MuiDataGrid-cell:hover": {
-                color: "primary.main"
-              },
-              "& .MuiDataGrid-cell": {
-                // backgroundColor: (theme : Theme) => theme.palette.background.default,
-                borderColor: (theme: Theme) => theme.palette.divider
-              },
-              "& .MuiDataGrid-columnHeaders": {
-                // backgroundColor: (theme : Theme) => theme.palette.background.default,
-                borderColor: (theme: Theme) => theme.palette.divider
-              },
-              "& .MuiDataGrid-footerContainer": {
-                // backgroundColor: (theme : Theme) => theme.palette.background.default,
-                borderColor: (theme: Theme) => theme.palette.divider
-              },
-              "& .super-app-theme--header": {
-                backgroundColor: "#121212"
-              }
-            }}
-            getRowClassName={(params) =>
-              params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-            }
-            // getCellClassName{(params) => 'allCels'}
-            slots={{
-              pagination: CustomPagination,
-              loadingOverlay: LinearProgress,
-              noRowsOverlay: CustomNoResultOverlay
-            }}
-            slotsProps={{
-              loadingOverlay: {
-                pageSize: page
-              }
-            }}
-          />
-        </Stack>
+      </Stack>
     </div>
   );
 }

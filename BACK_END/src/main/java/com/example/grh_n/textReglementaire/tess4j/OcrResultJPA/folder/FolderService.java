@@ -2,11 +2,17 @@
 package com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder;
 
 
+import com.example.grh_n.BugTracker.entities.QStatus;
+import com.example.grh_n.BugTracker.services.StatusCountDto;
 import com.example.grh_n.security.user.User;
 import com.example.grh_n.security.user.UserRepository_;
 import com.example.grh_n.security.user.UserService;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.OcrResultEntityJpa;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.OcrResultService;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.QOcrResultEntityJpa;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.QFolder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -226,6 +232,34 @@ public class FolderService {
               .getPdfFiles().stream().filter((item) -> item.getId().equals(ocrResultId)).findFirst();
       return resultEntityJpa.isPresent();
    }
+
+//   @GraphQLQuery
+//   public boolean isFavorite(String ocrResultId , String userName){
+//
+//      QFolder qFolder = QFolder.folder ;
+//      QOcrResultEntityJpa qOcrResultEntityJpa = QOcrResultEntityJpa.ocrResultEntityJpa ;
+//
+//      JPAQuery<QStatus> query = new JPAQuery<QStatus>(em) ;
+//
+//       query
+//              .from(qOcrResultEntityJpa)
+//              .join(qFolder).on(qOcrResultEntityJpa..eq(issue.status))
+//              .where(issue.project.id.eq(projectId))
+//              .groupBy(status.id, status.statusFr, status.statusAr, status.statusAn)
+//              .orderBy(status.id.asc())
+//              .select(
+//                      new QStatusCountDto(
+//                              status.id,
+//                              status.statusFr,
+//                              status.statusAr,
+//                              status.statusAn,
+//                              issue.id.count()
+//                      )
+//              );
+//      return statusCountDtos.fetch();
+//
+//      return resultEntityJpa.isPresent();
+//   }
 
    @GraphQLMutation
    public boolean deletePdfFileFromFolder(String pdfId, Long folderId) {

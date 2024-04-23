@@ -1,36 +1,35 @@
 import {
   ReactZoomPanPinchRef,
   TransformComponent,
-  TransformWrapper
+  TransformWrapper,
 } from "react-zoom-pan-pinch";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { OcrResultImagePreparedDocument } from "../../../../../_generated_gql_/graphql.ts";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectselectedFileId,
+  selectSelectedFileId,
   selectselectedLine,
-  selectselectedPageIndex, setSelectedPageIndex
+  selectselectedPageIndex,
+  setSelectedPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { useEffect, useRef } from "react";
 
 export const PanAndZoomViewer = () => {
-  const selectedFileId = useSelector(selectselectedFileId);
+  const selectedFileId = useSelector(selectSelectedFileId);
   const pageIndex = useSelector(selectselectedPageIndex) as unknown as number;
   const selectedLine = useSelector(selectselectedLine);
   const dispatch = useDispatch();
 
-
-  const [fetchImage, {
-    data: imageBase64,
-    error: imageError,
-    loading: imageLoading
-  }] = useLazyQuery(OcrResultImagePreparedDocument, {
+  const [
+    fetchImage,
+    { data: imageBase64, error: imageError, loading: imageLoading },
+  ] = useLazyQuery(OcrResultImagePreparedDocument, {
     variables: {
       id: selectedFileId ? selectedFileId : "-1",
       pageIndex: pageIndex ? pageIndex - 1 : 0,
-      size: -1
-    }
+      size: -1,
+    },
   });
 
   const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
@@ -45,15 +44,14 @@ export const PanAndZoomViewer = () => {
   };
 
   useEffect(() => {
-   fetchImage().then(() => {
-     setTimeout(() => zoomToImage() , 50 )
-   })
+    fetchImage().then(() => {
+      setTimeout(() => zoomToImage(), 50);
+    });
   }, [pageIndex, selectedFileId]);
 
   useEffect(() => {
-    zoomToImage()
+    zoomToImage();
   }, [selectedLine]);
-
 
   useEffect(() => {
     dispatch(setSelectedPageIndex(1));
@@ -71,7 +69,7 @@ export const PanAndZoomViewer = () => {
               height: "100%",
               padding: 0,
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             {pageIndex != null && (
@@ -89,7 +87,7 @@ export const PanAndZoomViewer = () => {
                       style={{
                         width: "100%",
                         height: "auto",
-                        display: "block"
+                        display: "block",
                         // margin: '0 auto',
                       }}
                     />
@@ -110,10 +108,9 @@ export const PanAndZoomViewer = () => {
                               selectedLine.content.bbox.y1) /
                             scale_,
                           border: "1px solid yellow", // Yellow bounding box
-                          pointerEvents: "none" // Disable interaction with the overlay
+                          pointerEvents: "none", // Disable interaction with the overlay
                         }}
-                      >
-                      </div>
+                      ></div>
                     )}
                     <div
                       style={{ top: 1700, left: 0, width: 50, height: 50 }}

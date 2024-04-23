@@ -1,8 +1,10 @@
 import {
-  Badge, Box,
-  LinearProgress, ListItem,
+  Badge,
+  Box,
+  LinearProgress,
+  ListItem,
   ListItemIcon,
-  Typography
+  Typography,
 } from "@mui/material";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -16,7 +18,8 @@ import { orange } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import {
   selectelasticSearchInput,
-  selectselectedFileId, setselectedFileId
+  selectSelectedFileId,
+  setselectedFileId,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { ConfidentialiteChip } from "../../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip";
 import { Theme } from "@mui/material/styles";
@@ -28,7 +31,6 @@ import { Pagination } from "../../../../../_generated_gql_/graphql";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../../../../redux/hooks.ts";
-
 
 const RenderOuterHitsTable = ({
   data,
@@ -45,14 +47,14 @@ const RenderOuterHitsTable = ({
   // todo change the display for the name
 
   const appDispatch = useAppDispatch();
-  const selectedFileId = useSelector(selectselectedFileId);
+  const selectedFileId = useSelector(selectSelectedFileId);
   const searchInput = useSelector(selectelasticSearchInput);
 
   const handleRowSelectionChange = (newSelection) => {
-    if(newSelection[0]) {
-      appDispatch(setselectedFileId(newSelection[0]))
+    if (newSelection[0]) {
+      appDispatch(setselectedFileId(newSelection[0]));
     }
-  }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -60,7 +62,7 @@ const RenderOuterHitsTable = ({
       headerName: "",
       width: 75,
       renderCell: () => (
-        <ListItem >
+        <ListItem>
           <ListItemAvatar>
             <Avatar
               variant={"rounded"}
@@ -79,10 +81,10 @@ const RenderOuterHitsTable = ({
       headerName: "تاريخ المرجع",
       width: 120,
       renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
-        <Box className={''}>
-          <Typography sx={{fontWeight : 'bold'}}>{
-            row.content.dateReference
-          }</Typography>
+        <Box className={""}>
+          <Typography sx={{ fontWeight: "bold" }}>
+            {row.content.dateReference}
+          </Typography>
         </Box>
       ),
     },
@@ -92,9 +94,9 @@ const RenderOuterHitsTable = ({
       width: 80,
       renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
         <Box>
-          <Typography sx={{width : 100 , fontWeight : 'bold'}}>{
-            row.content.reference
-          }</Typography>
+          <Typography sx={{ width: 100, fontWeight: "bold" }}>
+            {row.content.reference}
+          </Typography>
         </Box>
       ),
     },
@@ -104,9 +106,9 @@ const RenderOuterHitsTable = ({
       width: 120,
       renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
         <Box>
-          <Typography sx={{width : 100 , fontWeight : 'bold'}}>{
-            row.content.libTypeTexteAr
-          }</Typography>
+          <Typography sx={{ width: 100, fontWeight: "bold" }}>
+            {row.content.libTypeTexteAr}
+          </Typography>
         </Box>
       ),
     },
@@ -115,7 +117,7 @@ const RenderOuterHitsTable = ({
       headerName: "درجة السرية",
       width: 150,
       renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
-        <Box className={'flex flex-row items-center'}>
+        <Box className={"flex flex-row items-center"}>
           <ConfidentialiteChip
             confidentialite={{
               libConfidentialiteAr: row?.content.libConfidentialiteAr,
@@ -148,68 +150,67 @@ const RenderOuterHitsTable = ({
     },
   ];
 
-
   return (
-      <StripedDataGrid
-        sx={{
-          padding: 1 ,
-          boxShadow: 2,
-          border: 2,
-          borderColor: "primary.light",
-          "& .MuiDataGrid-cell:hover": {
-            color: "primary.main",
-          },
-          "& .MuiDataGrid-cell": {
-            // backgroundColor: (theme : Theme) => theme.palette.background.default,
-            borderColor: (theme: Theme) => theme.palette.divider,
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            // backgroundColor: (theme : Theme) => theme.palette.background.default,
-            borderColor: (theme: Theme) => theme.palette.divider,
-          },
-          "& .MuiDataGrid-footerContainer": {
-            // backgroundColor: (theme : Theme) => theme.palette.background.default,
-            borderColor: (theme: Theme) => theme.palette.divider,
-          },
-          "& .super-app-theme--header": {
-            backgroundColor: "#121212",
-          },
-        }}
-        slots={{
-          pagination: CustomPagination,
-          loadingOverlay: LinearProgress,
-          noRowsOverlay: CustomNoResultOverlay,
-        }}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+    <StripedDataGrid
+      sx={{
+        padding: 1,
+        boxShadow: 2,
+        border: 2,
+        borderColor: "primary.light",
+        "& .MuiDataGrid-cell:hover": {
+          color: "primary.main",
+        },
+        "& .MuiDataGrid-cell": {
+          // backgroundColor: (theme : Theme) => theme.palette.background.default,
+          borderColor: (theme: Theme) => theme.palette.divider,
+        },
+        "& .MuiDataGrid-columnHeaders": {
+          // backgroundColor: (theme : Theme) => theme.palette.background.default,
+          borderColor: (theme: Theme) => theme.palette.divider,
+        },
+        "& .MuiDataGrid-footerContainer": {
+          // backgroundColor: (theme : Theme) => theme.palette.background.default,
+          borderColor: (theme: Theme) => theme.palette.divider,
+        },
+        "& .super-app-theme--header": {
+          backgroundColor: "#121212",
+        },
+      }}
+      slots={{
+        pagination: CustomPagination,
+        loadingOverlay: LinearProgress,
+        noRowsOverlay: CustomNoResultOverlay,
+      }}
+      getRowClassName={(params) =>
+        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+      }
+      onPaginationModelChange={(model) => {
+        if (!model.page) {
+          setHitsPage((old) => ({ ...old, pageSize: model.pageSize }));
         }
-        onPaginationModelChange={(model) => {
-          if (!model.page) {
-            setHitsPage((old) => ({ ...old, pageSize: model.pageSize }));
-          }
 
-          setHitsPage((old) => ({
-            ...old,
-            pageSize: model.pageSize,
-            pageNumber: model.page,
-          }));
-        }}
-        paginationModel={{
-          page: hitsPage.pageNumber,
-          pageSize: hitsPage.pageSize ? hitsPage.pageSize : 10,
-        }}
-        rowHeight={55}
-        rows={data?.searchHits ? data?.searchHits : []}
-        columns={columns}
-        // error={error}
-        loading={isFetching}
-        autoPageSize={true}
-        paginationMode={"server"}
-        rowCount={data?.totalHits ? data?.totalHits : 0}
-        hideFooterSelectedRowCount={true}
-        rowSelectionModel={[selectedFileId]}
-        onRowSelectionModelChange={handleRowSelectionChange}
-      />
+        setHitsPage((old) => ({
+          ...old,
+          pageSize: model.pageSize,
+          pageNumber: model.page,
+        }));
+      }}
+      paginationModel={{
+        page: hitsPage.pageNumber,
+        pageSize: hitsPage.pageSize ? hitsPage.pageSize : 10,
+      }}
+      rowHeight={55}
+      rows={data?.searchHits ? data?.searchHits : []}
+      columns={columns}
+      // error={error}
+      loading={isFetching}
+      autoPageSize={true}
+      paginationMode={"server"}
+      rowCount={data?.totalHits ? data?.totalHits : 0}
+      hideFooterSelectedRowCount={true}
+      rowSelectionModel={[selectedFileId]}
+      onRowSelectionModelChange={handleRowSelectionChange}
+    />
   );
 };
 

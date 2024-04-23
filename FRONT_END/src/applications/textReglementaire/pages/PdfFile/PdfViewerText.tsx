@@ -5,7 +5,7 @@ import {
 } from "../../../../redux/mainApi";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectselectedFileId,
+  selectSelectedFileId,
   selectselectedPageIndex,
   selectselectedSinglePdfViewerFileId,
   setSelectedPageIndex,

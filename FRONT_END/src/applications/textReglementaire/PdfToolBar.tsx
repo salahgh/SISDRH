@@ -1,33 +1,23 @@
 import { Avatar, IconButton, Stack, Typography } from "@mui/material";
 import AddToFolderMenu from "./pages/FoldersTexteReglementaire/pdfFiles/AddToFolderMenu.tsx";
 import { useSelector } from "react-redux";
-import {
-  selectelasticSearchInput,
-  selectselectedFileId,
-  selectselectedPageIndex
-} from "../../redux/features/elasticSearch/selectedResultLineSlice.ts";
+import { selectSelectedFileId } from "../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { GetPdfFileQuery } from "../../_generated_gql_/graphql.ts";
 import { FavoriteButton } from "./FavoriteButton.tsx";
-import PdfViewerToggleButton from "./pages/PdfFile/PdfViewerToggleButton.tsx";
 import ASSETS from "../../resources/ASSETS.ts";
 import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../routing/routs.tsx";
 
-
 export const PdfToolBar = ({
   ocrResultJpa,
   showGoToPdf,
-  pdfToolBar
+  pdfToolBar,
 }: {
   ocrResultJpa: GetPdfFileQuery | undefined;
   showGoToPdf?: boolean;
-  pdfToolBar : any
+  pdfToolBar: any;
 }) => {
-  const selectedFileId = useSelector(selectselectedFileId);
-
-  // const toggleFavorite = useToggleFavorite(selectedFileId, []);
-
-  const pageIndex = useSelector(selectselectedPageIndex);
+  const selectedFileId = useSelector(selectSelectedFileId);
   const navigate = useNavigate();
 
   return (
@@ -80,7 +70,7 @@ export const PdfToolBar = ({
 
       {/*<Stack flex={1}></Stack>*/}
 
-      {ocrResultJpa && pageIndex && (
+      {ocrResultJpa && (
         <Typography variant={"h4"}>
           {ocrResultJpa?.ocrResultByid?.typeTexteReglementaire?.libTypeTexteFr +
             "  " +

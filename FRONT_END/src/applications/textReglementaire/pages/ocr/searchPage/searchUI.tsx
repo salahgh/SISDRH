@@ -16,20 +16,17 @@ import { format } from "date-fns";
 import RenderOuterHitsTable from "./RenderOuterHitsTable";
 import {
   selectelasticSearchInput,
-  selectselectedFileId,
-  setelasticSearchInput, setselectedFileId
+  selectSelectedFileId,
+  setelasticSearchInput,
+  setselectedFileId,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { selectLoggedInUser } from "../../../../../redux/features/auth/userSlice";
 import ElasticSearchForm from "../../../../common/components/forms/ElasticSearchForm.tsx";
 import HOcrViewer from "../../../../common/components/ocr/ocrSearchViewer/HOcrViewer.tsx";
-import {
-  selectTextReglementaireSearchPanelOpen
-} from "../../../../../redux/features/elasticSearch/textReglemetaireUISlice.ts";
+import { selectTextReglementaireSearchPanelOpen } from "../../../../../redux/features/elasticSearch/textReglemetaireUISlice.ts";
 
 const SearchUI = () => {
-
-
   const [hitsPage, setHitsPage] = useState<Pagination>({
     pageNumber: 0,
     pageSize: 20,
@@ -42,8 +39,8 @@ const SearchUI = () => {
 
   const searchInputs = useSelector(selectelasticSearchInput);
   const loggedInUser = useSelector(selectLoggedInUser);
-  const searchPanelOpen = useSelector(selectTextReglementaireSearchPanelOpen)
-  const selectedFileId = useSelector(selectselectedFileId);
+  const searchPanelOpen = useSelector(selectTextReglementaireSearchPanelOpen);
+  const selectedFileId = useSelector(selectSelectedFileId);
 
   const dispatch = useAppDispatch();
 
@@ -51,8 +48,12 @@ const SearchUI = () => {
     useFindElasticOcrResultsAllCriteriasMutation();
 
   useEffect(() => {
-    if( data && ( !selectedFileId || !data?.searchHits?.some((item) => item?.id === selectedFileId))){
-      dispatch(setselectedFileId(data?.searchHits?.at(0)?.id))
+    if (
+      data &&
+      (!selectedFileId ||
+        !data?.searchHits?.some((item) => item?.id === selectedFileId))
+    ) {
+      dispatch(setselectedFileId(data?.searchHits?.at(0)?.id));
     }
   }, [data]);
 
@@ -63,8 +64,10 @@ const SearchUI = () => {
     },
   );
 
-
-  const handleSubmit = (values: FormikValues, helpers: FormikHelpers<never>) => {
+  const handleSubmit = (
+    values: FormikValues,
+    helpers: FormikHelpers<never>,
+  ) => {
     helpers.setSubmitting(true);
     dispatch(
       setelasticSearchInput({
@@ -108,9 +111,9 @@ const SearchUI = () => {
 
   useEffect(() => {
     getResults(searchInputs);
-  }, [searchInputs , hitsPage, innerHitsPage]);
+  }, [searchInputs, hitsPage, innerHitsPage]);
 
-  const height_ = searchPanelOpen ? 278 : 132
+  const height_ = searchPanelOpen ? 278 : 132;
 
   return (
     <div>
@@ -143,12 +146,8 @@ const SearchUI = () => {
             />
           )}
         </div>
-        <Stack
-          flex={1}
-          justifyContent={"start"}
-          alignItems={"center"}
-        >
-          <HOcrViewer></HOcrViewer>
+        <Stack flex={1} justifyContent={"start"} alignItems={"center"}>
+          <HOcrViewer showGoToPdf={true}></HOcrViewer>
         </Stack>
       </Stack>
     </div>

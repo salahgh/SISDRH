@@ -89,7 +89,7 @@ const client = new ApolloClient({
   queryDeduplication: false,
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: "network-only",
+      fetchPolicy: "cache-and-network",
     },
   },
 });
@@ -99,27 +99,27 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <RTL>
         <DndProvider backend={HTML5Backend}>
-        <ApolloProvider client={client}>
-          <SnackbarProvider
-            maxSnack={5}
-            autoHideDuration={3000}
-            Components={{
-              singleNotification: SingleNotification,
-              // reportComplete: ReportComplete,
-              // copiedInfo: CopiedNotification,
-              // refetchedNotification: RefetchedNotification,
-            }}
-          >
-          <LocalizationProvider
-            dateAdapter={AdapterDateFns}
-            adapterLocale={local}
-          >
-            <RouterProvider router={router} />
-          </LocalizationProvider>
-          </SnackbarProvider>
-        </ApolloProvider>
+          <ApolloProvider client={client}>
+            <SnackbarProvider
+              maxSnack={5}
+              autoHideDuration={3000}
+              Components={{
+                singleNotification: SingleNotification,
+                // reportComplete: ReportComplete,
+                // copiedInfo: CopiedNotification,
+                // refetchedNotification: RefetchedNotification,
+              }}
+            >
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={local}
+              >
+                <RouterProvider router={router} />
+              </LocalizationProvider>
+            </SnackbarProvider>
+          </ApolloProvider>
         </DndProvider>
       </RTL>
     </Provider>
-  </React.StrictMode>
-)
+  </React.StrictMode>,
+);
