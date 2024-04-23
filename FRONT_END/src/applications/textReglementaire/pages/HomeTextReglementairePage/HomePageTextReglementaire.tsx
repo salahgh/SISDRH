@@ -4,8 +4,8 @@ import { FindAllPinnedFilesDocument } from "../../../../_generated_gql_/graphql"
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  setselectedSinglePdfViewerFileId,
-  setselectedSinglePdfViewerPageIndex,
+  setSelectedSinglePdfViewerFileId,
+  setSelectedSinglePdfViewerPageIndex,
 } from "../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { getLink, routs } from "../../../../routing/routs";
 import { useEffect } from "react";
@@ -22,8 +22,8 @@ const HomePageTextReglementaire = () => {
   });
 
   const handleClick = (e, item) => {
-    dispatch(setselectedSinglePdfViewerFileId(item?.ocrResult?.id));
-    dispatch(setselectedSinglePdfViewerPageIndex(1));
+    dispatch(setSelectedSinglePdfViewerFileId(item?.ocrResult?.id));
+    dispatch(setSelectedSinglePdfViewerPageIndex(1));
     navigate(getLink(routs.PdfFilePage));
   };
 

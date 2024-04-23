@@ -17,9 +17,9 @@ import {
 import { orange } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import {
-  selectelasticSearchInput,
+  selectElasticSearchInput,
   selectSelectedFileId,
-  setselectedFileId,
+  setSelectedFileId,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { ConfidentialiteChip } from "../../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip";
 import { Theme } from "@mui/material/styles";
@@ -48,11 +48,11 @@ const RenderOuterHitsTable = ({
 
   const appDispatch = useAppDispatch();
   const selectedFileId = useSelector(selectSelectedFileId);
-  const searchInput = useSelector(selectelasticSearchInput);
+  const searchInput = useSelector(selectElasticSearchInput);
 
   const handleRowSelectionChange = (newSelection) => {
     if (newSelection[0]) {
-      appDispatch(setselectedFileId(newSelection[0]));
+      appDispatch(setSelectedFileId(newSelection[0]));
     }
   };
 

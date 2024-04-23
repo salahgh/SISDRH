@@ -46,9 +46,9 @@ import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../../../../routing/routs";
 import {
   selectSelectedFileId,
-  setselectedFileId,
-  setselectedSinglePdfViewerFileId,
-  setselectedSinglePdfViewerPageIndex,
+  setSelectedFileId,
+  setSelectedSinglePdfViewerFileId,
+  setSelectedSinglePdfViewerPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { PagePreview } from "./PagePreview";
 import ASSETS from "../../../../../resources/ASSETS";
@@ -209,7 +209,7 @@ export function RenderPageOcrResultTable() {
   }
 
   function handleShowPdf(row) {
-    dispatch(setselectedFileId(row.id));
+    dispatch(setSelectedFileId(row.id));
     navigate(getLink(routs.PdfFilePage));
   }
 
@@ -488,7 +488,7 @@ export function RenderPageOcrResultTable() {
             },
           }}
           onRowSelectionModelChange={(newRowSelectionModel) => {
-            dispatch(setselectedFileId(newRowSelectionModel?.[0]));
+            dispatch(setSelectedFileId(newRowSelectionModel?.[0]));
             setRowSelectionModel(rowSelectionModel);
           }}
           rowSelectionModel={rowSelectionModel}

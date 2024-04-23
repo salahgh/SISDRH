@@ -48,25 +48,25 @@ export const elasticSelectionSlice = createSlice({
   name: "elastic",
   initialState,
   reducers: {
-    setselectedOcrResult: (state, action) => {
+    setSelectedOcrResult: (state, action) => {
       state.selectedOcrResult = action.payload;
     },
-    setselectedFileId: (state, action) => {
+    setSelectedFileId: (state, action) => {
       state.selectedOcrResult.selectedFileId = action.payload;
     },
     setSelectedPageIndex: (state, action) => {
       state.selectedOcrResult.selectedPageIndex = action.payload;
     },
-    setselectedLine: (state, action) => {
+    setSelectedLine: (state, action) => {
       state.selectedOcrResult.selectedLine = action.payload;
     },
-    setselectedSinglePdfViewerFileId: (state, action) => {
+    setSelectedSinglePdfViewerFileId: (state, action) => {
       state.selectedSinglePdfViewer.selectedFileId = action.payload;
     },
-    setselectedSinglePdfViewerPageIndex: (state, action) => {
+    setSelectedSinglePdfViewerPageIndex: (state, action) => {
       state.selectedSinglePdfViewer.selectedPageIndex = action.payload;
     },
-    setelasticSearchInput: (
+    setElasticSearchInput: (
       state,
       action: PayloadAction<ElasticSearchInputInterface>,
     ) => {
@@ -76,28 +76,26 @@ export const elasticSelectionSlice = createSlice({
 });
 
 export const {
-  setselectedOcrResult,
-  setselectedFileId,
+  setSelectedOcrResult,
+  setSelectedFileId,
   setSelectedPageIndex,
-  setselectedLine,
-  setelasticSearchInput,
-  setselectedSinglePdfViewerFileId,
-  setselectedSinglePdfViewerPageIndex,
+  setSelectedLine,
+  setElasticSearchInput,
+  setSelectedSinglePdfViewerFileId,
+  setSelectedSinglePdfViewerPageIndex,
 } = elasticSelectionSlice.actions;
 
-export const selectelectedOcrResult = (state: RootState) =>
-  state.elastic.selectedOcrResult;
 export const selectSelectedFileId = (state: RootState) =>
   state.elastic.selectedOcrResult.selectedFileId;
-export const selectselectedPageIndex = (state: RootState) =>
+export const selectSelectedPageIndex = (state: RootState) =>
   state.elastic.selectedOcrResult.selectedPageIndex;
-export const selectselectedLine = (state: RootState) =>
+export const selectSelectedLine = (state: RootState) =>
   state.elastic.selectedOcrResult.selectedLine;
-export const selectelasticSearchInput = (state: RootState) =>
+export const selectElasticSearchInput = (state: RootState) =>
   state.elastic.elasticSearchInput;
-export const selectselectedSinglePdfViewerFileId = (state: RootState) =>
+export const selectSelectedSinglePdfViewerFileId = (state: RootState) =>
   state.elastic.selectedSinglePdfViewer.selectedFileId;
-export const selectselectedSinglePdfViewerPageIndex = (state: RootState) =>
+export const selectSelectedSinglePdfViewerPageIndex = (state: RootState) =>
   state.elastic.selectedSinglePdfViewer.selectedPageIndex;
 
 export default elasticSelectionSlice.reducer;

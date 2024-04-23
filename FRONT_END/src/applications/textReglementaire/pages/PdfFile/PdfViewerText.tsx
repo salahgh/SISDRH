@@ -6,8 +6,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectSelectedFileId,
-  selectselectedPageIndex,
-  selectselectedSinglePdfViewerFileId,
+  selectSelectedPageIndex,
+  selectSelectedSinglePdfViewerFileId,
   setSelectedPageIndex,
 } from "../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { CircularProgress, Stack } from "@mui/material";
@@ -19,9 +19,9 @@ import { FindOcrResultEntityESbyIdDocument } from "../../../../_generated_gql_/g
 
 const PdfViewerText = () => {
   const selctedFileId: string = useSelector(
-    selectselectedSinglePdfViewerFileId,
+    selectSelectedSinglePdfViewerFileId,
   );
-  const selectedPageIndex: number = useSelector(selectselectedPageIndex);
+  const selectedPageIndex: number = useSelector(selectSelectedPageIndex);
   const dispatch = useDispatch();
 
   const {

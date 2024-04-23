@@ -3,9 +3,9 @@ import { LinearProgress, Paper, Stack } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectelasticSearchInput,
+  selectElasticSearchInput,
   selectSelectedFileId,
-  selectselectedPageIndex,
+  selectSelectedPageIndex,
   setSelectedPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import {
@@ -21,7 +21,7 @@ import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/search
 
 const HOcrViewer = ({ showGoToPdf }) => {
   const selectedFileId = useSelector(selectSelectedFileId);
-  const pageIndex = useSelector(selectselectedPageIndex);
+  const pageIndex = useSelector(selectSelectedPageIndex);
   const dispatch = useDispatch();
 
   function handlePageIndexChange(e: React.ChangeEvent<unknown>, page: number) {
@@ -55,7 +55,7 @@ const HOcrViewer = ({ showGoToPdf }) => {
 
   const selectedViewer = useSelector(selectselectedPdfViewer);
   const isOcrSearch =
-    useSelector(selectelasticSearchInput).searchToken?.length > 0;
+    useSelector(selectElasticSearchInput).searchToken?.length > 0;
 
   return (
     <Stack

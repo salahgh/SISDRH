@@ -9,16 +9,16 @@ import { OcrResultImagePreparedDocument } from "../../../../../_generated_gql_/g
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectSelectedFileId,
-  selectselectedLine,
-  selectselectedPageIndex,
+  selectSelectedLine,
+  selectSelectedPageIndex,
   setSelectedPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { useEffect, useRef } from "react";
 
 export const PanAndZoomViewer = () => {
   const selectedFileId = useSelector(selectSelectedFileId);
-  const pageIndex = useSelector(selectselectedPageIndex) as unknown as number;
-  const selectedLine = useSelector(selectselectedLine);
+  const pageIndex = useSelector(selectSelectedPageIndex) as unknown as number;
+  const selectedLine = useSelector(selectSelectedLine);
   const dispatch = useDispatch();
 
   const [

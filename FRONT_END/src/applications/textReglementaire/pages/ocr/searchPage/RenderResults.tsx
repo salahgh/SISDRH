@@ -11,8 +11,8 @@ import { DragHandle } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectSelectedFileId,
-  selectselectedLine,
-  setselectedLine,
+  selectSelectedLine,
+  setSelectedLine,
   setSelectedPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -32,7 +32,7 @@ export const RenderResults = ({
   isFetching: boolean;
 }) => {
   const selectedFileId = useSelector(selectSelectedFileId);
-  const selectedLine = useSelector(selectselectedLine);
+  const selectedLine = useSelector(selectSelectedLine);
   const dispatch = useDispatch();
 
   const [innerHits, setInnerHits] = useState(null);
@@ -48,7 +48,7 @@ export const RenderResults = ({
           <ListItemButton
             selected={row?.content?.id_line === selectedLine?.content?.id_line}
             onClick={() => {
-              dispatch(setselectedLine(row));
+              dispatch(setSelectedLine(row));
               dispatch(
                 setSelectedPageIndex(
                   parseInt(row?.content?.id_line?.split("_")[1]),
@@ -96,7 +96,7 @@ export const RenderResults = ({
 
   useEffect(() => {
     if (innerHits) {
-      dispatch(setselectedLine(innerHits?.[0]));
+      dispatch(setSelectedLine(innerHits?.[0]));
       dispatch(
         setSelectedPageIndex(
           parseInt(innerHits?.[0]?.content?.id_line?.split("_")[1]),

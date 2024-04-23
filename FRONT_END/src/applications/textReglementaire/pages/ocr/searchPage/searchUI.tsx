@@ -15,10 +15,10 @@ import { FormikHelpers, FormikValues } from "formik";
 import { format } from "date-fns";
 import RenderOuterHitsTable from "./RenderOuterHitsTable";
 import {
-  selectelasticSearchInput,
+  selectElasticSearchInput,
   selectSelectedFileId,
-  setelasticSearchInput,
-  setselectedFileId,
+  setElasticSearchInput,
+  setSelectedFileId,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { selectLoggedInUser } from "../../../../../redux/features/auth/userSlice";
@@ -37,7 +37,7 @@ const SearchUI = () => {
     pageSize: 20,
   });
 
-  const searchInputs = useSelector(selectelasticSearchInput);
+  const searchInputs = useSelector(selectElasticSearchInput);
   const loggedInUser = useSelector(selectLoggedInUser);
   const searchPanelOpen = useSelector(selectTextReglementaireSearchPanelOpen);
   const selectedFileId = useSelector(selectSelectedFileId);
@@ -53,7 +53,7 @@ const SearchUI = () => {
       (!selectedFileId ||
         !data?.searchHits?.some((item) => item?.id === selectedFileId))
     ) {
-      dispatch(setselectedFileId(data?.searchHits?.at(0)?.id));
+      dispatch(setSelectedFileId(data?.searchHits?.at(0)?.id));
     }
   }, [data]);
 
@@ -70,7 +70,7 @@ const SearchUI = () => {
   ) => {
     helpers.setSubmitting(true);
     dispatch(
-      setelasticSearchInput({
+      setElasticSearchInput({
         dateReferenceDebut: format(values.dateReferenceDebut, "yyyy-MM-dd"),
         dateReferenceFin: format(values.dateReferenceFin, "yyyy-MM-dd"),
         searchToken: values.searchToken,
