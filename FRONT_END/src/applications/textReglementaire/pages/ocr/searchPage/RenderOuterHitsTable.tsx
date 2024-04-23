@@ -2,7 +2,6 @@ import {
   Badge, Box,
   LinearProgress, ListItem,
   ListItemIcon,
-  Paper,
   Typography
 } from "@mui/material";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -49,15 +48,10 @@ const RenderOuterHitsTable = ({
   const selectedFileId = useSelector(selectselectedFileId);
   const searchInput = useSelector(selectelasticSearchInput);
 
-  console.log('selected file id ' + selectedFileId )
-
   const handleRowSelectionChange = (newSelection) => {
-    console.log('handleRowSelectionChange' , newSelection)
     if(newSelection[0]) {
-      console.log('newSelection[0]' , newSelection[0])
       appDispatch(setselectedFileId(newSelection[0]))
     }
-
   }
 
   const columns: GridColDef[] = [

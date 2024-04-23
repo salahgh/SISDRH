@@ -1,178 +1,170 @@
 import {
-  SearchHitOcrResultEntityElastic2,
-  SearchHitsOcrResultEntityElastic2,
+  SearchHitsOcrResultEntityElastic2
 } from "../../../../../redux/mainApi";
 import {
   LinearProgress,
   ListItemButton,
   ListItemText,
-  Paper,
-  Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import * as React from "react";
 import { DragHandle } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectelasticSearchInput,
   selectselectedFileId,
   selectselectedLine,
   setselectedLine,
-  setselectedPageIndex,
+  setSelectedPageIndex
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Pagination } from "../../../../../_generated_gql_/graphql";
 import { CustomNoResultOverlay } from "../../../../pam/mainDataGrid/CustomNoResultOverlay";
 import { Theme } from "@mui/material/styles";
 import { StripedDataGrid } from "../../../../pam/mainDataGrid/StripedDataGrid";
 
 export const RenderResults = ({
-  data,
-  error,
-  isFetching,
-  setInnerHitsPage
-}: {
+                                data,
+                                isFetching,
+                                setInnerHitsPage,
+                              }: {
   data: SearchHitsOcrResultEntityElastic2;
-  setPageIndex: Dispatch<SetStateAction<number>>;
   setInnerHitsPage: Dispatch<SetStateAction<Pagination>>;
   innerHitsPage: Pagination;
   isFetching: boolean;
-  error: boolean;
 }) => {
+
   const selectedFileId = useSelector(selectselectedFileId);
   const selectedLine = useSelector(selectselectedLine);
-  const searchInput = useSelector(selectelasticSearchInput);
   const dispatch = useDispatch();
-  const [currentResult, setCurrentResult] = useState(1);
+
+  const [innerHits, setInnerHits] = useState(null);
+  const [selectedOuterHit, setSelectedOuterHit] = useState(null);
 
   const columns: GridColDef[] = [
     {
       field: "result",
       headerName: "",
       width: 190,
-      renderCell: ({ row }) => (
-        <ListItemButton
-          selected={row?.content?.id_line === selectedLine?.content?.id_line}
-          onClick={() => {
-            dispatch(setselectedLine(row));
-            dispatch(
-              setselectedPageIndex(
-                parseInt(row?.content?.id_line?.split("_")[1]),
-              ),
-            );
-          }}
-        >
-          <DragHandle sx={{ marginRight: 1 }} />
-          <ListItemText
-            primary={
-              <Typography variant={"h6"} fontWeight={"bold"}>
-                {"P" +
-                  " " +
-                  row?.content?.id_line.split("_")[1] +
-                  " -> L " +
-                  row?.content?.id_line.split("_")[2] +
-                  " "}
-              </Typography>
-            }
-          ></ListItemText>
-        </ListItemButton>
-      ),
-    },
+      renderCell: ({ row }) => {
+        console.log(row)
+        return(
+          <ListItemButton
+            selected={row?.content?.id_line === selectedLine?.content?.id_line}
+            onClick={() => {
+              dispatch(setselectedLine(row));
+              dispatch(
+                setSelectedPageIndex(
+                  parseInt(row?.content?.id_line?.split("_")[1])
+                )
+              );
+            }}
+          >
+            <DragHandle sx={{ marginRight: 1 }} />
+            <ListItemText
+              primary={
+                <Typography variant={"h6"} fontWeight={"bold"}>
+                  {"P" +
+                    " " +
+                    row?.content?.id_line.split("_")[1] +
+                    " -> L " +
+                    row?.content?.id_line.split("_")[2] +
+                    " "}
+                </Typography>
+              }
+            ></ListItemText>
+          </ListItemButton>
+        )
+      }
+    }
   ];
 
   // todo display page miniature instedd of lines
 
-  const selectedOuterHit: SearchHitOcrResultEntityElastic2 =
-    data?.searchHits?.filter((hit) => hit.id === selectedFileId)[0];
+  useEffect(() => {
+    setSelectedOuterHit(data?.searchHits?.filter((item) => item?.id === selectedFileId)?.[0])
+    setInnerHits(data?.searchHits?.filter((item) => item?.id === selectedFileId)?.[0]?.innerHits["pages.paragraphs.lines"]?.searchHits?.map((item) => ({
+      ...item,
+      id: item.id + item.content?.id_line,
+      key: item.id + item.content?.id_line
+    })))
+  }, [selectedFileId]);
 
-  const innerHits = selectedOuterHit?.innerHits?.[
-    "pages.paragraphs.lines"
-  ].searchHits?.map((item) => ({
-    ...item,
-    id: item.id + item.content.id_line,
-    key: item.id + item.content.id_line,
-  }));
+
 
   // todo add multiple lines per page
 
-  if (innerHits?.length > 0) {
-    if (!selectedLine) {
-      dispatch(setselectedLine(innerHits[0]));
+  useEffect(() => {
+    if (innerHits) {
+      dispatch(setselectedLine(innerHits?.[0]));
       dispatch(
-        setselectedPageIndex(
-          parseInt(innerHits[0]?.content?.id_line?.split("_")[1]),
-        ),
+        setSelectedPageIndex(
+          parseInt(innerHits?.[0]?.content?.id_line?.split("_")[1])
+        )
       );
     }
-  }
+  }, [dispatch, innerHits]);
 
-  const handleGoLeft = () => {
-    setCurrentResult((old) => old - 1);
-  };
-
-  const handleGoRight = () => {
-    setCurrentResult((old) => old + 1);
-  };
 
   return (
-        <StripedDataGrid
-          rowHeight={65}
-          sx={{
-            boxShadow: 2,
-            border: 2,
-            borderColor: "primary.light",
-            "& .MuiDataGrid-cell:hover": {
-              color: "primary.main",
-            },
-            "& .MuiDataGrid-cell": {
-              // backgroundColor: (theme : Theme) => theme.palette.background.default,
-              borderColor: (theme: Theme) => theme.palette.divider,
-            },
-            "& .MuiDataGrid-columnHeaders": {
-              // backgroundColor: (theme : Theme) => theme.palette.background.default,
-              borderColor: (theme: Theme) => theme.palette.divider,
-            },
-            "& .MuiDataGrid-footerContainer": {
-              // backgroundColor: (theme : Theme) => theme.palette.background.default,
-              borderColor: (theme: Theme) => theme.palette.divider,
-            },
-            "& .super-app-theme--header": {
-              backgroundColor: "#121212",
-            },
-          }}
-          rows={innerHits ? innerHits : []}
-          columns={columns}
-          slots={{
-            loadingOverlay: LinearProgress,
-            noRowsOverlay: CustomNoResultOverlay,
-          }}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          }
-          error={error}
-          loading={isFetching}
-          autoPageSize={true}
-          disableSelectionOnClick={true}
-          onPaginationModelChange={(model, details) => {
-            if (!model.page) {
-              setInnerHitsPage((old) => ({ ...old, pageSize: model.pageSize }));
-            }
-
-            setInnerHitsPage((old) => ({
-              ...old,
-              pageSize: model.pageSize,
-              pageNumber: model.page,
-            }));
-          }}
-          paginationMode={"server"}
-          rowCount={
-            selectedOuterHit?.innerHits
-              ? selectedOuterHit?.innerHits?.["pages.paragraphs.lines"]
-                  .totalHits
-              : 0
-          }
-          hideFooterSelectedRowCount={true}
-        />
+    <StripedDataGrid
+      rowHeight={65}
+      sx={{
+        boxShadow: 2,
+        border: 2,
+        borderColor: "primary.light",
+        "& .MuiDataGrid-cell:hover": {
+          color: "primary.main"
+        },
+        "& .MuiDataGrid-cell": {
+          // backgroundColor: (theme : Theme) => theme.palette.background.default,
+          borderColor: (theme: Theme) => theme.palette.divider
+        },
+        "& .MuiDataGrid-columnHeaders": {
+          // backgroundColor: (theme : Theme) => theme.palette.background.default,
+          borderColor: (theme: Theme) => theme.palette.divider
+        },
+        "& .MuiDataGrid-footerContainer": {
+          // backgroundColor: (theme : Theme) => theme.palette.background.default,
+          borderColor: (theme: Theme) => theme.palette.divider
+        },
+        "& .super-app-theme--header": {
+          backgroundColor: "#121212"
+        }
+      }}
+      rows={innerHits ? innerHits : []}
+      columns={columns}
+      slots={{
+        loadingOverlay: LinearProgress,
+        noRowsOverlay: CustomNoResultOverlay
+      }}
+      getRowClassName={(params) =>
+        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+      }
+      loading={isFetching}
+      autoPageSize={true}
+      // disableSelectionOnClick={true}
+      onPaginationModelChange={(model) => {
+        console.log(model);
+        if (!model.page) {
+          setInnerHitsPage((old) => ({ ...old, pageSize: model.pageSize }));
+        }
+        setInnerHitsPage((old) => ({
+          ...old,
+          pageSize: model.pageSize,
+          pageNumber: model.page
+        }));
+      }}
+      paginationMode={"server"}
+      rowCount={
+        selectedOuterHit?.innerHits
+          ? selectedOuterHit?.innerHits?.["pages.paragraphs.lines"]
+            .totalHits
+          : 0
+      }
+      hideFooterSelectedRowCount={true}
+      // onRowSelectionModelChange={(model,details) => dispatch(setSelect) }
+      // rowSelectionModel={[selectedLine?.id]}
+    />
   );
 };

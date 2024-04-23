@@ -1,7 +1,6 @@
 import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
 import {
   FindElasticOcrResultsAllCriteriasApiArg,
   useFindElasticOcrResultsAllCriteriasMutation,
@@ -30,9 +29,6 @@ import {
 
 const SearchUI = () => {
 
-  const selctedFileId = useSelector(selectselectedFileId);
-
-  const [setPageIndex, setSetPageIndex] = useState(0);
 
   const [hitsPage, setHitsPage] = useState<Pagination>({
     pageNumber: 0,
@@ -45,21 +41,20 @@ const SearchUI = () => {
   });
 
   const searchInputs = useSelector(selectelasticSearchInput);
-  const dispatch = useAppDispatch();
-  const searchPanelOpen = useSelector(selectTextReglementaireSearchPanelOpen)
-
-  // const { data: ocrResultJpa, error: ocrResultJpaError } = useQuery(
-  //   GetPdfFileDocument,
-  //   {
-  //     variables: {
-  //       fileSignatue: selctedFileId ? selctedFileId : "-1",
-  //     },
-  //   },
-  // );
-
   const loggedInUser = useSelector(selectLoggedInUser);
+  const searchPanelOpen = useSelector(selectTextReglementaireSearchPanelOpen)
+  const selectedFileId = useSelector(selectselectedFileId);
+
+  const dispatch = useAppDispatch();
+
   const [search, { isLoading, error, data }] =
     useFindElasticOcrResultsAllCriteriasMutation();
+
+  useEffect(() => {
+    if( data && ( !selectedFileId || !data?.searchHits?.some((item) => item?.id === selectedFileId))){
+      dispatch(setselectedFileId(data?.searchHits?.at(0)?.id))
+    }
+  }, [data]);
 
   const { data: userConfidentialities } = useQuery(
     UserConfidentialitesDocument,
@@ -68,9 +63,8 @@ const SearchUI = () => {
     },
   );
 
-  const handleSubmit = (values: FormikValues, helpers: FormikHelpers<any>) => {
-    console.log('handle submit ...')
-    console.log(values)
+
+  const handleSubmit = (values: FormikValues, helpers: FormikHelpers<never>) => {
     helpers.setSubmitting(true);
     dispatch(
       setelasticSearchInput({
@@ -78,15 +72,6 @@ const SearchUI = () => {
         dateReferenceFin: format(values.dateReferenceFin, "yyyy-MM-dd"),
         searchToken: values.searchToken,
         idsTypeTextReglementaire: values.idsTypeTextReglementaire,
-        // isConfidentialite: values?.isConfidentialite?.filter((item) => {
-        //   if (
-        //     userConfidentialities?.user?.habilitation?.confidentialites?.some(
-        //       (conf) => conf?.libConfidentialiteFr == item,
-        //     )
-        //   ) {
-        //     return true;
-        //   } else return false;
-        // }),
         isConfidentialite: values?.isConfidentialite?.filter((item) => {
           if (
             userConfidentialities?.user?.habilitation?.confidentialites?.some(
@@ -99,22 +84,6 @@ const SearchUI = () => {
         reference: values.reference,
       }),
     );
-    // getResults({
-    //   dateReferenceDebut: format(values.dateReferenceDebut, "yyyy-MM-dd"),
-    //   dateReferenceFin: format(values.dateReferenceFin, "yyyy-MM-dd"),
-    //   searchToken: values.searchToken,
-    //   idsTypeTextReglementaire: values.idsTypeTextReglementaire,
-    //   isConfidentialite: values?.isConfidentialite?.filter((item) => {
-    //     if (
-    //       userConfidentialities?.user?.habilitation?.confidentialites?.some(
-    //         (conf) => conf?.libConfidentialiteFr == item,
-    //       )
-    //     ) {
-    //       return true;
-    //     } else return false;
-    //   }),
-    //   reference: values.reference,
-    // });
     helpers.setSubmitting(false);
   };
   // todo change color selection for toggle buttons
@@ -139,7 +108,7 @@ const SearchUI = () => {
 
   useEffect(() => {
     getResults(searchInputs);
-  }, [searchInputs , hitsPage]);
+  }, [searchInputs , hitsPage, innerHitsPage]);
 
   const height_ = searchPanelOpen ? 278 : 132
 
@@ -169,10 +138,8 @@ const SearchUI = () => {
             <RenderResults
               setInnerHitsPage={setInnerHitsPage}
               innerHitsPage={innerHitsPage}
-              setPageIndex={setPageIndex}
               data={data}
               isFetching={isLoading}
-              error={error}
             />
           )}
         </div>
