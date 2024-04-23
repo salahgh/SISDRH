@@ -3,29 +3,28 @@ import { format } from "date-fns";
 import { RootState } from "../../store.ts";
 
 interface ElasticSearchInputInterface {
-  dateReferenceDebut: string,
-  dateReferenceFin: string,
-  reference: string,
-  searchToken: string,
-  idsTypeTextReglementaire: string[],
-  isConfidentialite: string[],
+  dateReferenceDebut: string;
+  dateReferenceFin: string;
+  reference: string;
+  searchToken: string;
+  idsTypeTextReglementaire: string[];
+  isConfidentialite: string[];
 }
 
 interface InitialStateInterface {
   selectedOcrResult: {
-    selectedFileId: string,
-    selectedPageIndex: string,
-    selectedLine: any,
-  },
+    selectedFileId: string;
+    selectedPageIndex: string;
+    selectedLine: any;
+  };
   selectedSinglePdfViewer: {
-    selectedFileId: string,
-    selectedPageIndex: string,
-  },
-  elasticSearchInput: ElasticSearchInputInterface
+    selectedFileId: string;
+    selectedPageIndex: string;
+  };
+  elasticSearchInput: ElasticSearchInputInterface;
 }
 
-
-const initialState : InitialStateInterface = {
+const initialState: InitialStateInterface = {
   selectedOcrResult: {
     selectedFileId: null,
     selectedPageIndex: null,
@@ -67,7 +66,10 @@ export const elasticSelectionSlice = createSlice({
     setselectedSinglePdfViewerPageIndex: (state, action) => {
       state.selectedSinglePdfViewer.selectedPageIndex = action.payload;
     },
-    setelasticSearchInput: (state, action : PayloadAction<ElasticSearchInputInterface>) => {
+    setelasticSearchInput: (
+      state,
+      action: PayloadAction<ElasticSearchInputInterface>,
+    ) => {
       state.elasticSearchInput = action.payload;
     },
   },
@@ -85,7 +87,7 @@ export const {
 
 export const selectelectedOcrResult = (state: RootState) =>
   state.elastic.selectedOcrResult;
-export const selectselectedFileId = (state: RootState) =>
+export const selectSelectedFileId = (state: RootState) =>
   state.elastic.selectedOcrResult.selectedFileId;
 export const selectselectedPageIndex = (state: RootState) =>
   state.elastic.selectedOcrResult.selectedPageIndex;

@@ -41,7 +41,7 @@ export const FavoriteButton = ({ pdfFileId }: { pdfFileId: string | null }) => {
   };
 
   return (
-    <IconButton size={"large"} onClick={handleClick}>
+    <IconButton onClick={handleClick}>
       {isFavorite?.favorite ? (
         <Star
           sx={{

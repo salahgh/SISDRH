@@ -21,7 +21,6 @@ const HomePageTextReglementaire = () => {
     refetch();
   });
 
-  // @ts-ignore
   const handleClick = (e, item) => {
     dispatch(setselectedSinglePdfViewerFileId(item?.ocrResult?.id));
     dispatch(setselectedSinglePdfViewerPageIndex(1));

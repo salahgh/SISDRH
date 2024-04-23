@@ -4,13 +4,13 @@ import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectelasticSearchInput,
-  selectselectedFileId,
+  selectSelectedFileId,
   selectselectedPageIndex,
-  setSelectedPageIndex
+  setSelectedPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import {
   GetPdfFileDocument,
-  OcrResultPdfDocument
+  OcrResultPdfDocument,
 } from "../../../../../_generated_gql_/graphql.ts";
 import { PdfToolBar } from "../../../../textReglementaire/PdfToolBar.tsx";
 import Pagination from "@mui/material/Pagination";
@@ -19,11 +19,10 @@ import { selectselectedPdfViewer } from "../../../../../redux/features/folderAnd
 import PdfViewerToggleButton from "../../../../textReglementaire/pages/PdfFile/PdfViewerToggleButton.tsx";
 import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/searchPage/PanAndZoomViewer.tsx";
 
-const HOcrViewer = () => {
-  const selectedFileId = useSelector(selectselectedFileId);
+const HOcrViewer = ({ showGoToPdf }) => {
+  const selectedFileId = useSelector(selectSelectedFileId);
   const pageIndex = useSelector(selectselectedPageIndex);
   const dispatch = useDispatch();
-
 
   function handlePageIndexChange(e: React.ChangeEvent<unknown>, page: number) {
     dispatch(setSelectedPageIndex(page));
@@ -32,32 +31,31 @@ const HOcrViewer = () => {
   const {
     data: ocrResultJpa,
     error: ocrResultJpaError,
-    loading: ocrResultJpaLoading
+    loading: ocrResultJpaLoading,
   } = useQuery(GetPdfFileDocument, {
     variables: {
-      fileSignatue: selectedFileId ? selectedFileId : "-1"
-    }
+      fileSignatue: selectedFileId ? selectedFileId : "-1",
+    },
   });
 
   const numberOfPapers = ocrResultJpa?.ocrResultByid?.numberOfPapers
     ? ocrResultJpa?.ocrResultByid?.numberOfPapers
     : 1;
 
-
   // todo implment the zoom to fit functionlity
 
-
-  const {
-    data: pdfFile,
-    loading: pdfFileLoading
-  } = useQuery(OcrResultPdfDocument, {
-    variables: {
-      id: selectedFileId
-    }
-  });
+  const { data: pdfFile, loading: pdfFileLoading } = useQuery(
+    OcrResultPdfDocument,
+    {
+      variables: {
+        id: selectedFileId,
+      },
+    },
+  );
 
   const selectedViewer = useSelector(selectselectedPdfViewer);
-  const isOcrSearch = useSelector(selectelasticSearchInput).searchToken?.length > 0;
+  const isOcrSearch =
+    useSelector(selectelasticSearchInput).searchToken?.length > 0;
 
   return (
     <Stack
@@ -68,9 +66,14 @@ const HOcrViewer = () => {
     >
       <Paper>
         <PdfToolBar
-          pdfToolBar={<PdfViewerToggleButton
-            viewers={isOcrSearch ? ["IMAGE", "PDF"] : ["PDF"]}></PdfViewerToggleButton>}
-          showGoToPdf={true} ocrResultJpa={ocrResultJpa}></PdfToolBar>
+          pdfToolBar={
+            <PdfViewerToggleButton
+              viewers={isOcrSearch ? ["IMAGE", "PDF"] : ["PDF"]}
+            ></PdfViewerToggleButton>
+          }
+          showGoToPdf={showGoToPdf}
+          ocrResultJpa={ocrResultJpa}
+        ></PdfToolBar>
       </Paper>
 
       {selectedViewer === "PDF" && !pdfFileLoading && (
@@ -78,13 +81,9 @@ const HOcrViewer = () => {
           src={"data:application/pdf;base64," + pdfFile?.ocrResultPdf}
           width="100%"
           height="100%"
-        >
-
-        </iframe>
+        ></iframe>
       )}
-      {selectedViewer === "PDF" && pdfFileLoading && (
-        <LinearProgress />
-      )}
+      {selectedViewer === "PDF" && pdfFileLoading && <LinearProgress />}
       {selectedViewer == "IMAGE" && <PanAndZoomViewer></PanAndZoomViewer>}
       <Stack
         direction={"row"}
@@ -92,15 +91,20 @@ const HOcrViewer = () => {
         alignItems={"center"}
         justifyContent={"center"}
       >
-        {selectedViewer !== "PDF" && <Pagination
-          sx={{ visibility: !ocrResultJpaLoading ? "visible" : "hidden", padding: 1 }}
-          size={"large"}
-          page={pageIndex as unknown as number}
-          count={numberOfPapers ? numberOfPapers : 1}
-          variant="outlined"
-          color="secondary"
-          onChange={(e, page) => handlePageIndexChange(e, page)}
-        />}
+        {selectedViewer !== "PDF" && (
+          <Pagination
+            sx={{
+              visibility: !ocrResultJpaLoading ? "visible" : "hidden",
+              padding: 1,
+            }}
+            size={"large"}
+            page={pageIndex as unknown as number}
+            count={numberOfPapers ? numberOfPapers : 1}
+            variant="outlined"
+            color="secondary"
+            onChange={(e, page) => handlePageIndexChange(e, page)}
+          />
+        )}
         {ocrResultJpaError && <NetWorkErrorComponent />}
       </Stack>
     </Stack>
