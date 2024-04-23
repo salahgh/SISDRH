@@ -1,37 +1,37 @@
 import {
   ReactZoomPanPinchRef,
   TransformComponent,
-  TransformWrapper,
+  TransformWrapper
 } from "react-zoom-pan-pinch";
-import { CircularProgress } from "@mui/material";
-import { useQuery } from "@apollo/client";
+import { CircularProgress, LinearProgress } from "@mui/material";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { OcrResultImagePreparedDocument } from "../../../../../_generated_gql_/graphql.ts";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectselectedFileId,
   selectselectedLine,
-  selectselectedPageIndex,
+  selectselectedPageIndex, setSelectedPageIndex
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { useEffect, useRef } from "react";
 
 export const PanAndZoomViewer = () => {
   const selectedFileId = useSelector(selectselectedFileId);
-  const pageIndex = useSelector(selectselectedPageIndex);
+  const pageIndex = useSelector(selectselectedPageIndex) as unknown as number;
+  const selectedLine = useSelector(selectselectedLine);
+  const dispatch = useDispatch();
 
-  const {
+
+  const [fetchImage, {
     data: imageBase64,
     error: imageError,
-    loading: imageLoading,
-    refetch: refetchImage,
-  } = useQuery(OcrResultImagePreparedDocument, {
+    loading: imageLoading
+  }] = useLazyQuery(OcrResultImagePreparedDocument, {
     variables: {
       id: selectedFileId ? selectedFileId : "-1",
       pageIndex: pageIndex ? pageIndex - 1 : 0,
-      size: -1,
-    },
+      size: -1
+    }
   });
-
-  const selectedLine = useSelector(selectselectedLine);
 
   const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
 
@@ -40,18 +40,26 @@ export const PanAndZoomViewer = () => {
       const { zoomToElement } = transformComponentRef.current;
       zoomToElement("imgExample");
     } else {
-      console.log("************************");
+      console.log("imgExample");
     }
   };
 
   useEffect(() => {
-    refetchImage();
-    zoomToImage();
-  }, [pageIndex, imageBase64, selectedLine]);
+   fetchImage().then(() => {
+     setTimeout(() => zoomToImage() , 50 )
+   })
+  }, [pageIndex, selectedFileId]);
 
-  console.log(selectedLine);
+  useEffect(() => {
+    zoomToImage()
+  }, [selectedLine]);
 
-  const scale_ = 2.6;
+
+  useEffect(() => {
+    dispatch(setSelectedPageIndex(1));
+  }, [selectedFileId]);
+
+  const scale_ = 2.35;
 
   return (
     <TransformWrapper ref={transformComponentRef}>
@@ -63,12 +71,12 @@ export const PanAndZoomViewer = () => {
               height: "100%",
               padding: 0,
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "center"
             }}
           >
             {pageIndex != null && (
               <>
-                {imageLoading && <CircularProgress></CircularProgress>}
+                {imageLoading && <LinearProgress></LinearProgress>}
                 {imageError && <div> error while loaidng the image </div>}
                 {imageBase64 && !imageLoading && (
                   <div className={"relative"}>
@@ -81,7 +89,7 @@ export const PanAndZoomViewer = () => {
                       style={{
                         width: "100%",
                         height: "auto",
-                        display: "block",
+                        display: "block"
                         // margin: '0 auto',
                       }}
                     />
@@ -102,7 +110,7 @@ export const PanAndZoomViewer = () => {
                               selectedLine.content.bbox.y1) /
                             scale_,
                           border: "1px solid yellow", // Yellow bounding box
-                          pointerEvents: "none", // Disable interaction with the overlay
+                          pointerEvents: "none" // Disable interaction with the overlay
                         }}
                       >
                       </div>
