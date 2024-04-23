@@ -8,7 +8,7 @@ import {
   selectselectedFileId,
   selectselectedPageIndex,
   selectselectedSinglePdfViewerFileId,
-  setselectedPageIndex,
+  setSelectedPageIndex,
 } from "../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { CircularProgress, Stack } from "@mui/material";
 import { Pagination } from "@mui/lab";
@@ -33,7 +33,7 @@ const PdfViewerText = () => {
   });
 
   function handlePageIndexChange(e: React.ChangeEvent<unknown>, page: number) {
-    dispatch(setselectedPageIndex(page));
+    dispatch(setSelectedPageIndex(page));
   }
 
   const RenderPage = ({ page }) => {

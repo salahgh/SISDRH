@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { format } from "date-fns";
 import { RootState } from "../../store.ts";
-import { FilteringFieldsInterface } from "../../../applications/pam/mainDataGrid/types.ts";
 
 interface ElasticSearchInputInterface {
   dateReferenceDebut: string,
@@ -16,7 +15,7 @@ interface InitialStateInterface {
   selectedOcrResult: {
     selectedFileId: string,
     selectedPageIndex: string,
-    selectedLine: string,
+    selectedLine: any,
   },
   selectedSinglePdfViewer: {
     selectedFileId: string,
@@ -56,7 +55,7 @@ export const elasticSelectionSlice = createSlice({
     setselectedFileId: (state, action) => {
       state.selectedOcrResult.selectedFileId = action.payload;
     },
-    setselectedPageIndex: (state, action) => {
+    setSelectedPageIndex: (state, action) => {
       state.selectedOcrResult.selectedPageIndex = action.payload;
     },
     setselectedLine: (state, action) => {
@@ -77,7 +76,7 @@ export const elasticSelectionSlice = createSlice({
 export const {
   setselectedOcrResult,
   setselectedFileId,
-  setselectedPageIndex,
+  setSelectedPageIndex,
   setselectedLine,
   setelasticSearchInput,
   setselectedSinglePdfViewerFileId,

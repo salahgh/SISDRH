@@ -18,7 +18,7 @@ import RenderOuterHitsTable from "./RenderOuterHitsTable";
 import {
   selectelasticSearchInput,
   selectselectedFileId,
-  setelasticSearchInput,
+  setelasticSearchInput, setselectedFileId
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { selectLoggedInUser } from "../../../../../redux/features/auth/userSlice";
