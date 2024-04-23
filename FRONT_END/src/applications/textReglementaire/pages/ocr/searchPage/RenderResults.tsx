@@ -47,7 +47,6 @@ export const RenderResults = ({
       headerName: "",
       width: 190,
       renderCell: ({ row }) => {
-        console.log(row)
         return(
           <ListItemButton
             selected={row?.content?.id_line === selectedLine?.content?.id_line}
@@ -88,8 +87,7 @@ export const RenderResults = ({
       id: item.id + item.content?.id_line,
       key: item.id + item.content?.id_line
     })))
-  }, [selectedFileId]);
-
+  }, [data?.searchHits,selectedFileId]);
 
 
   // todo add multiple lines per page
