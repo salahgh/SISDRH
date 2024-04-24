@@ -1,58 +1,45 @@
 import {
-  Button,
-  IconButton,
+  Badge,
+  Box,
   LinearProgress,
   ListItem,
   ListItemAvatar,
+  ListItemIcon,
   ListItemText,
-  Paper,
   Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-  GridEventListener,
-  GridRowId,
-  GridSelectionModel,
-} from "@mui/x-data-grid";
+import { GridColDef, GridEventListener } from "@mui/x-data-grid";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { orange } from "@mui/material/colors";
 import {
   AutoStoriesOutlined,
+  ChevronLeft,
   Error,
   PictureAsPdfOutlined,
-  Star,
-  StarBorder,
 } from "@mui/icons-material";
-import BasicMenu from "./BasicMenu";
+
 import { useMutation, useQuery } from "@apollo/client";
 import {
   AddOcrResultToFolderDocument,
   DeletePdfFileFromFolderDocument,
   FindAllOcrResultEntityByFoldersContainingDocument,
+  FindAllOcrResultEntityByFoldersContainingQuery,
   GetFovoriteFolderDocument,
-  OcrResultEntityJpa,
   PrivilegesEnum,
 } from "../../../../../_generated_gql_/graphql";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectSelectedFile,
-  selectSelectedFolder,
-} from "../../../../../redux/features/folderAndFiles/foldersSlice";
+import { selectSelectedFolder } from "../../../../../redux/features/folderAndFiles/foldersSlice";
 import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../../../../routing/routs";
 import {
   selectSelectedFileId,
   setSelectedFileId,
-  setSelectedSinglePdfViewerFileId,
-  setSelectedSinglePdfViewerPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { PagePreview } from "./PagePreview";
 import ASSETS from "../../../../../resources/ASSETS";
-import ActionsMenu from "./ActionsMenu";
 import { ConfidentialiteChip } from "./ConfidentialiteChip";
 import ConfidentialiteForm from "../ConfidentialiteForm";
 import OcrResultUserGrantsAvatarGroup from "./OcrResultUserGrantsAvatarGroup";
@@ -67,9 +54,8 @@ import { Theme } from "@mui/material/styles";
 import { CustomPagination } from "../../../../pam/mainDataGrid/CustomPagination.tsx";
 import { CustomNoResultOverlay } from "../../../../pam/mainDataGrid/CustomNoResultOverlay.tsx";
 import { ActionBar } from "../folders/ActionBar.tsx";
-import { FavoriteButton } from "../../../FavoriteButton.tsx";
 import { PdfFileActions } from "./PdfFileActions.tsx";
-import { setSelectedUser } from "../../../../../redux/features/userAdministration/userAdministrationSlice.ts";
+import { SearchHitOcrResultEntityElastic2 } from "../../../../../redux/mainApi.ts";
 
 const rowHeight = 60;
 
@@ -213,13 +199,95 @@ export function RenderPageOcrResultTable() {
     navigate(getLink(routs.PdfFilePage));
   }
 
+  console.log(data);
   // todo add the privilege check for pin add
 
   const columns: GridColDef[] = [
     {
+      field: "icon",
+      headerName: "",
+      width: 60,
+      renderCell: () => (
+        <ListItem>
+          <PictureAsPdfOutlined
+            onClick={() => handleShowPdf(row)}
+            sx={{
+              width: 35,
+              height: 35,
+              color: "#fa7d15",
+            }}
+          />
+        </ListItem>
+      ),
+    },
+    {
+      field: "type",
+      headerName: "نوع النص القانوني",
+      width: 120,
+      renderCell: ({
+        row,
+      }: {
+        row: FindAllOcrResultEntityByFoldersContainingQuery["findAllOcrResultEntityByFoldersContaining"]["content"][0];
+      }) => (
+        <Box>
+          <Typography
+            sx={{ width: 120, fontWeight: "bold", textAlign: "center" }}
+          >
+            {row.typeTexteReglementaire.libTypeTexteAr}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "reference",
+      headerName: "المرجع",
+      width: 80,
+      renderCell: ({ row }: { row: SearchHitOcrResultEntityElastic2 }) => (
+        <Box className={"flex flex-row justify-center w-full"}>
+          <Typography sx={{ fontWeight: "bold" }}>{row.reference}</Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "date referencedf",
+      headerName: "تاريخ المرجع",
+      width: 110,
+      renderCell: ({
+        row,
+      }: {
+        row: FindAllOcrResultEntityByFoldersContainingQuery["findAllOcrResultEntityByFoldersContaining"]["content"][0];
+      }) => (
+        <Box className={""} overflow={"auto"}>
+          <Typography sx={{ fontWeight: "bold" }}>
+            {row.dateReference}
+          </Typography>
+        </Box>
+      ),
+    },
+
+    {
+      field: "resultd",
+      headerName: "درجة السرية",
+      width: 130,
+      renderCell: ({
+        row,
+      }: {
+        row: FindAllOcrResultEntityByFoldersContainingQuery["findAllOcrResultEntityByFoldersContaining"]["content"][0];
+      }) => (
+        <Box className={"flex flex-row justify-center w-full"}>
+          <ConfidentialiteChip
+            confidentialite={{
+              libConfidentialiteAr: row?.confidentialite.libConfidentialiteAr,
+            }}
+          />
+        </Box>
+      ),
+    },
+
+    {
       field: "originalFileName",
       headerName: "إسم الملف",
-      width: 400,
+      width: 320,
       renderCell: ({ row }: { row: any }) => (
         <>
           <ListItem
@@ -247,22 +315,7 @@ export function RenderPageOcrResultTable() {
               arrow
               sx={{ padding: 0, margin: 0 }}
             >
-              <ToolTipChildWrapper>
-                <ListItemAvatar>
-                  <PictureAsPdfOutlined
-                    onClick={() => handleShowPdf(row)}
-                    sx={{
-                      width: 35,
-                      height: 35,
-                      color: "#fa7d15",
-                    }}
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={<Typography>{row.originalFileName}</Typography>}
-                  // secondary={row.numberOfPapers}
-                />
-              </ToolTipChildWrapper>
+              <Typography>{row.originalFileName}</Typography>
             </Tooltip>
           </ListItem>
         </>
@@ -271,15 +324,21 @@ export function RenderPageOcrResultTable() {
     {
       field: "ocrDone",
       headerName: "عدد الصفحات",
-      width: 80,
+      width: 130,
       renderCell: (rowParams) => {
         return (
-          <Stack direction={"row"} spacing={4} justifyContent={"left"}>
+          <Stack
+            direction={"row"}
+            spacing={4}
+            justifyContent={"center"}
+            className={"w-full"}
+          >
             <Stack
-              sx={{ padding: 1, width: 60 }}
+              sx={{ padding: 1, width: 70 }}
               direction={"row"}
               alignItems={"center"}
               spacing={1}
+              className={"justify-center"}
             >
               <AutoStoriesOutlined />
               <Typography fontSize={20}>
@@ -327,26 +386,8 @@ export function RenderPageOcrResultTable() {
       },
     },
     {
-      field: "confidentialite",
-      headerName: "Confidentialité",
-      width: 150,
-      renderCell: ({ row }: { row: any }) => {
-        return (
-          <Stack
-            direction={"row"}
-            width={150}
-            alignItems={"center"}
-            justifyContent={"center"}
-            justifyItems={"center"}
-          >
-            <ConfidentialiteChip confidentialite={row.confidentialite} />
-          </Stack>
-        );
-      },
-    },
-    {
       field: "ocrResultPinned",
-      headerName: "يب",
+      headerName: "",
       width: 50,
       renderCell: ({ row }: { row: any }) => {
         if (!PRIVILIGES.OcrResultPin) return <></>;
@@ -374,7 +415,7 @@ export function RenderPageOcrResultTable() {
     },
     {
       field: "id",
-      headerName: "actions",
+      headerName: "",
       width: 300,
       renderCell: (row) => (
         <PdfFileActions
@@ -423,7 +464,7 @@ export function RenderPageOcrResultTable() {
         open={confidentialiteOpen}
         setOpen={setConfidentialiteOpen}
       />
-      <Stack sx={{ height: "calc(100vh - 190px)" }} className={"p-1"}>
+      <Stack sx={{ height: "calc(100vh - 200px)" }} className={"p-1"}>
         <StripedDataGrid
           rowHeight={rowHeight}
           rows={
