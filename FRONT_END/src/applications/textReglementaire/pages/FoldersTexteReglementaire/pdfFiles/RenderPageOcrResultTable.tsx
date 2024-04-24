@@ -26,7 +26,11 @@ import {
   PrivilegesEnum,
 } from "../../../../../_generated_gql_/graphql";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSelectedFolder } from "../../../../../redux/features/folderAndFiles/foldersSlice";
+import {
+  selectPage,
+  selectSelectedFolder,
+  setPage,
+} from "../../../../../redux/features/folderAndFiles/foldersSlice";
 import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../../../../routing/routs";
 import {
@@ -48,6 +52,7 @@ import { CustomNoResultOverlay } from "../../../../pam/mainDataGrid/CustomNoResu
 import { ActionBar } from "../folders/ActionBar.tsx";
 import { PdfFileActions } from "./PdfFileActions.tsx";
 import { SearchHitOcrResultEntityElastic2 } from "../../../../../redux/mainApi.ts";
+import { useAppSelector } from "../../../../../redux/hooks.ts";
 
 const rowHeight = 60;
 
@@ -67,9 +72,6 @@ const ToolTipChildWrapper = React.forwardRef(({ children, ...other }, ref) => {
 });
 
 export function RenderPageOcrResultTable() {
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
-
   const [confidentialiteOpen, setConfidentialiteOpen] = useState(false);
   const selectedFolder = useSelector(selectSelectedFolder);
   const selectedFileId = useSelector(selectSelectedFileId);
@@ -79,6 +81,8 @@ export function RenderPageOcrResultTable() {
     PrivilegesEnum.OcrResultDirectGrant,
   );
 
+  const paginationInput = useAppSelector(selectPage);
+
   const OcrResultPin = useHasAuthorities(PrivilegesEnum.OcrResultPin);
 
   const { data, error, loading, refetch } = useQuery(
@@ -87,8 +91,8 @@ export function RenderPageOcrResultTable() {
       variables: {
         folderId: selectedFolder?.id,
         pagination: {
-          pageSize: size,
-          pageNumber: page,
+          pageSize: paginationInput.pageSize,
+          pageNumber: paginationInput.pageNumber,
         },
       },
     },
@@ -103,8 +107,8 @@ export function RenderPageOcrResultTable() {
           variables: {
             folderId: selectedFolder?.id,
             pagination: {
-              pageSize: size,
-              pageNumber: page,
+              pageSize: paginationInput.pageSize,
+              pageNumber: paginationInput.pageNumber,
             },
           },
         },
@@ -120,8 +124,8 @@ export function RenderPageOcrResultTable() {
           variables: {
             folderId: selectedFolder?.id,
             pagination: {
-              pageSize: size,
-              pageNumber: page,
+              pageSize: paginationInput.pageSize,
+              pageNumber: paginationInput.pageNumber,
             },
           },
         },
@@ -130,7 +134,12 @@ export function RenderPageOcrResultTable() {
 
   const { data: fovoriteFolder } = useQuery(GetFovoriteFolderDocument);
 
-  useEffect(() => {}, [selectedFolder, refetch, page, size]);
+  const handleRowClick: GridEventListener<"rowMouseEnter"> = (params) => {};
+  const [usersChoiceDialogOpen, setUsersChoiceOpen] = useState<boolean>(false);
+  const [ocrResultId, setOcrResultId] = useState<string>(null);
+  const [rowCount, setRowCount] = useState();
+
+  // useEffect(() => {}, [selectedFolder, refetch, page, size]);
 
   const { handleShowGraphQlErrorSnackBar, handleShowInfoSnackBar } =
     useSnackBarNotifications();
@@ -408,15 +417,15 @@ export function RenderPageOcrResultTable() {
     },
     {
       field: "id",
-      headerName: "sdf",
+      headerName: "",
       width: 300,
       renderCell: (row) => (
         <PdfFileActions
           handleDeletePdfFromFolder={handleDeletePdfFromFolder}
           selectedFileId={row?.id}
           handleShowPdf={handleShowPdf}
-          page={page}
-          size={size}
+          page={paginationInput.pageNumber}
+          size={paginationInput.pageSize}
           row={row}
         ></PdfFileActions>
       ),
@@ -424,13 +433,6 @@ export function RenderPageOcrResultTable() {
   ];
 
   // todo display the actions only when the row is hoverd
-
-  const handleRowClick: GridEventListener<"rowMouseEnter"> = (params) => {};
-
-  const [usersChoiceDialogOpen, setUsersChoiceOpen] = useState<boolean>(false);
-  const [ocrResultId, setOcrResultId] = useState<string>(null);
-
-  const [rowCount, setRowCount] = useState();
 
   useEffect(() => {
     if (data) {
@@ -450,10 +452,10 @@ export function RenderPageOcrResultTable() {
         ocrResultId={ocrResultId}
       />
       <ActionBar setConfidentialiteOpen={setConfidentialiteOpen} />
-      <ConfidentialiteForm
-        open={confidentialiteOpen}
-        setOpen={setConfidentialiteOpen}
-      />
+      {/*<ConfidentialiteForm*/}
+      {/*  open={confidentialiteOpen}*/}
+      {/*  setOpen={setConfidentialiteOpen}*/}
+      {/*/>*/}
       <Stack sx={{ height: "calc(100vh - 200px)" }} className={"p-1"}>
         <StripedDataGrid
           rowHeight={rowHeight}
@@ -469,12 +471,13 @@ export function RenderPageOcrResultTable() {
           loading={loading}
           autoPageSize={true}
           paginationModel={{
-            page: page,
-            pageSize: size,
+            page: paginationInput?.pageNumber,
+            pageSize: paginationInput?.pageSize,
           }}
           onPaginationModelChange={(model) => {
-            setPage(model.page);
-            setSize(model.pageSize);
+            dispatch(
+              setPage({ pageNumber: model.page, pageSize: model.pageSize }),
+            );
           }}
           // getRowId={(row) => row?.matricule}
           paginationMode={"server"}
@@ -515,7 +518,7 @@ export function RenderPageOcrResultTable() {
           }}
           slotsProps={{
             loadingOverlay: {
-              pageSize: page,
+              pageSize: paginationInput.pageSize,
             },
           }}
           onRowSelectionModelChange={(newRowSelectionModel) => {

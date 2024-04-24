@@ -19,21 +19,21 @@ import {
   PrivilegesEnum,
   UnpinOcrResultDocument,
 } from "../../../../../_generated_gql_/graphql";
-import { selectSelectedFolder } from "../../../../../redux/features/folderAndFiles/foldersSlice";
+import {
+  selectPage,
+  selectSelectedFolder,
+} from "../../../../../redux/features/folderAndFiles/foldersSlice";
 import ASSETS from "../../../../../resources/ASSETS";
 import UsersChoiceDialog from "./UsersChoice";
 import useSnackBarNotifications from "../../../../common/notifications/useSnackBarNotifications.tsx";
 import { useHasAuthorities } from "../../../../../security/useHasAuthoritie.ts";
+import { useAppSelector } from "../../../../../redux/hooks.ts";
 
 export default function ActionsMenu({
   row,
-  page,
-  size,
   handleDeletePdfFromFolder,
 }: {
   row?: any;
-  page: number;
-  size: number;
   handleDeletePdfFromFolder: any;
 }) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | undefined>(
@@ -53,6 +53,8 @@ export default function ActionsMenu({
     setAnchorEl(null);
   };
 
+  const paginatingInput = useAppSelector(selectPage);
+
   const [pinFile, { loading: pinningFile }] = useMutation(
     PinOcrResultDocument,
     {
@@ -62,8 +64,8 @@ export default function ActionsMenu({
           variables: {
             folderId: selectedFolder?.id,
             pagination: {
-              pageSize: size,
-              pageNumber: page,
+              pageSize: paginatingInput.pageSize,
+              pageNumber: paginatingInput.pageNumber,
             },
           },
         },
@@ -80,8 +82,8 @@ export default function ActionsMenu({
           variables: {
             folderId: selectedFolder?.id,
             pagination: {
-              pageSize: size,
-              pageNumber: page,
+              pageSize: paginatingInput.pageSize,
+              pageNumber: paginatingInput.pageNumber,
             },
           },
         },

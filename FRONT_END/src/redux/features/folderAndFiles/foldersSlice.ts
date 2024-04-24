@@ -1,10 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store.ts";
 
-const initialState = {
+interface Page {
+  pageNumber: number;
+  pageSize: number;
+}
+
+interface InitialState {
+  selectedFolder: string;
+  selectedPdfViewer: string;
+  page: Page;
+}
+
+const initialState: InitialState = {
   selectedFolder: null,
-  selectedFile: null,
   selectedPdfViewer: "PDF",
+  page: {
+    pageNumber: 0,
+    pageSize: 10,
+  },
 };
 
 export const foldersSlice = createSlice({
@@ -14,23 +28,23 @@ export const foldersSlice = createSlice({
     setSelectedFolder: (state, action) => {
       state.selectedFolder = action.payload;
     },
-    setSelectedFile: (state, action) => {
-      state.selectedFile = action.payload;
-    },
     setSelectedPdfViewer: (state, action) => {
       state.selectedPdfViewer = action.payload;
+    },
+    setPage: (state, action: PayloadAction<Page>) => {
+      state.page = action.payload;
     },
   },
 });
 
-export const { setSelectedFolder, setSelectedFile, setSelectedPdfViewer } =
+export const { setSelectedFolder, setSelectedPdfViewer, setPage } =
   foldersSlice.actions;
 
 export const selectSelectedFolder = (state: RootState) =>
   state.folder.selectedFolder;
-export const selectSelectedFile = (state: RootState) =>
-  state.folder.selectedFile;
-export const selectselectedPdfViewer = (state: RootState) =>
+export const selectSelectedPdfViewer = (state: RootState) =>
   state.folder.selectedPdfViewer;
+
+export const selectPage = (state: RootState) => state.folder.page;
 
 export default foldersSlice.reducer;
