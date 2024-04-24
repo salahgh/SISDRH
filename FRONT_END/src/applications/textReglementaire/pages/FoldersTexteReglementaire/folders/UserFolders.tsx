@@ -36,10 +36,12 @@ export function UserFolders() {
   // todo preferences folder par default
 
   useEffect(() => {
+    console.log(".......................");
     if (ownedFolders && !selectedFolder) {
+      console.log("**********************");
       dispatch(setSelectedFolder({ id: -2 }));
     }
-  }, [ownedFolders]);
+  }, [dispatch, ownedFolders]);
 
   return (
     <>

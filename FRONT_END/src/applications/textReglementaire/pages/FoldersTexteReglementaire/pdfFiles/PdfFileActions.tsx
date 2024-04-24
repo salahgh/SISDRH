@@ -1,9 +1,7 @@
 import * as React from "react";
-import { OcrResultEntityJpa } from "../../../../../_generated_gql_/graphql.ts";
 import { IconButton, Stack } from "@mui/material";
 import BasicMenu from "./BasicMenu.tsx";
 import { FavoriteButton } from "../../../FavoriteButton.tsx";
-import { PictureAsPdfOutlined } from "@mui/icons-material";
 import ActionsMenu from "./ActionsMenu.tsx";
 import ASSETS from "../../../../../resources/ASSETS.ts";
 
@@ -15,7 +13,6 @@ export const PdfFileActions = ({
   size,
   row,
 }) => {
-  console.log(selectedFileId);
   return (
     <Stack direction={"row"} alignItems={"center"} spacing={1}>
       <BasicMenu row={row} />
@@ -29,12 +26,12 @@ export const PdfFileActions = ({
           }}
         />
       </IconButton>
-      {/*<ActionsMenu*/}
-      {/*  handleDeletePdfFromFolder={handleDeletePdfFromFolder}*/}
-      {/*  page={page}*/}
-      {/*  size={size}*/}
-      {/*  row={row}*/}
-      {/*/>*/}
+      <ActionsMenu
+        handleDeletePdfFromFolder={handleDeletePdfFromFolder}
+        page={page}
+        size={size}
+        row={row}
+      />
     </Stack>
   );
 };

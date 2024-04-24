@@ -10,13 +10,14 @@ import {
 import { DriveFileMove, Folder as FolderIcon } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { selectLoggedInUser } from "../../../../../redux/features/auth/userSlice";
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   AddOcrResultToFolderDocument,
   GetOwnedFoldersDocument,
 } from "../../../../../_generated_gql_/graphql";
 import { selectSelectedFolder } from "../../../../../redux/features/folderAndFiles/foldersSlice";
 import useSnackBarNotifications from "../../../../common/notifications/useSnackBarNotifications.tsx";
+import { useEffect } from "react";
 
 export default function BasicMenu({ row }: { row?: never }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -34,11 +35,14 @@ export default function BasicMenu({ row }: { row?: never }) {
     setAnchorEl(null);
   };
 
-  const { data: ownedFolders } = useQuery(GetOwnedFoldersDocument, {
-    variables: {
-      username_: userName,
+  const [getOwnedFolders, { data: ownedFolders }] = useLazyQuery(
+    GetOwnedFoldersDocument,
+    {
+      variables: {
+        username_: userName,
+      },
     },
-  });
+  );
 
   const data_ = ownedFolders?.ownedFolders?.filter(
     (item) =>
@@ -63,6 +67,10 @@ export default function BasicMenu({ row }: { row?: never }) {
       })
       .catch((error) => handleShowGraphQlErrorSnackBar(JSON.stringify(error)));
   }
+
+  useEffect(() => {
+    if (open) getOwnedFolders().then(() => null);
+  }, [open]);
 
   return (
     <>

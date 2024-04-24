@@ -73,27 +73,25 @@ export default function MyDrawer() {
     setOpen(false);
   };
 
-  const canSeeAll = useHasAuthorities(
-    PrivilegesEnum.PersonnelNotesSeeAll,
-  ).hasAthoritie;
+  const canSeeAll = useHasAuthorities(PrivilegesEnum.PersonnelNotesSeeAll);
   const canSeeApplicationPamDashboard = useHasAuthorities(
     PrivilegesEnum.ApplicationPamDashboard,
-  ).hasAthoritie;
+  );
   const canSeeApplicationPamEtats = useHasAuthorities(
     PrivilegesEnum.ApplicationPamEtats,
-  ).hasAthoritie;
+  );
   const canSeeApplicationPamNote = useHasAuthorities(
     PrivilegesEnum.ApplicationPamNote,
-  ).hasAthoritie;
+  );
   const canSeeApplicationPamPam = useHasAuthorities(
     PrivilegesEnum.ApplicationPamPam,
-  ).hasAthoritie;
+  );
   const canSeeApplicationPamPav = useHasAuthorities(
     PrivilegesEnum.ApplicationPamPav,
-  ).hasAthoritie;
+  );
   const canSeeApplicationPamPhotoEditor = useHasAuthorities(
     PrivilegesEnum.ApplicationPamPhotoEditor,
-  ).hasAthoritie;
+  );
 
   return (
     <>
@@ -317,7 +315,7 @@ export default function MyDrawer() {
           // bgcolor: theme.palette.background.default,
           height: "calc(100% - 64px)",
           // marginLeft: !selectedApplication ? 0 : open ? drawerWidth / 10 : 10,
-          marginLeft : 10
+          marginLeft: 10,
         }}
         // className={'bg-amber-600'}
       >
