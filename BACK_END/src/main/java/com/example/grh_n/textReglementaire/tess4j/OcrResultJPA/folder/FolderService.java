@@ -267,8 +267,10 @@ public class FolderService {
               () -> new EntityNotFoundException("Folder " + folderId + " does not exist")
       );
       OcrResultEntityJpa pdfFile = ocrResultService.findById(pdfId);
-      pdfFile.getFolders().remove(folder);
-//        this.save(pdfFile);
+      List<OcrResultEntityJpa> pdfFiles = folder.getPdfFiles();
+      pdfFiles.remove(pdfFile);
+      folder.setPdfFiles(pdfFiles);
+      folderRepository.save(folder);
       return true;
    }
 }
