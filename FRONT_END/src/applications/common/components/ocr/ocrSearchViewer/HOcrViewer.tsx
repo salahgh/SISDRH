@@ -15,7 +15,7 @@ import {
 import { PdfToolBar } from "../../../../textReglementaire/PdfToolBar.tsx";
 import Pagination from "@mui/material/Pagination";
 import { NetWorkErrorComponent } from "../../errors/NetWorkErrorComponent.tsx";
-import { selectselectedPdfViewer } from "../../../../../redux/features/folderAndFiles/foldersSlice.ts";
+import { selectSelectedPdfViewer } from "../../../../../redux/features/folderAndFiles/foldersSlice.ts";
 import PdfViewerToggleButton from "../../../../textReglementaire/pages/PdfFile/PdfViewerToggleButton.tsx";
 import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/searchPage/PanAndZoomViewer.tsx";
 
@@ -53,7 +53,7 @@ const HOcrViewer = ({ showGoToPdf }) => {
     },
   );
 
-  const selectedViewer = useSelector(selectselectedPdfViewer);
+  const selectedViewer = useSelector(selectSelectedPdfViewer);
   const isOcrSearch =
     useSelector(selectElasticSearchInput).searchToken?.length > 0;
 
