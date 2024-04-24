@@ -1,7 +1,13 @@
 import { Button, Stack } from "@mui/material";
 import * as React from "react";
+import { useHasAuthorities } from "../../../../../security/useHasAuthoritie.ts";
+import { PrivilegesEnum } from "../../../../../_generated_gql_/graphql.ts";
 
-export const ActionBar = ({ PRIVILIGES, setConfidentialiteOpen }) => {
+export const ActionBar = ({ setConfidentialiteOpen }) => {
+  const UpdateConfidentiality = useHasAuthorities(
+    PrivilegesEnum.UpdateConfidentialite,
+  );
+
   return (
     <Stack
       sx={{
@@ -12,7 +18,7 @@ export const ActionBar = ({ PRIVILIGES, setConfidentialiteOpen }) => {
       className={"pl-1"}
     >
       {/*<Button variant={'outlined'}> أضف إلى المجلد </Button>*/}
-      {PRIVILIGES.UpdateConfidentialite && (
+      {UpdateConfidentiality && (
         <Button
           onClick={() => setConfidentialiteOpen(true)}
           variant={"outlined"}

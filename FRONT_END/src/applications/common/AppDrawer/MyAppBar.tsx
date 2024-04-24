@@ -12,8 +12,8 @@ import { BugReport, LogoutOutlined, Settings } from "@mui/icons-material";
 import { getLink, routs } from "../../../routing/routs.tsx";
 import { useNavigate } from "react-router-dom";
 import { PrivilegesEnum } from "../../../_generated_gql_/graphql";
-import { useHasAuthorities } from "../../../security/useHasAuthoritie.ts";
 import { useAppDispatch } from "../../../redux/hooks.ts";
+import { useHasAuthorities } from "../../../security/useHasAuthoritie.ts";
 
 export function MyAppBar(props: { open: boolean; onClick: () => void }) {
   const theme = useTheme();

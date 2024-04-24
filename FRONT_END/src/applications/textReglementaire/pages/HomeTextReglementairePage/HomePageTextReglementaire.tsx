@@ -11,15 +11,15 @@ import { getLink, routs } from "../../../../routing/routs";
 import { useEffect } from "react";
 
 const HomePageTextReglementaire = () => {
-  const { data, error, loading, refetch } = useQuery(
-    FindAllPinnedFilesDocument,
-  );
+  // const { data, error, loading, refetch } = useQuery(
+  //   FindAllPinnedFilesDocument,
+  // );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    refetch();
-  });
+  // useEffect(() => {
+  //   refetch();
+  // });
 
   const handleClick = (e, item) => {
     dispatch(setSelectedSinglePdfViewerFileId(item?.ocrResult?.id));

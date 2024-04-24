@@ -1,11 +1,7 @@
 import {
-  Badge,
   Box,
   LinearProgress,
   ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemText,
   Stack,
   Tooltip,
   Typography,
@@ -16,7 +12,6 @@ import { useEffect, useState } from "react";
 import { orange } from "@mui/material/colors";
 import {
   AutoStoriesOutlined,
-  ChevronLeft,
   Error,
   PictureAsPdfOutlined,
 } from "@mui/icons-material";
@@ -45,10 +40,7 @@ import ConfidentialiteForm from "../ConfidentialiteForm";
 import OcrResultUserGrantsAvatarGroup from "./OcrResultUserGrantsAvatarGroup";
 import UsersChoiceDialog from "./UsersChoice";
 import useSnackBarNotifications from "../../../../common/notifications/useSnackBarNotifications.tsx";
-import {
-  useGetAuthories,
-  useHasAuthorities,
-} from "../../../../../security/useHasAuthoritie.ts";
+import { useHasAuthorities } from "../../../../../security/useHasAuthoritie.ts";
 import { StripedDataGrid } from "../../../../pam/mainDataGrid/StripedDataGrid.tsx";
 import { Theme } from "@mui/material/styles";
 import { CustomPagination } from "../../../../pam/mainDataGrid/CustomPagination.tsx";
@@ -77,15 +69,17 @@ const ToolTipChildWrapper = React.forwardRef(({ children, ...other }, ref) => {
 export function RenderPageOcrResultTable() {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
+
   const [confidentialiteOpen, setConfidentialiteOpen] = useState(false);
   const selectedFolder = useSelector(selectSelectedFolder);
   const selectedFileId = useSelector(selectSelectedFileId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const PRIVILIGES = useGetAuthories();
   const hasOcrResultDirectGrant = useHasAuthorities(
     PrivilegesEnum.OcrResultDirectGrant,
   );
+
+  const OcrResultPin = useHasAuthorities(PrivilegesEnum.OcrResultPin);
 
   const { data, error, loading, refetch } = useQuery(
     FindAllOcrResultEntityByFoldersContainingDocument,
@@ -148,7 +142,7 @@ export function RenderPageOcrResultTable() {
         pdfId: row?.id,
       },
     })
-      .then((result) => {
+      .then(() => {
         handleShowInfoSnackBar("deleted");
       })
       .catch((error) => handleShowGraphQlErrorSnackBar(JSON.stringify(error)));
@@ -199,7 +193,6 @@ export function RenderPageOcrResultTable() {
     navigate(getLink(routs.PdfFilePage));
   }
 
-  console.log(data);
   // todo add the privilege check for pin add
 
   const columns: GridColDef[] = [
@@ -345,7 +338,7 @@ export function RenderPageOcrResultTable() {
                 {rowParams.row.numberOfPapers}
               </Typography>
             </Stack>
-            {PRIVILIGES.OcrResultDirectGrant && (
+            {hasOcrResultDirectGrant && (
               <OcrResultUserGrantsAvatarGroup
                 userIds={rowParams?.row?.ocrResultUserGrants?.map(
                   (grant) => grant?.user?.personnel?.matricule,
@@ -390,7 +383,7 @@ export function RenderPageOcrResultTable() {
       headerName: "",
       width: 50,
       renderCell: ({ row }: { row: any }) => {
-        if (!PRIVILIGES.OcrResultPin) return <></>;
+        if (!OcrResultPin) return <></>;
         return (
           <Stack
             direction={"row"}
@@ -415,7 +408,7 @@ export function RenderPageOcrResultTable() {
     },
     {
       field: "id",
-      headerName: "",
+      headerName: "sdf",
       width: 300,
       renderCell: (row) => (
         <PdfFileActions
@@ -456,10 +449,7 @@ export function RenderPageOcrResultTable() {
         setOpen={setUsersChoiceOpen}
         ocrResultId={ocrResultId}
       />
-      <ActionBar
-        PRIVILIGES={PRIVILIGES}
-        setConfidentialiteOpen={setConfidentialiteOpen}
-      />
+      <ActionBar setConfidentialiteOpen={setConfidentialiteOpen} />
       <ConfidentialiteForm
         open={confidentialiteOpen}
         setOpen={setConfidentialiteOpen}
