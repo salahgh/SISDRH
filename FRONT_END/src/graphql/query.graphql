@@ -49,6 +49,8 @@ query findAllOcrResultEntityByFoldersContaining ( $folderId : Long ,    $paginat
                 libConfidentialiteAr
                 libConfidentialiteFr
             }
+            dateReference
+            reference
         }
         totalElements
         pageable {
