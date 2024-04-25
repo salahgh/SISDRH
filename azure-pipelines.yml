@@ -27,5 +27,4 @@ steps:
     MachineNames: '192.213.71.243'
     AdminUserName: 'Administrateur.WIN-SGHEVTHFV84' 
     AdminPassword: 'FGkfjHjfBVxsUJ@2025'
-    TargetPath: 'C:\Users\Administrateur.WIN-SGHEVTHFV84\Desktop\deployement\back_end'
-    CopyFilesInParallel: false
+- 
