@@ -12,7 +12,7 @@ pool:
 steps:
 - task: Maven@3
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'BACK_END/pom.xml'
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
