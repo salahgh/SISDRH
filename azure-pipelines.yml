@@ -23,9 +23,9 @@ steps:
     sonarQubeRunAnalysis: false
 - task: WindowsMachineFileCopy@2
   inputs:
-    SourcePath: 'C:\agent\_work\1\s\target'
+    SourcePath: 'C:\agent\_work\1\s\target\SI_RH_DSN.jar'
     MachineNames: '192.213.71.243'
-    AdminUserName: 'administrateur'
+    AdminUserName: 'Administrateur.WIN-SGHEVTHFV84' 
     AdminPassword: 'FGkfjHjfBVxsUJ@2025'
     TargetPath: 'C:\Users\Administrateur.WIN-SGHEVTHFV84\Desktop\deployement\back_end'
-    CleanTargetBeforeCopy: true
+    CopyFilesInParallel: false
