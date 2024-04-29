@@ -3,7 +3,7 @@ package com.example.grh_n.textReglementaire.tess4j.ElasticSearch;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.json.JsonData;
-import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.MyElasticSearchRepository_2;
+import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrIndexElasticRepository;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrResultEntityElastic_2;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.Confidentialite;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.OcrResultService;
@@ -32,16 +32,16 @@ public class ProductSearchService {
 
     private static final String OCR_INDEX = "ocr_index";
     private final ElasticsearchOperations operations;
-    private final MyElasticSearchRepository_2 myElasticSearchRepository_2 ;
+    private final OcrIndexElasticRepository ocrIndexElasticRepository_;
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
     private final Integer PAGE_SIZE_LIMIt = 100;
 
     private final OcrResultService ocrResultService ;
 
-    public ProductSearchService(ElasticsearchOperations operations, MyElasticSearchRepository_2 myElasticSearchRepository2, OcrResultService ocrResultService) {
+    public ProductSearchService(ElasticsearchOperations operations, OcrIndexElasticRepository myElasticSearchRepository2, OcrResultService ocrResultService) {
         this.operations = operations;
 
-        myElasticSearchRepository_2 = myElasticSearchRepository2;
+        ocrIndexElasticRepository_ = myElasticSearchRepository2;
         this.ocrResultService = ocrResultService;
     }
 
@@ -51,7 +51,7 @@ public class ProductSearchService {
 
     @GetMapping
     public OcrResultEntityElastic_2 findByid(@RequestParam String fileId){
-       return myElasticSearchRepository_2.findById(fileId).orElseThrow(
+       return ocrIndexElasticRepository_.findById(fileId).orElseThrow(
                () -> new EntityNotFoundException("pdf file with id =  " +  fileId +" does not exist")
        ) ;
     }
