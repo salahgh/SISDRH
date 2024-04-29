@@ -11,7 +11,15 @@ pool:
 
 steps:
 
-
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'BACK_END/pom.xml'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 
 - task: WindowsMachineFileCopy@2
   inputs:
