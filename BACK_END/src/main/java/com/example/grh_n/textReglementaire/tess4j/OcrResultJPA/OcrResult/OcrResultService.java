@@ -1,15 +1,13 @@
 package com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult;
 
 import com.example.grh_n.dbdsn.entities.dto.CountParDiplomeCivile;
+import com.example.grh_n.security.user.OcrResultUserGrantService;
 import com.example.grh_n.security.user.User;
 import com.example.grh_n.security.user.UserService;
-import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.MyElasticSearchRepository_2;
+import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrIndexElasticRepository;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrResultEntityElastic_2;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.HOCRToJSON;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.ConfidentialiteCountDto;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.QConfidentialite;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.QOcrResultEntityJpa;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.QTypeTexteReglementaire;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImage;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageEmbeddedId;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageRepository;
@@ -17,6 +15,7 @@ import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.QConfidentialiteC
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.QTypeTextReglementaireCountDto;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.TypeTextReglementaireCountDto;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.Folder;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.FolderRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import io.leangen.graphql.annotations.GraphQLMutation;
@@ -45,12 +44,14 @@ import java.util.stream.StreamSupport;
 public class OcrResultService {
 
     private final OCRResultCrudRepository ocrResultRepository;
+    private final OcrIndexElasticRepository ocrResultEntityElastic2 ;
     private final TypeTexteReglementaireRepository typeTexteReglementaireRepository;
     private final ConfidentialiteRepository confidentialiteRepository;
+    private final OcrResultUserGrantService ocrResultUserGrantService ;
     private final UserService userService;
 
     // todo discuss security issues when using the userService ;
-    MyElasticSearchRepository_2 myElasticSearchRepository_2;
+    OcrIndexElasticRepository ocrIndexElasticRepository;
     private final OcrResultPageAsImageRepository ocrResultPageAsImageRepository;
     static Logger logger = LoggerFactory.getLogger(HOCRToJSON.class);
 
@@ -58,18 +59,22 @@ public class OcrResultService {
 
     public OcrResultService
             (
-                    OCRResultCrudRepository ocrResultRepository,
+                    OCRResultCrudRepository ocrResultRepository, OcrIndexElasticRepository ocrResultEntityElastic2,
                     TypeTexteReglementaireRepository typeTexteReglementaireRepository,
-                    ConfidentialiteRepository confidentialiteRepository, UserService userService,
-                    MyElasticSearchRepository_2 myElasticSearchRepository_2,
-                    OcrResultPageAsImageRepository ocrResultPageAsImageRepository, EntityManager em) {
+                    ConfidentialiteRepository confidentialiteRepository, OcrResultUserGrantService ocrResultUserGrantService, UserService userService,
+                    OcrIndexElasticRepository ocrIndexElasticRepository_,
+                    OcrResultPageAsImageRepository ocrResultPageAsImageRepository, EntityManager em,
+                    FolderRepository folderRepository) {
         this.ocrResultRepository = ocrResultRepository;
+        this.ocrResultEntityElastic2 = ocrResultEntityElastic2;
         this.typeTexteReglementaireRepository = typeTexteReglementaireRepository;
         this.confidentialiteRepository = confidentialiteRepository;
+        this.ocrResultUserGrantService = ocrResultUserGrantService;
         this.userService = userService;
-        this.myElasticSearchRepository_2 = myElasticSearchRepository_2;
+        this.ocrIndexElasticRepository = ocrIndexElasticRepository_;
         this.ocrResultPageAsImageRepository = ocrResultPageAsImageRepository;
         this.em = em;
+        this.folderRepository = folderRepository;
     }
 
     public Optional<OcrResultEntityJpa> doesFileExist(byte[] file) {
@@ -78,6 +83,7 @@ public class OcrResultService {
     }
 
     private static final String HASH_ALGORITHM = "SHA-256";
+    private final FolderRepository folderRepository;
 
     public static String generateSignature(byte[] file) {
         MessageDigest digest = null;
@@ -111,7 +117,7 @@ public class OcrResultService {
     }
 
     public OcrResultEntityElastic_2 save(OcrResultEntityElastic_2 ocrResultEntityElastic_2) {
-        return myElasticSearchRepository_2.save(ocrResultEntityElastic_2);
+        return ocrIndexElasticRepository.save(ocrResultEntityElastic_2);
     }
 
     public OcrResultEntityJpa save(OcrResultEntityJpa result) {
@@ -125,7 +131,20 @@ public class OcrResultService {
     }
 
     @GraphQLMutation
-    public void delete(String id) {
+    public void deletePdfFile(String id) {
+        OcrResultEntityJpa ocrResultEntityJpa = ocrResultRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("ocr result with id " + id + " not found")
+        ) ;
+        ocrIndexElasticRepository.deleteById(id);
+        ocrResultEntityJpa.setOcrDone("n");
+        ocrResultRepository.save(ocrResultEntityJpa) ;
+        List<Folder> folders = ocrResultEntityJpa.getFolders();
+        for (Folder folder : folders) {
+            List<OcrResultEntityJpa> folderOcrFiles = folder.getPdfFiles();
+            folderOcrFiles.remove(ocrResultEntityJpa);
+            folder.setPdfFiles(folderOcrFiles);
+            folderRepository.save(folder);
+        }
         ocrResultRepository.deleteById(id);
     }
 
@@ -199,16 +218,16 @@ public class OcrResultService {
         ocrResultEntityJpa.setConfidentialite(confidentialite);
         ocrResultRepository.save(ocrResultEntityJpa);
 
-        OcrResultEntityElastic_2 ocrResultEntityElastic_2 = myElasticSearchRepository_2.findById(ocrResultId)
+        OcrResultEntityElastic_2 ocrResultEntityElastic_2 = ocrIndexElasticRepository.findById(ocrResultId)
                 .orElseThrow(() -> new EntityNotFoundException("elastic search entitity with id " + ocrResultId + " not found"));
         ocrResultEntityElastic_2.setLibConfidentialiteFr(confidentialite.getLibConfidentialiteFr());
         ocrResultEntityElastic_2.setLibConfidentialiteAr(confidentialite.getLibConfidentialiteAr());
-        myElasticSearchRepository_2.save(ocrResultEntityElastic_2);
+        ocrIndexElasticRepository.save(ocrResultEntityElastic_2);
     }
 
     @GraphQLQuery
     public OcrResultEntityElastic_2 findOcrResultEntityESbyId(String fileId) {
-        return myElasticSearchRepository_2.findById(fileId).orElseThrow(() -> new EntityNotFoundException("file with id = " + fileId + " does not exist"));
+        return ocrIndexElasticRepository.findById(fileId).orElseThrow(() -> new EntityNotFoundException("file with id = " + fileId + " does not exist"));
     }
 
     public Page<OcrResultEntityJpa> findAllByOwner(User user , Pageable pageable){

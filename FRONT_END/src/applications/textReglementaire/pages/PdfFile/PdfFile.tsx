@@ -8,7 +8,7 @@ const PdfFile = () => {
       }}
       className={"p-1 overflow-clip bg-amber-600"}
     >
-      <HOcrViewer showGoToPdf={false} />
+      <HOcrViewer showGoToPdf={false} showDeletePdfFile={true} />
     </div>
   );
 };
