@@ -10,17 +10,7 @@ pool:
   name: default
 
 steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'BACK_END/pom.xml'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    mavenVersionOption: 'Default'
-    mavenOptions: '-Xmx3072m'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+
 - task: WindowsMachineFileCopy@2
   inputs:
     SourcePath: 'C:\agent\_work\2\s\BACK_END\target\SI_RH_DSN.jar'
