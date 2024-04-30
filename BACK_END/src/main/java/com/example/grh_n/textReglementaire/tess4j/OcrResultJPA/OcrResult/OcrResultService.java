@@ -47,7 +47,6 @@ public class OcrResultService {
     private final OcrIndexElasticRepository ocrResultEntityElastic2 ;
     private final TypeTexteReglementaireRepository typeTexteReglementaireRepository;
     private final ConfidentialiteRepository confidentialiteRepository;
-    private final OcrResultUserGrantService ocrResultUserGrantService ;
     private final UserService userService;
 
     // todo discuss security issues when using the userService ;
@@ -61,7 +60,7 @@ public class OcrResultService {
             (
                     OCRResultCrudRepository ocrResultRepository, OcrIndexElasticRepository ocrResultEntityElastic2,
                     TypeTexteReglementaireRepository typeTexteReglementaireRepository,
-                    ConfidentialiteRepository confidentialiteRepository, OcrResultUserGrantService ocrResultUserGrantService, UserService userService,
+                    ConfidentialiteRepository confidentialiteRepository, UserService userService,
                     OcrIndexElasticRepository ocrIndexElasticRepository_,
                     OcrResultPageAsImageRepository ocrResultPageAsImageRepository, EntityManager em,
                     FolderRepository folderRepository) {
@@ -69,7 +68,6 @@ public class OcrResultService {
         this.ocrResultEntityElastic2 = ocrResultEntityElastic2;
         this.typeTexteReglementaireRepository = typeTexteReglementaireRepository;
         this.confidentialiteRepository = confidentialiteRepository;
-        this.ocrResultUserGrantService = ocrResultUserGrantService;
         this.userService = userService;
         this.ocrIndexElasticRepository = ocrIndexElasticRepository_;
         this.ocrResultPageAsImageRepository = ocrResultPageAsImageRepository;
