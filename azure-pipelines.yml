@@ -16,7 +16,7 @@ steps:
     mavenPomFile: 'BACK_END/pom.xml'
     publishJUnitResults: false
     javaHomeOption: 'Path'
-    jdkDirectory: 'C:\java\bin'
+    jdkDirectory: 'C:\java'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
