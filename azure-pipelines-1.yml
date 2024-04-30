@@ -10,11 +10,10 @@ pool:
   name: default
 
 steps:
-- task: PowerShell@2
+- task: NodeTool@0
   inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      
-      npm run vite
-    workingDirectory: 'C:\agent\_work\2\s\FRONT_END'
+    versionSpec: '18.x'
+    checkLatest: true
+    force32bit: true
+- script: |    
+      npm vite build
