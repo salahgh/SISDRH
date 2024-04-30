@@ -9,6 +9,7 @@ trigger:
 pool:
   name: default
 
+steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
