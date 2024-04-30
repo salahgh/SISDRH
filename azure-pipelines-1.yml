@@ -11,6 +11,4 @@ pool:
 
 steps:
 - task: Npm@1
-  inputs:
-    command: 'run build'
-- script: 'build'
+- script: 'vite build'
