@@ -15,4 +15,4 @@ steps:
   inputs:
     command: 'custom'
     workingDir: 'C:\agent\_work\2\s\FRONT_END'
-    customCommand: 'run vite build'
+    customCommand: 'run build'
