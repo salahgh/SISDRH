@@ -1,5 +1,3 @@
-
-
 query findOcrResultEntityESbyId($fildId : String){
     findOcrResultEntityESbyId(fileId: $fildId){
         dateReference
@@ -37,11 +35,12 @@ query findOcrResultEntityESbyId($fildId : String){
 query isFavorite($ocrResultId : String , $userName : String){
     favorite(ocrResultId: $ocrResultId , userName: $userName)
 }
-
 mutation toggleFavorite($ocrResultId : String ){
     toggleFavorite(ocrResultId: $ocrResultId)
 }
-
+mutation deletePdfFile($id : String){
+    deletePdfFile(id:$id)
+}
 query typeTextReglementaireCount{
     typeTextReglementaireCount {
         id
@@ -50,7 +49,6 @@ query typeTextReglementaireCount{
         count_
     }
 }
-
 query confidentialiteCount{
     confidentialiteCount {
         id

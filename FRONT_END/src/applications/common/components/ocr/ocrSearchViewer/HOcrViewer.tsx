@@ -19,7 +19,7 @@ import { selectSelectedPdfViewer } from "../../../../../redux/features/folderAnd
 import PdfViewerToggleButton from "../../../../textReglementaire/pages/PdfFile/PdfViewerToggleButton.tsx";
 import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/searchPage/PanAndZoomViewer.tsx";
 
-const HOcrViewer = ({ showGoToPdf }) => {
+const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
   const selectedFileId = useSelector(selectSelectedFileId);
   const pageIndex = useSelector(selectSelectedPageIndex);
   const dispatch = useDispatch();
@@ -72,6 +72,7 @@ const HOcrViewer = ({ showGoToPdf }) => {
             ></PdfViewerToggleButton>
           }
           showGoToPdf={showGoToPdf}
+          showDeletePdfFile={showDeletePdfFile}
           ocrResultJpa={ocrResultJpa}
         ></PdfToolBar>
       </Paper>

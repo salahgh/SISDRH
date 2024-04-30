@@ -147,7 +147,7 @@ const SearchUI = () => {
           )}
         </div>
         <Stack flex={1} justifyContent={"start"} alignItems={"center"}>
-          <HOcrViewer showGoToPdf={true}></HOcrViewer>
+          <HOcrViewer showGoToPdf={true} showDeletePdfFile={false}></HOcrViewer>
         </Stack>
       </Stack>
     </div>

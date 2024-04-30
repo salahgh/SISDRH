@@ -38,14 +38,14 @@ public class OcrResultEntityJpa {
 
    private String reference ;
 
-   @OneToMany(mappedBy = "ocrResultEntityJpa")
+   @OneToMany(mappedBy = "ocrResultEntityJpa" , cascade = CascadeType.REMOVE)
    private List<OcrResultUserGrant> ocrResultUserGrants;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "type")
    private TypeTexteReglementaire typeTexteReglementaire ;
 
-   @OneToMany(mappedBy = "ocrResultEntityJpa")
+   @OneToMany(mappedBy = "ocrResultEntityJpa" , cascade = CascadeType.REMOVE)
    List<OcrResultPageAsImage> ocrResultPagesAsImages ;
 
    @ManyToOne(fetch = FetchType.LAZY)
@@ -59,10 +59,10 @@ public class OcrResultEntityJpa {
    @OneToOne(mappedBy = "ocrResult", cascade = CascadeType.ALL, orphanRemoval = true)
    private OcrResultPinned ocrResultPinned;
 
-   @OneToMany(mappedBy = "subject")
+   @OneToMany(mappedBy = "subject" , cascade = CascadeType.ALL)
    private List<OcrResultRelation> subjects ;
 
-   @OneToMany(mappedBy = "object")
+   @OneToMany(mappedBy = "object" , cascade = CascadeType.ALL)
    private List<OcrResultRelation> objects ;
 
    @Column(name = "ocr_done")
@@ -88,6 +88,5 @@ public class OcrResultEntityJpa {
    public int hashCode() {
       return getClass().hashCode();
    }
-
 
 }
