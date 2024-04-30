@@ -10,5 +10,9 @@ pool:
   name: default
 
 steps:
+
 - task: Npm@1
-- script: 'vite build'
+  inputs:
+    command: 'custom'
+    workingDir: 'C:\agent\_work\2\s\FRONT_END'
+    customCommand: 'run vite build'
