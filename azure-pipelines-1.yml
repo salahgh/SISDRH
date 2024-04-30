@@ -9,11 +9,11 @@ trigger:
 pool:
   name: default
 
-- task: Npm@1
+- task: PowerShell@2
   inputs:
-    command: 'install'
-    workingDir: 'FRONT_END/package.json'
-    versionSpec: '18.x'
-    checkLatest: true
-    force32bit: true
-  scripts : 'npm run build'
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      npm run vite
+    workingDirectory: 'C:\agent\_work\2\s\FRONT_END'
