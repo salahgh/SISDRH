@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 import useSnackBarNotifications from "../../../common/notifications/useSnackBarNotifications.tsx";
 import { selectLoggedInUser } from "../../../../redux/features/auth/userSlice.ts";
 import { useState } from "react";
+import { format } from "date-fns";
 
 const PdfFile = () => {
   const selectedFileId = useSelector(selectSelectedFileId);
@@ -241,7 +242,14 @@ const PdfFile = () => {
                         </IconButton>
                       </Stack>
                     ) : (
-                      <ListItemText>{item?.text}</ListItemText>
+                      <ListItemText
+                        secondary={format(
+                          item?.dateCreation,
+                          "yyyy-MM-dd HH:mm",
+                        )}
+                      >
+                        {item?.text}
+                      </ListItemText>
                     )}
                     {hoveredIndex === index || editMode === index ? (
                       <IconButton
