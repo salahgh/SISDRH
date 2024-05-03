@@ -1,0 +1,69 @@
+
+query getTexteReglementaireNoteById($id : String){
+    texteReglementaireNoteById(id: $id){
+        dateCreation
+        id
+        text
+    }
+}
+query getTexteReglementaireNoteByOwner($userName : String , $pageable : PaginationInput){
+    texteReglementaireNoteByOwner(userName: $userName,pageable: $pageable){
+        content {
+            dateCreation
+            id
+            text
+            textReglemetaire {
+                id
+            }
+        }
+        totalElements
+        totalPages
+    }
+}
+query notesByTextIdAndOwnerId($ocrResultId : String , $userName : String , $pageable : PaginationInput){
+    notesByTextIdAndOwnerId(ocrResultId:$ocrResultId , userName:  $userName , pageable:  $pageable){
+        content {
+            dateCreation
+            id
+            text
+            textReglemetaire {
+                id
+            }
+        }
+        totalElements
+        totalPages
+    }
+}
+query getTextReglementaireNoteByText($ocrResultId : String , $pageable : PaginationInput){
+    textReglementaireNoteByText(ocrResultId: $ocrResultId , pageable: $pageable){
+        content {
+            dateCreation
+            id
+            text
+            textReglemetaire {
+                id
+            }
+        }
+        totalElements
+        totalPages
+    }
+}
+mutation updateTextNote($noteId : String , $text : String){
+    updateTextNote(noteId: $noteId , text: $text){
+        dateCreation
+        id
+        text
+        textReglemetaire {
+            id
+        }
+    }
+}
+mutation deleteTexteReglementaireNote($id : String){
+    deleteTexteReglementaireNote(id: $id)
+}
+mutation createTextReglementaireNote($note : CreateNoteDtoInput){
+    createTextReglementaireNote(note: $note){
+        id
+    }
+}
+
