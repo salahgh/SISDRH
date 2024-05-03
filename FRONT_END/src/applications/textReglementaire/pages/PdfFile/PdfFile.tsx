@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import {
   AddCircle,
+  Delete,
+  DeleteOutline,
   NoteRounded,
   SaveOutlined,
   Undo,
@@ -21,6 +23,7 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import {
   CreateTextReglementaireNoteDocument,
+  DeleteTexteReglementaireNoteDocument,
   NotesByTextIdAndOwnerIdDocument,
   UpdateTextNoteDocument,
 } from "../../../../_generated_gql_/graphql.ts";
@@ -35,6 +38,7 @@ const PdfFile = () => {
   const username = useSelector(selectLoggedInUser).matricule;
   const [editMode, setEditMode] = useState<number>(-1);
   const [value, setValue] = useState("");
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
 
   const { data: notes } = useQuery(NotesByTextIdAndOwnerIdDocument, {
     variables: {
@@ -48,6 +52,22 @@ const PdfFile = () => {
   });
 
   const [updateNote, { loading, error }] = useMutation(UpdateTextNoteDocument, {
+    refetchQueries: [
+      {
+        query: NotesByTextIdAndOwnerIdDocument,
+        variables: {
+          userName: username,
+          ocrResultId: selectedFileId,
+          pageable: {
+            pageNumber: 0,
+            pageSize: 50,
+          },
+        },
+      },
+    ],
+  });
+
+  const [deleteNote] = useMutation(DeleteTexteReglementaireNoteDocument, {
     refetchQueries: [
       {
         query: NotesByTextIdAndOwnerIdDocument,
@@ -89,7 +109,11 @@ const PdfFile = () => {
         },
       },
     })
-      .then(() => handleShowInfoSnackBar("created"))
+      .then(() => {
+        handleShowInfoSnackBar("created");
+        setEditMode(0);
+        setValue("");
+      })
       .catch((e) => handleShowGraphQlErrorSnackBar(JSON.stringify(e)));
   };
 
@@ -114,13 +138,15 @@ const PdfFile = () => {
     setEditMode(-1);
   }
 
-  function isDisabled(index: number) {
-    console.log(notes?.notesByTextIdAndOwnerId?.content?.at(index)?.text);
-    console.log(value);
-    console.log(
-      notes?.notesByTextIdAndOwnerId?.content?.at(index)?.text === value,
-    );
-    return notes?.notesByTextIdAndOwnerId?.content?.at(index)?.text === value;
+  function handleDeleteNote(id: string | undefined) {
+    deleteNote({
+      variables: {
+        id: id,
+      },
+    })
+      .then(() => handleShowInfoSnackBar("deleted"))
+      .catch((e) => handleShowGraphQlErrorSnackBar(JSON.stringify(e)));
+    setEditMode(-1);
   }
 
   return (
@@ -165,6 +191,8 @@ const PdfFile = () => {
                   <ListItemButton
                     onDoubleClick={() => handleEditModeEnter(index)}
                     key={index}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(-1)}
                   >
                     <ListItemAvatar>
                       <NoteRounded
@@ -177,19 +205,29 @@ const PdfFile = () => {
                         direction={"row"}
                         spacing={1}
                         alignItems={"center"}
+                        width={"100%"}
                       >
                         <TextField
+                          fullWidth={true}
                           value={value}
                           onChange={handleChange}
                         ></TextField>
                         <IconButton
                           sx={{ height: 50, width: 50 }}
                           onClick={() => handleUpdateNote(index)}
-                          disabled={isDisabled(index)}
+                          disabled={
+                            notes?.notesByTextIdAndOwnerId?.content?.at(index)
+                              ?.text === value
+                          }
                         >
                           <SaveOutlined
                             sx={{ height: 35, width: 35 }}
-                            color={isDisabled(index) ? "disabled" : "primary"}
+                            color={
+                              notes?.notesByTextIdAndOwnerId?.content?.at(index)
+                                ?.text === value
+                                ? "disabled"
+                                : "primary"
+                            }
                           ></SaveOutlined>
                         </IconButton>
                         <IconButton
@@ -205,6 +243,17 @@ const PdfFile = () => {
                     ) : (
                       <ListItemText>{item?.text}</ListItemText>
                     )}
+                    {hoveredIndex === index || editMode === index ? (
+                      <IconButton
+                        onClick={() => handleDeleteNote(item?.id)}
+                        sx={{ height: 35, width: 35 }}
+                      >
+                        <Delete
+                          sx={{ height: 35, width: 35 }}
+                          color={"error"}
+                        ></Delete>
+                      </IconButton>
+                    ) : null}
                   </ListItemButton>
                 );
               })}
