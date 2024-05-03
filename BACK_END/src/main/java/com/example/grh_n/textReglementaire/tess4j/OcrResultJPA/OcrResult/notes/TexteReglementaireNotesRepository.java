@@ -9,13 +9,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface TexteReglementaireNotesRepository extends CrudRepository<TexteReglementaireNote, String> , PagingAndSortingRepository<TexteReglementaireNote,String> {
 
-    @Query("select text from TexteReglementaireNote text where text.owner.id = :ownerId order by text.dateCreation")
+    @Query("select text from TexteReglementaireNote text where text.owner.id = :ownerId order by text.dateCreation desc ")
     Page<TexteReglementaireNote> getAllByOwner(String ownerId , Pageable pageable) ;
 
-    @Query("select text from TexteReglementaireNote text where text.textReglemetaire.id = :textId order by text.dateCreation")
+    @Query("select text from TexteReglementaireNote text where text.textReglemetaire.id = :textId order by text.dateCreation desc")
     Page<TexteReglementaireNote> getAllByText(String textId , Pageable pageable) ;
 
-    @Query("select text from TexteReglementaireNote text where text.textReglemetaire.id = :textId and text.owner.id = :ownerId order by text.dateCreation" )
+    @Query("select text from TexteReglementaireNote text where text.textReglemetaire.id = :textId and text.owner.id = :ownerId order by text.dateCreation desc" )
     Page<TexteReglementaireNote> getAllByTextAndOwner(String textId , String ownerId , Pageable pageable) ;
 
 
