@@ -17,7 +17,7 @@ public class TexteReglementaireNote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
     @Column(length = 2000)
     private String text ;
