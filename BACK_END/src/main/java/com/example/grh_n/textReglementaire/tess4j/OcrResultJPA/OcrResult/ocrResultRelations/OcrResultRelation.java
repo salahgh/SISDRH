@@ -18,7 +18,7 @@ public class OcrResultRelation {
     private OcrResultRelationKey id;
 
     @ManyToOne
-    @JoinColumn(name = "typeRelation", insertable = false, updatable = false)
+    @JoinColumn(name = "relationType", insertable = false, updatable = false)
     private OcrResultRelationType relationType;
 
     @ManyToOne
@@ -29,6 +29,4 @@ public class OcrResultRelation {
     @JoinColumn(name = "object", insertable = false, updatable = false)
     private OcrResultEntityJpa object;
 
-    // Other properties and associations
-    // ...
 }

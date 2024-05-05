@@ -1,0 +1,51 @@
+
+
+mutation createOcrResultRelation($relationType : String , $objectId : String , $subjectId : String){
+    createOcrResultRelation(objectId: $objectId , relationTypeId: $relationType , subjectId: $subjectId){
+        id {
+            object
+            relationType
+            subject
+        }
+    }
+}
+
+mutation deleteOcrResultRelation($id : OcrResultRelationKeyInput) {
+    deleteOcrResultRelation(ocrResultRelationKey: $id)
+}
+
+query ocrResultRelationById($id : OcrResultRelationKeyInput){
+    ocrResultRelationById(ocrResultRelationKey: $id){
+        id {
+            object
+            relationType
+            subject
+        }
+    }
+}
+
+query ocrResultRelationByObjectId($objectId : String){
+    ocrResultRelationByObjectId(objectId: $objectId){
+        id {
+            object
+            relationType
+            subject
+        }
+    }
+}
+
+query ocrResultRelationBySubjectId($subjectId : String){
+    ocrResultRelationBySubjectId(subjectId: $subjectId){
+        id {
+            object
+            relationType
+            subject
+        }
+    }
+}
+
+query findOcrResultEntityJpabyReference($ref : String){
+    findOcrResultEntityJpabyReference(ref: $ref){
+        id
+    }
+}

@@ -64,4 +64,6 @@ public interface OCRResultCrudRepository extends CrudRepository<OcrResultEntityJ
 
     List<OcrResultEntityJpa> findAllByConfidentialite(Confidentialite confidentialite);
 
+    List<OcrResultEntityJpa> findByReferenceLike(String ref);
+
 }

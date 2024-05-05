@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class OcrResultRelationKey implements Serializable {
 
 
-    private String typeRelation ;
+    private String relationType ;
     private String subject ;
     private String object ;
 
