@@ -41,11 +41,40 @@ query ocrResultRelationBySubjectId($subjectId : String){
             relationType
             subject
         }
+        relationType {
+            id
+            libTypeRelationAr
+            libTypRelationFr
+        }
+        object {
+            id
+            originalFileName
+            reference
+            dateReference
+            typeTexteReglementaire {
+                id
+                libTypeTexteFr
+                libTypeTexteAr
+            }
+            confidentialite {
+                id
+                libConfidentialiteFr
+                libConfidentialiteAr
+            }
+        }
     }
 }
 
 query findOcrResultEntityJpabyReference($ref : String){
     findOcrResultEntityJpabyReference(ref: $ref){
         id
+    }
+}
+
+query allOcrResultRelatioTypes{
+    allOcrResultRelatioTypes{
+        id
+        libTypeRelationAr
+        libTypRelationFr
     }
 }

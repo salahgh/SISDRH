@@ -133,7 +133,6 @@ query FindAllOcrResultsPaged($pageable : PaginationInput){
         }
     }
 }
-
 query CpuUsage{
     cpuUsage_
 }
@@ -633,11 +632,9 @@ mutation CreateFolder($folder : FolderInput , $username : String){
 mutation DeleteFolder($folder_id : Long){
     deleteFolder(folderId: $folder_id)
 }
-
 mutation DeletePdfFileFromFolder($folderId : Long , $pdfId : String){
     deletePdfFileFromFolder(folderId: $folderId , pdfId: $pdfId)
 }
-
 mutation StartScheduler{
     startScheduler
 }

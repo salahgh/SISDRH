@@ -15,10 +15,13 @@ public class OcrResultRelationsService {
 
     private final OcrResultRelationsRepository ocrResultRelationsRepository ;
     private final OcrResultService ocrResultService ;
+    private final OcrResultRelationTypeRepository ocrResultRelationTypeRepository;
 
-    public OcrResultRelationsService(OcrResultRelationsRepository ocrResultRelationsRepository, OcrResultService ocrResultService) {
+    public OcrResultRelationsService(OcrResultRelationsRepository ocrResultRelationsRepository, OcrResultService ocrResultService,
+                                     OcrResultRelationTypeRepository ocrResultRelationTypeRepository) {
         this.ocrResultRelationsRepository = ocrResultRelationsRepository;
         this.ocrResultService = ocrResultService;
+        this.ocrResultRelationTypeRepository = ocrResultRelationTypeRepository;
     }
 
     @GraphQLMutation
@@ -65,5 +68,11 @@ public class OcrResultRelationsService {
                         () -> new EntityNotFoundException("relation with id " + ocrResultRelationKey + " does not exist")));
         return true ;
     }
+
+    @GraphQLQuery
+    public List<OcrResultRelationType> getAllOcrResultRelatioTypes(){
+        return IteratorUtils.toList(ocrResultRelationTypeRepository.findAll().iterator());
+    }
+
 
 }
