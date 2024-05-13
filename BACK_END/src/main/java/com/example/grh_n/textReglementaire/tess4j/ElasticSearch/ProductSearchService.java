@@ -79,12 +79,8 @@ public class ProductSearchService {
         }
 
 
-        logger.info(elasticSearchInput.toString());
-
         PageRequest hitsPageable = PageRequest.of(elasticSearchInput.getPage() , elasticSearchInput.getSize()) ;
         PageRequest innerHitsPageable = PageRequest.of(elasticSearchInput.getInnerPage() , elasticSearchInput.getInnerSize());
-
-        logger.info(elasticSearchInput.toString());
 
         Query searchQuery = new NativeQueryBuilder()
                 .withQuery(
@@ -93,7 +89,7 @@ public class ProductSearchService {
                                         .must(m -> m
                                                 .wildcard(mq -> mq
                                                         .field("reference")
-                                                        .value("*" + elasticSearchInput.reference + "*")
+                                                        .value(elasticSearchInput.reference)
                                                 )
                                         )
                                         .must(ddd -> ddd
