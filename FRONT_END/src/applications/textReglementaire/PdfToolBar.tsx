@@ -56,7 +56,9 @@ export const PdfToolBar = ({
       justifyContent={"space-between"}
       sx={{
         backgroundColor:
-          ocrResultJpa?.ocrResultByid?.objects?.length !== 0 && "#f6cbcb",
+          ocrResultJpa?.ocrResultByid?.objects?.length !== 0
+            ? "#f6cbcb"
+            : "#d3f6cb",
       }}
     >
       {pdfToolBar}
@@ -90,6 +92,7 @@ export const PdfToolBar = ({
           </Typography>
           {ocrResultJpa?.ocrResultByid?.objects?.length !== 0 && (
             <Chip
+              variant={"outlined"}
               color={"error"}
               label={
                 ocrResultJpa?.ocrResultByid?.objects?.at(0)?.relationType

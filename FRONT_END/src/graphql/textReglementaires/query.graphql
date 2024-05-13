@@ -91,3 +91,67 @@ query GetPdfFile($fileSignatue : String){
         }
     }
 }
+query findAllOcrResultEntityByFoldersContaining ( $folderId : Long ,    $pagination : PaginationInput){
+    findAllOcrResultEntityByFoldersContaining(
+        pageable: $pagination , folderId: $folderId
+    ) {
+        content {
+            id ,
+            numberOfPapers ,
+            originalFileName ,
+            ocrDone,
+            ocrResultUserGrants {
+                id {
+                    type
+                    userId
+                    ocrResultId
+                }
+                user {
+                    id
+                    personnel {
+                        matricule
+                        noma
+                        pnoma
+                        nom
+                        pnom
+                    }
+                }
+            }
+            typeTexteReglementaire {
+                id ,
+                libTypeTexteAr ,
+                libTypeTexteFr
+            }
+            folders {
+                id ,
+                description,
+                name
+            }
+            ocrResultPinned {
+                id
+            }
+            confidentialite {
+                id
+                libConfidentialiteAr
+                libConfidentialiteFr
+            }
+            objects {
+                id {
+                    object
+                    relationType
+                    subject
+                }
+                relationType {
+                    objectLib
+                }
+            }
+            dateReference
+            reference
+        }
+        totalElements
+        pageable {
+            pageSize
+            pageNumber
+        }
+    }
+}

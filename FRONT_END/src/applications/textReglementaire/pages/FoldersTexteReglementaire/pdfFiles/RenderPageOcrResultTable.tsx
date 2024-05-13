@@ -74,7 +74,6 @@ const ToolTipChildWrapper = React.forwardRef(({ children, ...other }, ref) => {
 export function RenderPageOcrResultTable() {
   const [confidentialiteOpen, setConfidentialiteOpen] = useState(false);
   const selectedFolder = useSelector(selectSelectedFolder);
-  const selectedFileId = useSelector(selectSelectedFileId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const hasOcrResultDirectGrant = useHasAuthorities(

@@ -5,60 +5,7 @@ query GetOwnedFolders($username_ : String!) {
         description
     }
 }
-query findAllOcrResultEntityByFoldersContaining ( $folderId : Long ,    $pagination : PaginationInput){
-    findAllOcrResultEntityByFoldersContaining(
-        pageable: $pagination , folderId: $folderId
-    ) {
-        content {
-            id ,
-            numberOfPapers ,
-            originalFileName ,
-            ocrDone,
-            ocrResultUserGrants {
-                id {
-                    type
-                    userId
-                    ocrResultId
-                }
-                user {
-                    id
-                    personnel {
-                        matricule
-                        noma
-                        pnoma
-                        nom
-                        pnom
-                    }
-                }
-            }
-            typeTexteReglementaire {
-                id ,
-                libTypeTexteAr ,
-                libTypeTexteFr
-            }
-            folders {
-                id ,
-                description,
-                name
-            }
-            ocrResultPinned {
-                id
-            }
-            confidentialite {
-                id
-                libConfidentialiteAr
-                libConfidentialiteFr
-            }
-            dateReference
-            reference
-        }
-        totalElements
-        pageable {
-            pageSize
-            pageNumber
-        }
-    }
-}
+
 query GetFovoriteFolder{
     favoriteFolder(userName: "ddf"){
         id ,
