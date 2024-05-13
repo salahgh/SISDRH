@@ -199,6 +199,11 @@ export const TextReglementairesNotes = () => {
                     fullWidth={true}
                     value={value}
                     onChange={handleChange}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleUpdateNote(index);
+                      }
+                    }}
                   ></TextField>
                   <IconButton
                     sx={{ height: 50, width: 50 }}
