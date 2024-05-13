@@ -445,7 +445,7 @@ export function RenderPageOcrResultTable() {
   const [rowSelectionModel, setRowSelectionModel] = useState();
 
   return (
-    <div>
+    <Stack flex={1}>
       <UsersChoiceDialog
         open={usersChoiceDialogOpen}
         setOpen={setUsersChoiceOpen}
@@ -456,7 +456,7 @@ export function RenderPageOcrResultTable() {
       {/*  open={confidentialiteOpen}*/}
       {/*  setOpen={setConfidentialiteOpen}*/}
       {/*/>*/}
-      <Stack sx={{ height: "calc(100vh - 200px)" }} className={"p-1"}>
+      <Stack flex={1} className={"p-1"}>
         <StripedDataGrid
           rowHeight={rowHeight}
           rows={
@@ -528,6 +528,6 @@ export function RenderPageOcrResultTable() {
           rowSelectionModel={rowSelectionModel}
         />
       </Stack>
-    </div>
+    </Stack>
   );
 }
