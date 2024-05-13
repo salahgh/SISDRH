@@ -1,4 +1,4 @@
-import { Avatar, IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, Chip, IconButton, Stack, Typography } from "@mui/material";
 import AddToFolderMenu from "./pages/FoldersTexteReglementaire/pdfFiles/AddToFolderMenu.tsx";
 import { useSelector } from "react-redux";
 import { selectSelectedFileId } from "../../redux/features/elasticSearch/selectedResultLineSlice.ts";
@@ -8,7 +8,7 @@ import {
 } from "../../_generated_gql_/graphql.ts";
 import { FavoriteButton } from "./FavoriteButton.tsx";
 import ASSETS from "../../resources/ASSETS.ts";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../routing/routs.tsx";
 import { Delete } from "@mui/icons-material";
 import { useMutation } from "@apollo/client";
@@ -54,6 +54,10 @@ export const PdfToolBar = ({
       direction={"row"}
       alignItems={"center"}
       justifyContent={"space-between"}
+      sx={{
+        backgroundColor:
+          ocrResultJpa?.ocrResultByid?.objects?.length !== 0 && "#f6cbcb",
+      }}
     >
       {pdfToolBar}
       <div>
@@ -74,42 +78,26 @@ export const PdfToolBar = ({
         )}
       </div>
 
-      {/*<IconButton*/}
-      {/*  size={"large"}*/}
-      {/*  onClick={() => alert("cette fonctionalite n est pas encore implmente")}*/}
-      {/*>*/}
-      {/*  <Download*/}
-      {/*    sx={{*/}
-      {/*      width: 40,*/}
-      {/*      height: 40,*/}
-      {/*      color: "#3270f8",*/}
-      {/*    }}*/}
-      {/*  />*/}
-      {/*</IconButton>*/}
-
-      {/*<IconButton*/}
-      {/*  size={"large"}*/}
-      {/*  onClick={() => alert("cette fonctionalite n est pas encore implmente")}*/}
-      {/*>*/}
-      {/*  <Print*/}
-      {/*    sx={{*/}
-      {/*      width: 40,*/}
-      {/*      height: 40,*/}
-      {/*      color: "#3270f8",*/}
-      {/*    }}*/}
-      {/*  />*/}
-      {/*</IconButton>*/}
-
-      {/*<Stack flex={1}></Stack>*/}
-
       {ocrResultJpa && (
-        <Typography variant={"h4"}>
-          {ocrResultJpa?.ocrResultByid?.typeTexteReglementaire?.libTypeTexteFr +
-            "  " +
-            ocrResultJpa?.ocrResultByid?.reference +
-            " du " +
-            ocrResultJpa?.ocrResultByid?.dateReference}
-        </Typography>
+        <Stack direction={"row-reverse"} spacing={1}>
+          <Typography variant={"h5"}>
+            {ocrResultJpa?.ocrResultByid?.typeTexteReglementaire
+              ?.libTypeTexteFr +
+              "  " +
+              ocrResultJpa?.ocrResultByid?.reference +
+              " du " +
+              ocrResultJpa?.ocrResultByid?.dateReference}
+          </Typography>
+          {ocrResultJpa?.ocrResultByid?.objects?.length !== 0 && (
+            <Chip
+              color={"error"}
+              label={
+                ocrResultJpa?.ocrResultByid?.objects?.at(0)?.relationType
+                  .objectLib
+              }
+            ></Chip>
+          )}
+        </Stack>
       )}
     </Stack>
   );

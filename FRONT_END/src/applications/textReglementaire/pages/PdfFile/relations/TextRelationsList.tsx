@@ -1,10 +1,19 @@
 import { CreateEntityDialog } from "../../../../common/UserAdministration/roles/CreateEntityDialog.tsx";
 import { useState } from "react";
 import { GetTextDialogue } from "./GetTextDialogue.tsx";
-import { Button, List, ListItemButton } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   CreateOcrResultRelationDocument,
+  DeleteOcrResultRelationDocument,
   OcrResultRelationByObjectIdDocument,
   OcrResultRelationBySubjectIdDocument,
 } from "../../../../../_generated_gql_/graphql.ts";
@@ -14,6 +23,8 @@ import useSnackBarNotifications from "../../../../common/notifications/useSnackB
 import { useNavigate, useParams } from "react-router-dom";
 import { getLink, routs } from "../../../../../routing/routs.tsx";
 import Divider from "@mui/material/Divider";
+import { Theme } from "@mui/material/styles";
+import { AddCircle, AddOutlined, Delete } from "@mui/icons-material";
 
 export const TextRelationsList = () => {
   const subjectId = useParams().fildId;
@@ -24,6 +35,7 @@ export const TextRelationsList = () => {
   const [selectedRelationItem, setSelectedRelationItem] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [hoveredIndex, setHoveredIndex] = useState();
 
   const { data: relations } = useQuery(OcrResultRelationBySubjectIdDocument, {
     variables: {
@@ -51,6 +63,29 @@ export const TextRelationsList = () => {
           subjectId: subjectId,
         },
       },
+      {
+        query: OcrResultRelationByObjectIdDocument,
+        variables: {
+          objectId: subjectId,
+        },
+      },
+    ],
+  });
+
+  const [delete_] = useMutation(DeleteOcrResultRelationDocument, {
+    refetchQueries: [
+      {
+        query: OcrResultRelationBySubjectIdDocument,
+        variables: {
+          subjectId: subjectId,
+        },
+      },
+      {
+        query: OcrResultRelationByObjectIdDocument,
+        variables: {
+          objectId: subjectId,
+        },
+      },
     ],
   });
 
@@ -71,6 +106,29 @@ export const TextRelationsList = () => {
 
   console.log(getLink(routs.PdfFilePage));
 
+  function handleDelete(
+    id:
+      | {
+          __typename?: "OcrResultRelationKey";
+          object?: string | null;
+          relationType?: string | null;
+          subject?: string | null;
+        }
+      | undefined,
+  ) {
+    delete_({
+      variables: {
+        id: {
+          object: id?.object,
+          relationType: id?.relationType,
+          subject: id?.subject,
+        },
+      },
+    })
+      .then(() => handleShowInfoSnackBar("deleted"))
+      .catch((e) => handleShowGraphQlErrorSnackBar(JSON.stringify(e)));
+  }
+
   return (
     <div>
       <CreateEntityDialog
@@ -90,10 +148,22 @@ export const TextRelationsList = () => {
         maxWidth={"xl"}
         padding={0}
       ></CreateEntityDialog>
-      <Button onClick={() => setOpen(true)}>ajouter une relation</Button>
+      <div className={"flex p-2 w-full justify-center"}>
+        <Button
+          variant={"contained"}
+          startIcon={<AddCircle></AddCircle>}
+          onClick={() => setOpen(true)}
+        >
+          <Typography fontWeight={"bold"} variant={"h5"}>
+            إضافة علاقة بين نصين قانونيين
+          </Typography>
+        </Button>
+      </div>
       <List>
         {relations?.ocrResultRelationBySubjectId?.map((relation, index) => (
           <ListItemButton
+            onMouseEnter={() => setHoveredIndex(relation?.id)}
+            onMouseLeave={() => setHoveredIndex(null)}
             onClick={() => setSelectedRelationItem(relation?.id)}
             onDoubleClick={() => {
               dispatch(setSelectedFileId(relation?.object?.id));
@@ -102,35 +172,66 @@ export const TextRelationsList = () => {
             selected={relation?.id === selectedRelationItem}
             key={index}
           >
-            {relation?.relationType?.subjectLib +
-              " " +
-              relation?.object?.typeTexteReglementaire?.libTypeTexteAr +
-              " رقم  " +
-              relation?.object?.reference +
-              " المؤرخ في " +
-              relation?.object?.dateReference}
+            <ListItemText>
+              {relation?.relationType?.subjectLib +
+                " " +
+                relation?.object?.typeTexteReglementaire?.libTypeTexteAr +
+                " رقم  " +
+                relation?.object?.reference +
+                " المؤرخ في " +
+                relation?.object?.dateReference}
+            </ListItemText>
+            <Stack flex={1}></Stack>
+            {hoveredIndex === relation?.id && (
+              <IconButton
+                sx={{
+                  width: 30,
+                  height: 30,
+                  bgcolor: "#f8bcbc",
+                }}
+                onClick={() => handleDelete(relation?.id)}
+              >
+                <Delete sx={{ width: 28, height: 28 }} color={"error"}></Delete>
+              </IconButton>
+            )}
           </ListItemButton>
         ))}
       </List>
-      <Divider></Divider>
-      <List>
-        {objectRelations?.ocrResultRelationByObjectId?.map(
-          (relation, index) => (
-            <ListItemButton
-              selected={relation?.id === selectedRelationItem}
-              key={index}
-            >
-              {relation?.relationType?.objectLib +
-                " بـال" +
-                relation?.subject?.typeTexteReglementaire?.libTypeTexteAr +
-                " رقم  " +
-                relation?.subject?.reference +
-                " المؤرخ في " +
-                relation?.subject?.dateReference}
-            </ListItemButton>
-          ),
+      {relations?.ocrResultRelationBySubjectId?.length !== 0 &&
+        objectRelations?.ocrResultRelationByObjectId?.length !== 0 && (
+          <Divider></Divider>
         )}
-      </List>
+      {objectRelations?.ocrResultRelationByObjectId?.length !== 0 && (
+        <List sx={{ backgroundColor: "#f4caca" }}>
+          {objectRelations?.ocrResultRelationByObjectId?.map(
+            (relation, index) => (
+              <ListItemButton
+                onMouseEnter={() => setHoveredIndex(relation?.id)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                onDoubleClick={() => {
+                  dispatch(setSelectedFileId(relation?.subject?.id));
+                  navigate(
+                    `${getLink(routs.PdfFilePage)}/${relation?.subject?.id}`,
+                  );
+                }}
+                selected={relation?.id === selectedRelationItem}
+                key={index}
+              >
+                <ListItemText>
+                  {relation?.relationType?.objectLib +
+                    " بـال" +
+                    relation?.subject?.typeTexteReglementaire?.libTypeTexteAr +
+                    " رقم  " +
+                    relation?.subject?.reference +
+                    " المؤرخ في " +
+                    relation?.subject?.dateReference}
+                </ListItemText>
+                <Stack flex={1}></Stack>
+              </ListItemButton>
+            ),
+          )}
+        </List>
+      )}
     </div>
   );
 };

@@ -57,3 +57,37 @@ query confidentialiteCount{
         count_
     }
 }
+query GetPdfFile($fileSignatue : String){
+    ocrResultByid(fileSignatue: $fileSignatue){
+        originalFileName ,
+        id ,
+        folders {
+            id ,
+            name ,
+            description
+        },
+        ocrDone ,
+        numberOfPapers ,
+        typeTexteReglementaire {
+            libTypeTexteFr ,
+            libTypeTexteAr
+        },
+        confidentialite {
+            libConfidentialiteAr
+            libConfidentialiteFr
+            id
+        }
+        reference,
+        dateReference,
+        executedAt ,
+        terminatedAt ,
+        objects {
+            id {
+                relationType
+            }
+            relationType {
+                objectLib
+            }
+        }
+    }
+}
