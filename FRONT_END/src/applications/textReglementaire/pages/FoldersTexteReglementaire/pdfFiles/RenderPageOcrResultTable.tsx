@@ -199,7 +199,8 @@ export function RenderPageOcrResultTable() {
 
   function handleShowPdf(row) {
     dispatch(setSelectedFileId(row.id));
-    navigate(getLink(routs.PdfFilePage));
+    // navigate(getLink(routs.PdfFilePage));
+    navigate(`${getLink(routs.PdfFilePage)}/${row?.id}`);
   }
 
   // todo add the privilege check for pin add

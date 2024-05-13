@@ -7,16 +7,21 @@ import {
   CreateOcrResultRelationDocument,
   OcrResultRelationBySubjectIdDocument,
 } from "../../../../../_generated_gql_/graphql.ts";
-import { selectSelectedFileId } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
-import { useSelector } from "react-redux";
+import { setSelectedFileId } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
+import { useDispatch } from "react-redux";
 import useSnackBarNotifications from "../../../../common/notifications/useSnackBarNotifications.tsx";
+import { useNavigate, useParams } from "react-router-dom";
+import { getLink, routs } from "../../../../../routing/routs.tsx";
 
 export const TextRelationsList = () => {
-  const subjectId = useSelector(selectSelectedFileId);
+  const subjectId = useParams().fildId;
   const [open, setOpen] = useState(false);
   const title = "choose a file";
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRelationType, setSelectedRelationType] = useState();
+  const [selectedRelationItem, setSelectedRelationItem] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { data: relations } = useQuery(OcrResultRelationBySubjectIdDocument, {
     variables: {
@@ -53,6 +58,8 @@ export const TextRelationsList = () => {
       .catch((e) => handleShowGraphQlErrorSnackBar(JSON.stringify(e)));
   };
 
+  console.log(getLink(routs.PdfFilePage));
+
   return (
     <div>
       <CreateEntityDialog
@@ -75,7 +82,15 @@ export const TextRelationsList = () => {
       <Button onClick={() => setOpen(true)}>ajouter une relation</Button>
       <List>
         {relations?.ocrResultRelationBySubjectId?.map((relation, index) => (
-          <ListItemButton key={index}>
+          <ListItemButton
+            onClick={() => setSelectedRelationItem(relation?.id)}
+            onDoubleClick={() => {
+              dispatch(setSelectedFileId(relation?.object?.id));
+              navigate(`${getLink(routs.PdfFilePage)}/${relation?.object?.id}`);
+            }}
+            selected={relation?.id === selectedRelationItem}
+            key={index}
+          >
             {relation?.relationType?.libTypeRelationAr +
               " " +
               relation?.object?.typeTexteReglementaire?.libTypeTexteAr +
