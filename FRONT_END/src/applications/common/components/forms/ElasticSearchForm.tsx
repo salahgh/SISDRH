@@ -143,7 +143,7 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
                     spacing={1}
                     className={""}
                   >
-                    <div className={""}>
+                    <div className={""} dir={"ltr"}>
                       <Field
                         component={TextField}
                         name={"reference"}
