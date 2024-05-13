@@ -132,9 +132,11 @@ export const TextReglementairesNotes = () => {
         text: value,
       },
     })
-      .then(() => handleShowInfoSnackBar("updated"))
+      .then(() => {
+        handleShowInfoSnackBar("updated");
+        setEditMode(-1);
+      })
       .catch((e) => handleShowGraphQlErrorSnackBar(JSON.stringify(e)));
-    setEditMode(-1);
   }
 
   function handleDeleteNote(id: string | undefined) {
@@ -145,7 +147,6 @@ export const TextReglementairesNotes = () => {
     })
       .then(() => handleShowInfoSnackBar("deleted"))
       .catch((e) => handleShowGraphQlErrorSnackBar(JSON.stringify(e)));
-    setEditMode(-1);
   }
 
   return (
