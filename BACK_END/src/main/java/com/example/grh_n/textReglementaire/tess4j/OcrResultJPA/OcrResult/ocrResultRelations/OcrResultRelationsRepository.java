@@ -11,7 +11,7 @@ public interface OcrResultRelationsRepository extends CrudRepository<OcrResultRe
     @Query("select relation from OcrResultRelation relation where relation.subject.id = :subjectId")
     List<OcrResultRelation> findBySubjectId(String subjectId);
 
-    @Query("select relation from OcrResultRelation relation where relation.subject.id = :objectId")
+    @Query("select relation from OcrResultRelation relation where relation.object.id = :objectId")
     List<OcrResultRelation> findByObjectId(String objectId);
 
 }

@@ -31,6 +31,29 @@ query ocrResultRelationByObjectId($objectId : String){
             relationType
             subject
         }
+        relationType {
+            id
+            libTypeRelationAr
+            libTypRelationFr
+            subjectLib
+            objectLib
+        }
+        subject {
+            id
+            originalFileName
+            reference
+            dateReference
+            typeTexteReglementaire {
+                id
+                libTypeTexteFr
+                libTypeTexteAr
+            }
+            confidentialite {
+                id
+                libConfidentialiteFr
+                libConfidentialiteAr
+            }
+        }
     }
 }
 
@@ -45,6 +68,8 @@ query ocrResultRelationBySubjectId($subjectId : String){
             id
             libTypeRelationAr
             libTypRelationFr
+            subjectLib
+            objectLib
         }
         object {
             id

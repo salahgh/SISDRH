@@ -5,6 +5,7 @@ import { Button, List, ListItemButton } from "@mui/material";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   CreateOcrResultRelationDocument,
+  OcrResultRelationByObjectIdDocument,
   OcrResultRelationBySubjectIdDocument,
 } from "../../../../../_generated_gql_/graphql.ts";
 import { setSelectedFileId } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
@@ -12,6 +13,7 @@ import { useDispatch } from "react-redux";
 import useSnackBarNotifications from "../../../../common/notifications/useSnackBarNotifications.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { getLink, routs } from "../../../../../routing/routs.tsx";
+import Divider from "@mui/material/Divider";
 
 export const TextRelationsList = () => {
   const subjectId = useParams().fildId;
@@ -28,6 +30,15 @@ export const TextRelationsList = () => {
       subjectId: subjectId,
     },
   });
+
+  const { data: objectRelations } = useQuery(
+    OcrResultRelationByObjectIdDocument,
+    {
+      variables: {
+        objectId: subjectId,
+      },
+    },
+  );
 
   const { handleShowInfoSnackBar, handleShowGraphQlErrorSnackBar } =
     useSnackBarNotifications();
@@ -91,7 +102,7 @@ export const TextRelationsList = () => {
             selected={relation?.id === selectedRelationItem}
             key={index}
           >
-            {relation?.relationType?.libTypeRelationAr +
+            {relation?.relationType?.subjectLib +
               " " +
               relation?.object?.typeTexteReglementaire?.libTypeTexteAr +
               " رقم  " +
@@ -100,6 +111,25 @@ export const TextRelationsList = () => {
               relation?.object?.dateReference}
           </ListItemButton>
         ))}
+      </List>
+      <Divider></Divider>
+      <List>
+        {objectRelations?.ocrResultRelationByObjectId?.map(
+          (relation, index) => (
+            <ListItemButton
+              selected={relation?.id === selectedRelationItem}
+              key={index}
+            >
+              {relation?.relationType?.objectLib +
+                " بـال" +
+                relation?.subject?.typeTexteReglementaire?.libTypeTexteAr +
+                " رقم  " +
+                relation?.subject?.reference +
+                " المؤرخ في " +
+                relation?.subject?.dateReference}
+            </ListItemButton>
+          ),
+        )}
       </List>
     </div>
   );

@@ -21,4 +21,7 @@ public class OcrResultRelationType {
 
     private String libTypRelationFr ;
 
+    private String subjectLib ;
+    private String objectLib ;
+
 }
