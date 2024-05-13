@@ -25,11 +25,7 @@ import {
   Typography,
 } from "@mui/material";
 import { CustomNoResultOverlay } from "../pam/mainDataGrid/CustomNoResultOverlay";
-import {
-  GridCellEditStopParams,
-  GridColDef,
-  MuiEvent,
-} from "@mui/x-data-grid";
+import { GridCellEditStopParams, GridColDef, MuiEvent } from "@mui/x-data-grid";
 import { PamDataGridAvatarPhoto } from "../pam/mainDataGrid/PamDataGridAvatarPhoto";
 import { directeur } from "../../redux/RtkQueryApis/constants";
 import GradeAvatar from "../rh/GradeAvatar";
@@ -209,7 +205,7 @@ export const PavHome = () => {
               armeId={row?.personnel?.pamOff2024?.arme}
               promotionNumber={row?.personnel?.pamOff2024?.promotionNumber}
             />
-            <div className={'w-60 flex flex-row justify-center'}>
+            <div className={"w-60 flex flex-row justify-center"}>
               <PostChip poste={row?.personnel?.pamOff2024?.poste}></PostChip>
             </div>
             <FormationChip
@@ -435,10 +431,16 @@ export const PavHome = () => {
         sort={sort}
         setSort={setSort}
       />
-     <div className={'flex flex-row justify-end pb-1'}> <ExportToPdfPav page={page} values={values} sort={sort}></ExportToPdfPav></div>
+      <div className={"flex flex-row justify-end pb-1"}>
+        {" "}
+        <ExportToPdfPav
+          page={page}
+          values={values}
+          sort={sort}
+        ></ExportToPdfPav>
+      </div>
       <StripedDataGrid
         rows={
-          // @ts-ignore
           pav2024?.findAllPav?.content &&
           pav2024?.findAllPav?.content?.length > 0
             ? pav2024?.findAllPav?.content

@@ -30,7 +30,6 @@ const AvatarPhoto = React.forwardRef((props: AvatarPhotoProps, ref) => {
     config: { duration: 150 },
   });
 
-  // @ts-ignore
   const { data, error, loading } = useQuery(
     GetPhotoByMatriculeAndSizeDocument,
     {
@@ -71,7 +70,7 @@ const AvatarPhoto = React.forwardRef((props: AvatarPhotoProps, ref) => {
           ></Error>
         </Stack>
       )}
-      {data && !loading && (
+      {data && !loading && !error && (
         <animated.div style={springs}>
           <Avatar
             ref={ref}

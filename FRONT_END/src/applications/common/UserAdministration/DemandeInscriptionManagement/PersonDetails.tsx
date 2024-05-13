@@ -9,7 +9,6 @@ import {
 import {useTheme} from "@mui/material/styles";
 import {useQuery} from "@apollo/client";
 import {GetPhotoByMatriculeAndSizeDocument} from "../../../../_generated_gql_/graphql";
-import {NetWorkErrorComponent} from "../../../../components/errors/NetWorkErrorComponent";
 import {TOOLS} from "../../../../redux/RtkQueryApis/constants";
 
 const PersonDetails = ({
@@ -41,7 +40,8 @@ const PersonDetails = ({
             })
         }}>
             {
-                person && error && <NetWorkErrorComponent error={error} size={140}/>
+                // person && error && <NetWorkErrorComponent error={error} size={140}/>
+                person && error && <div>{JSON.stringify(error)}</div>
             }
             {
                 !person && <div>select a person</div>

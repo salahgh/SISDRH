@@ -17,6 +17,7 @@ import PdfFile from "../applications/textReglementaire/pages/PdfFile/PdfFile.tsx
 import UploadMainPage from "../applications/textReglementaire/pages/upload/uploadMainPage/UploadMainPage.tsx";
 import SearchUI from "../applications/textReglementaire/pages/ocr/searchPage/searchUI.tsx";
 import OcrJobMain from "../applications/textReglementaire/pages/OcrJobMonitoring/OcrJobMain.tsx";
+import SettingTabs from "../applications/common/UserAdministration/user/SettingsTabs.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -72,10 +73,10 @@ export const router = createBrowserRouter([
       //       path: routs.OcrUserMain.name,
       //       element: <OcrUserMain />,
       //     },
-      //     {
-      //       path: routs.SettingTabs.name,
-      //       element: <SettingTabs />,
-      //     },
+      {
+        path: routs.SettingTabs.name,
+        element: <SettingTabs />,
+      },
       //     // {
       //     //    path: routs.RDiplomeSpecialite.name,
       //     //    element: <RDiplomeSpecialite/>

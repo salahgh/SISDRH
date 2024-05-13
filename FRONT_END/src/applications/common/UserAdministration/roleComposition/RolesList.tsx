@@ -2,8 +2,6 @@ import {List, Stack} from "@mui/material";
 import {Dispatch, SetStateAction} from "react";
 import {useQuery} from "@apollo/client";
 import {FindAllRolesDocument} from "../../../../_generated_gql_/graphql";
-import {NetWorkErrorComponent} from "../../../../components/errors/NetWorkErrorComponent";
-import EmptyListComponent from "../../../../components/EmptyListComponent";
 import {RoleListItem} from "./RoleListItem";
 
 export function RolesList(
@@ -23,12 +21,12 @@ export function RolesList(
 
    return (
       <Stack direction={"column"} padding={1}>
-         {
-            error && <NetWorkErrorComponent/>
-         }
-         {
-             allRoles?.findAllRoles?.length == 0 && <EmptyListComponent/>
-         }
+         {/*{*/}
+         {/*   error && <NetWorkErrorComponent/>*/}
+         {/*}*/}
+         {/*{*/}
+         {/*    allRoles?.findAllRoles?.length == 0 && <EmptyListComponent/>*/}
+         {/*}*/}
          <List>
             {
                 allRoles?.findAllRoles?.map((role) => <RoleListItem
