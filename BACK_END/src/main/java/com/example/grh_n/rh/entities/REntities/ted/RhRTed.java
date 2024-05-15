@@ -40,6 +40,8 @@ public class RhRTed {
     @ManyToOne
     private RhRArmementTed armementTed ;
 
+    @ManyToOne RhTedFonction fonction ;
+
     // todo voir le cas du off superieur !!!
     @ManyToOne
     @JoinColumn(name = "ID_CAT_GRADE")

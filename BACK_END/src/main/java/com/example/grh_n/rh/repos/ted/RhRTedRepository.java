@@ -7,5 +7,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface RhRTedRepository extends CrudRepository<RhRTed, Long> , PagingAndSortingRepository<RhRTed, Long> {
 
 
-
 }

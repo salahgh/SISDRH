@@ -10,9 +10,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString
 @Table(name = "RH_R_ARME")
 public class RhRArme {
@@ -31,16 +31,13 @@ public class RhRArme {
     @JoinColumn(name = "id_commandement")
     private RhRCommandement commandement ;
 
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "arme")
     @ToString.Exclude
     private List<RhRTed> rTeds ;
 
-    public void setrTeds(List<RhRTed> rTeds) {
-        this.rTeds = rTeds;
-    }
-
-    public List<RhRTed> getrTeds() {
-        return rTeds;
-    }
+    @Column(nullable = true , name = "isTed")
+    private String isTed ;
 
 }

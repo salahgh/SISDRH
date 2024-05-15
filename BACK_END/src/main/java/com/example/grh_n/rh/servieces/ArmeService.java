@@ -41,6 +41,11 @@ public class ArmeService {
     }
 
     @GraphQLQuery
+    public List<RhRArme> getTedArmes() {
+        return armeRepository.allArmesTed() ;
+    }
+
+    @GraphQLQuery
     public List<RhRCommandement> getAllCommandements() {
         return (List<RhRCommandement>) commandementRepository.findAll();
     }

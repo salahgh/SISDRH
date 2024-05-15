@@ -28,6 +28,7 @@ public class TedDto {
     private Long idCatGrade ;
 
     private String idTypeStructureSn ;
+    private String idFonction ;
 
 }
 

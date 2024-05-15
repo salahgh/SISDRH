@@ -3,9 +3,12 @@ package com.example.grh_n.rh.servieces.ted;
 
 import com.example.grh_n.rh.entities.REntities.ted.RhRArmementTed;
 import com.example.grh_n.rh.repos.ted.RhRArmementTedRepository;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @GraphQLApi
@@ -19,6 +22,11 @@ public class AremementTedService {
 
     RhRArmementTed findById(String id) {
         return armementTedRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("arement ted with id " + id + " does not exist")) ;
+    }
+
+    @GraphQLQuery
+    public List<RhRArmementTed> allAremementTed(){
+        return (List<RhRArmementTed>) armementTedRepository.findAll();
     }
 
 }

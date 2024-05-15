@@ -219,6 +219,29 @@ const ApplicationChoice = () => {
             </Animated>
           </div>
         )}
+        {hasApplicationApplicationSimulation && !fakeLoading && (
+          <div className={"shadow-lg rounded-2xl"}>
+            <Animated
+              index={-2}
+              config={{
+                tension: 120,
+                friction: 14,
+                clamp: true,
+              }}
+              delay={150}
+            >
+              <MediaCard
+                width={width}
+                image={ASSETS.PROCESS}
+                title={"الموارد البشرية"}
+                action={() => {
+                  dispatch(setselectedApplication(APPLICATIONS.RH));
+                  navigate(getLink(routs.RhHome));
+                }}
+              />
+            </Animated>
+          </div>
+        )}
         {!hasAnyApplication().hasAthoritie &&
           !(hasAnyApplication().loading || fakeLoading) && (
             <Stack spacing={4} alignItems={"center"}>

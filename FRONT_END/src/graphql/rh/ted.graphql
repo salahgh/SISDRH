@@ -1,0 +1,186 @@
+query tedById($tedId : Long){
+    tedById(tedId: $tedId){
+        id
+        arme {
+            id
+            libArmeFr
+            libArmeAr
+        }
+        armementTed {
+            id
+            libArmementAr
+            libArmementFr
+        }
+        catGrade {
+            cat
+            catGrade
+            libCatAr
+            libCatFr
+            libCatGradeAr
+            libCatGradeFr
+        }
+        habilitation {
+            id
+            abbreviation
+            libHabilitationAr
+            libHabilitationFr
+        }
+        nombre
+        observation
+        qualification {
+            id
+            libQualificatinFr
+            libQualificationAr
+            tri
+        }
+        specialiteTed {
+            id
+            libSpecialiteAr
+            libSpecialiteFr
+        }
+        typeStructureSn {
+            id
+            libAr
+            libFr
+            abrAr
+            abrFr
+        }
+        fonction {
+            id
+            chef
+            adjoint
+            libFonctionAr
+            libFonctionFr
+            structureInterne {
+                id
+                libStructureAr
+                libStructureFr
+                pere {
+                    id
+                    libStructureAr
+                    libStructureFr
+                }
+            }
+        }
+    }
+}
+query allTedsPaged($page : PaginationInput){
+    allTedsPaged(pageable: $page){
+        content {
+            id
+            arme {
+                id
+                libArmeFr
+                libArmeAr
+            }
+            armementTed {
+                id
+                libArmementAr
+                libArmementFr
+            }
+            catGrade {
+                cat
+                catGrade
+                libCatAr
+                libCatFr
+                libCatGradeAr
+                libCatGradeFr
+            }
+            habilitation {
+                id
+                abbreviation
+                libHabilitationAr
+                libHabilitationFr
+            }
+            nombre
+            observation
+            qualification {
+                id
+                libQualificatinFr
+                libQualificationAr
+                tri
+            }
+            specialiteTed {
+                id
+                libSpecialiteAr
+                libSpecialiteFr
+            }
+            typeStructureSn {
+                id
+                libAr
+                libFr
+                abrAr
+                abrFr
+            }
+            fonction {
+                id
+                chef
+                adjoint
+                libFonctionAr
+                libFonctionFr
+                structureInterne {
+                    id
+                    libStructureAr
+                    libStructureFr
+                    pere {
+                        id
+                        libStructureAr
+                        libStructureFr
+                    }
+                }
+            }
+        }
+        numberOfElements
+    }
+}
+mutation deleteTed($id : Long){
+    deleteTed(id: $id)
+}
+mutation createTed($tedDtoInput : TedDtoInput){
+    createTed(tedDto: $tedDtoInput){
+        id
+    }
+}
+
+query allCatGrades{
+    allCatGrades {
+        cat
+        catGrade
+        libCatAr
+        libCatFr
+        libCatGradeAr
+        libCatGradeFr
+    }
+}
+
+query allAremementTed{
+    allAremementTed{
+        id
+        libArmementAr
+        libArmementFr
+    }
+}
+
+query tedArmes{
+    tedArmes {
+        id
+        libArmeAr
+        libArmeFr
+    }
+}
+
+query allSpecialitesTed{
+    allSpecialitesTed {
+        id
+        libSpecialiteAr
+        libSpecialiteFr
+    }
+}
+
+query allQualifications{
+    allQualifications {
+        id
+        libQualificatinFr
+        libQualificationAr
+    }
+}

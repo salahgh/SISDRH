@@ -1,6 +1,7 @@
 package com.example.grh_n.rh.servieces.ted;
 
 
+import com.example.grh_n.rh.entities.REntities.ted.RhRArmementTed;
 import com.example.grh_n.rh.entities.REntities.ted.RhRTed;
 import com.example.grh_n.rh.entities.REntities.ted.TedDto;
 import com.example.grh_n.rh.repos.ted.RhRTedRepository;
@@ -12,7 +13,11 @@ import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @GraphQLApi
@@ -26,6 +31,7 @@ public class TedService {
     private final HabilitationService habilitationService;
     private final TypeStructureSnService typeStructureSnService;
     private final QualificationService qualificationService;
+    private final FonctionService fonctionService ;
 
     public TedService(
             RhRTedRepository tedRepository,
@@ -35,7 +41,7 @@ public class TedService {
             ArmeService armeService,
             HabilitationService habilitationService,
             TypeStructureSnService typeStructureSnService,
-            QualificationService qualificationService
+            QualificationService qualificationService, FonctionService fonctionService
     ) {
         this.tedRepository = tedRepository;
         this.gradeService = gradeService;
@@ -45,6 +51,7 @@ public class TedService {
         this.habilitationService = habilitationService;
         this.typeStructureSnService = typeStructureSnService;
         this.qualificationService = qualificationService;
+        this.fonctionService = fonctionService;
     }
 
     @GraphQLMutation
@@ -58,6 +65,7 @@ public class TedService {
                 .habilitation(habilitationService.findById(tedDto.getIdArmementTed()))
                 .typeStructureSn(typeStructureSnService.findById(tedDto.getIdTypeStructureSn()))
                 .qualification(qualificationService.findById(tedDto.getIdQualification()))
+                .fonction(fonctionService.fonctionById(tedDto.getIdFonction()))
                 .build();
         return tedRepository.save(ted);
     }
@@ -68,8 +76,15 @@ public class TedService {
     }
 
     @GraphQLMutation
-    void deleteTed(Long id) {
+    public void deleteTed(Long id) {
         tedRepository.deleteById(id);
     }
+
+    @GraphQLQuery
+    public Page<RhRTed> allTedsPaged(Pageable pageable){
+        return tedRepository.findAll(pageable);
+    }
+
+
 
 }
