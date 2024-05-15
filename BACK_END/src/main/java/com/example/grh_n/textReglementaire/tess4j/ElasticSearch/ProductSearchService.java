@@ -8,6 +8,7 @@ import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.Oc
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.Confidentialite;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.OcrResultService;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.TypeTexteReglementaire;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -49,8 +50,8 @@ public class ProductSearchService {
     // todo see the possiblity for eliminating the content from the backend
 
 
-    @GetMapping
-    public OcrResultEntityElastic_2 findByid(@RequestParam String fileId){
+    @GraphQLQuery(name = "ocrResultElasticById")
+    public OcrResultEntityElastic_2 findByid(String fileId){
        return ocrIndexElasticRepository_.findById(fileId).orElseThrow(
                () -> new EntityNotFoundException("pdf file with id =  " +  fileId +" does not exist")
        ) ;

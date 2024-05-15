@@ -18,6 +18,7 @@ import { NetWorkErrorComponent } from "../../errors/NetWorkErrorComponent.tsx";
 import { selectSelectedPdfViewer } from "../../../../../redux/features/folderAndFiles/foldersSlice.ts";
 import PdfViewerToggleButton from "../../../../textReglementaire/pages/PdfFile/PdfViewerToggleButton.tsx";
 import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/searchPage/PanAndZoomViewer.tsx";
+import { OcrTextViewer } from "../../../../textReglementaire/pages/ocrTextViewer/OcrTextViewer.tsx";
 
 const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
   const selectedFileId = useSelector(selectSelectedFileId);
@@ -68,7 +69,7 @@ const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
         <PdfToolBar
           pdfToolBar={
             <PdfViewerToggleButton
-              viewers={isOcrSearch ? ["IMAGE", "PDF"] : ["PDF"]}
+              viewers={isOcrSearch ? ["IMAGE", "PDF", "TEXT"] : ["PDF", "TEXT"]}
             ></PdfViewerToggleButton>
           }
           showGoToPdf={showGoToPdf}
@@ -86,6 +87,7 @@ const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
       )}
       {selectedViewer === "PDF" && pdfFileLoading && <LinearProgress />}
       {selectedViewer == "IMAGE" && <PanAndZoomViewer></PanAndZoomViewer>}
+      {selectedViewer == "TEXT" && <OcrTextViewer></OcrTextViewer>}
       <Stack
         direction={"row"}
         width={"100%"}

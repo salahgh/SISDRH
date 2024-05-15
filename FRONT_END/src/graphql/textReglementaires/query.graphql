@@ -57,3 +57,49 @@ query confidentialiteCount{
         count_
     }
 }
+query ocrResultElasticById($fileId : String){
+    ocrResultElasticById(fileId: $fileId){
+        reference
+        dateReference
+        id
+        libConfidentialiteAr
+        libTypeTexteAr
+        libUrgenceAr
+        numberOfPapers
+        originalFileName
+        pages {
+            bbox {
+                x1
+                x2
+                y1
+                y2
+            }
+            id_page
+            type
+            paragraphs {
+                bbox {
+                    x1
+                    x2
+                    y1
+                    y2
+                }
+                id_par
+                lang
+                type
+                lines {
+                    bbox {
+                        x1
+                        x2
+                        y1
+                        y2
+                    }
+                    fsize
+                    id_line
+                    text
+                    type
+                }
+
+            }
+        }
+    }
+}
