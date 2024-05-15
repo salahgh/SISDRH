@@ -13,12 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ToString
-@Table(name = "RH_R_SPECIALITE_TED")
+@Table(name = "RH_TED_R_SPECIALITE")
 public class RhRSpecialiteTed {
 
     @Id
     @Column(name = "id", nullable = false)
-    private BigInteger id;
+    private String id;
 
     @Column(name = "LIB_SPECIALITE_FR", nullable = true, length = 60)
     private String libSpecialiteFr;

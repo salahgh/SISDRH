@@ -59,6 +59,7 @@ public class ProductSearchService {
     @PostMapping
     public SearchHits<OcrResultEntityElastic_2> findElasticOcrResultsAllCriterias(
             @RequestBody ElasticSearchInput elasticSearchInput
+
     ) {
 
         if (elasticSearchInput.getSize() > PAGE_SIZE_LIMIt || elasticSearchInput.getInnerSize() > PAGE_SIZE_LIMIt) {
