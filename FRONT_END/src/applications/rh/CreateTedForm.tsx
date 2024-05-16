@@ -8,14 +8,18 @@ import { LoadingButton } from "@mui/lab";
 import {
   AllAremementTedDocument,
   AllCatGradesDocument,
+  AllPostesDocument,
   AllQualificationsDocument,
   AllSpecialitesTedDocument,
+  AllTedsPagedDocument,
+  CreateTedDocument,
   TedArmesDocument,
   TedDtoInput,
 } from "../../_generated_gql_/graphql.ts";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
+import useSnackBarNotifications from "../common/notifications/useSnackBarNotifications.tsx";
 
-export const CreateTedForm = () => {
+export const CreateTedForm = ({ page }) => {
   const initialValues: TedDtoInput = {
     id: null,
     idArme: null,
@@ -26,6 +30,7 @@ export const CreateTedForm = () => {
     idQualification: null,
     idSpecialiteTed: null,
     idTypeStructureSn: null,
+    idPoste: null,
     nombre: 0,
     observation: "",
   };
@@ -35,13 +40,33 @@ export const CreateTedForm = () => {
   const { data: armes } = useQuery(TedArmesDocument);
   const { data: allSpecialite } = useQuery(AllSpecialitesTedDocument);
   const { data: allQualifictios } = useQuery(AllQualificationsDocument);
+  const { data: allPostes } = useQuery(AllPostesDocument);
+  const [create] = useMutation(CreateTedDocument, {
+    refetchQueries: [
+      {
+        query: AllTedsPagedDocument,
+        variables: {
+          page: page,
+        },
+      },
+    ],
+  });
+
+  const { handleShowInfoSnackBar, handleShowErrorSnackBar } =
+    useSnackBarNotifications();
 
   const handleSubmit = async (
     values: FormikValues,
     helpers: FormikHelpers<any>,
   ) => {
     helpers.setSubmitting(true);
-    alert(JSON.stringify(values));
+    create({
+      variables: {
+        tedDtoInput: values,
+      },
+    })
+      .then(() => handleShowInfoSnackBar("success"))
+      .catch((e) => JSON.stringify(e));
     helpers.setSubmitting(false);
   };
 
@@ -168,6 +193,25 @@ export const CreateTedForm = () => {
                       <Tooltip title={option?.libQualificationAr}>
                         <ToggleButton key={option?.id} value={option?.id}>
                           <Typography>{option?.libQualificatinFr}</Typography>
+                        </ToggleButton>
+                      </Tooltip>
+                    ))}
+                  </Field>
+                </Stack>
+                <Stack direction={"row"} spacing={1} justifyContent={"center"}>
+                  <Field
+                    component={ToggleButtonGroup}
+                    name="idPoste"
+                    type="checkbox"
+                    exclusive={true}
+                  >
+                    {allPostes?.allPostes?.map((option) => (
+                      <Tooltip title={option?.idPoste}>
+                        <ToggleButton
+                          key={option?.idPoste}
+                          value={option?.idPoste}
+                        >
+                          <Typography>{option?.idPoste}</Typography>
                         </ToggleButton>
                       </Tooltip>
                     ))}

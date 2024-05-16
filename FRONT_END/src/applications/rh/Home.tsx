@@ -39,7 +39,7 @@ export const Home = () => {
           open={open}
           setOpen={setOpen}
           title={"ajouter TED"}
-          content={<CreateTedForm />}
+          content={<CreateTedForm page={page} />}
           fullWidth={false}
           maxWidth={"xl"}
         ></CreateEntityDialog>

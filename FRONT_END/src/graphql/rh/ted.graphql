@@ -141,7 +141,6 @@ mutation createTed($tedDtoInput : TedDtoInput){
         id
     }
 }
-
 query allCatGrades{
     allCatGrades {
         cat
@@ -152,7 +151,6 @@ query allCatGrades{
         libCatGradeFr
     }
 }
-
 query allAremementTed{
     allAremementTed{
         id
@@ -160,7 +158,6 @@ query allAremementTed{
         libArmementFr
     }
 }
-
 query tedArmes{
     tedArmes {
         id
@@ -168,7 +165,6 @@ query tedArmes{
         libArmeFr
     }
 }
-
 query allSpecialitesTed{
     allSpecialitesTed {
         id
@@ -176,11 +172,16 @@ query allSpecialitesTed{
         libSpecialiteFr
     }
 }
-
 query allQualifications{
     allQualifications {
         id
         libQualificatinFr
         libQualificationAr
+    }
+}
+query allPostes{
+    allPostes {
+        idPoste
+        trie_
     }
 }

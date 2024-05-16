@@ -41,6 +41,7 @@ public class RhRTed {
     private RhRArmementTed armementTed ;
 
     @ManyToOne RhTedFonction fonction ;
+    @ManyToOne RhPoste poste ;
 
     // todo voir le cas du off superieur !!!
     @ManyToOne

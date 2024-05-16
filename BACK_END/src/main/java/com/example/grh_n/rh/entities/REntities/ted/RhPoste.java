@@ -1,4 +1,4 @@
-package com.example.grh_n.pam.entities;
+package com.example.grh_n.rh.entities.REntities.ted;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,4 +16,5 @@ public class RhPoste {
     @Id
     String idPoste ;
     Integer trie_ ;
+
 }

@@ -7,28 +7,29 @@ import lombok.Data;
 @Builder
 public class TedDto {
 
-    private Long Id ;
+    private Long Id;
 
     private Integer nombre;
 
-    private String observation ;
+    private String observation;
 
     private String idHabilitation;
 
-    private Long idQualification ;
+    private Long idQualification;
 
-    private Long idArme ;
+    private Long idArme;
 
+    private String idSpecialiteTed;
 
-    private String idSpecialiteTed ;
+    private String idArmementTed;
 
-    private String idArmementTed ;
+    private String idPoste ;
 
     // todo voir le cas du off superieur !!!
-    private Long idCatGrade ;
+    private Long idCatGrade;
 
-    private String idTypeStructureSn ;
-    private String idFonction ;
+    private String idTypeStructureSn;
+    private String idFonction;
 
 }
 

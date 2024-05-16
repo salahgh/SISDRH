@@ -32,6 +32,7 @@ public class TedService {
     private final TypeStructureSnService typeStructureSnService;
     private final QualificationService qualificationService;
     private final FonctionService fonctionService ;
+    private final PosteService posteService;
 
     public TedService(
             RhRTedRepository tedRepository,
@@ -41,7 +42,7 @@ public class TedService {
             ArmeService armeService,
             HabilitationService habilitationService,
             TypeStructureSnService typeStructureSnService,
-            QualificationService qualificationService, FonctionService fonctionService
+            QualificationService qualificationService, FonctionService fonctionService, PosteService posteService
     ) {
         this.tedRepository = tedRepository;
         this.gradeService = gradeService;
@@ -52,6 +53,7 @@ public class TedService {
         this.typeStructureSnService = typeStructureSnService;
         this.qualificationService = qualificationService;
         this.fonctionService = fonctionService;
+        this.posteService = posteService;
     }
 
     @GraphQLMutation
@@ -66,6 +68,7 @@ public class TedService {
                 .typeStructureSn(typeStructureSnService.findById(tedDto.getIdTypeStructureSn()))
                 .qualification(qualificationService.findById(tedDto.getIdQualification()))
                 .fonction(fonctionService.fonctionById(tedDto.getIdFonction()))
+                .poste(posteService.findById(tedDto.getIdPoste()))
                 .build();
         return tedRepository.save(ted);
     }
@@ -84,7 +87,5 @@ public class TedService {
     public Page<RhRTed> allTedsPaged(Pageable pageable){
         return tedRepository.findAll(pageable);
     }
-
-
 
 }

@@ -3,7 +3,6 @@ package com.example.grh_n.rh.entities.REntities.ted;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @Entity
@@ -32,12 +31,5 @@ public class RhRArmementTed {
     @ToString.Exclude
     private List<RhRTed> rTeds ;
 
-    public void setrTeds(List<RhRTed> rTeds) {
-        this.rTeds = rTeds;
-    }
-
-    public List<RhRTed> getrTeds() {
-        return rTeds;
-    }
 
 }
