@@ -185,3 +185,43 @@ query allPostes{
         trie_
     }
 }
+
+query findRhTedStructureInterneById($id : String){
+    findRhTedStructureInterneById(id: $id){
+        id
+        libStructureAr
+        libStructureFr
+        fils {
+            id
+            libStructureAr
+            libStructureFr
+            fils {
+                id
+                libStructureAr
+                libStructureFr
+                fils {
+                    id
+                    libStructureAr
+                    libStructureFr
+                    fils {
+                        id
+                        libStructureAr
+                        libStructureFr
+                    }
+                }
+            }
+        }
+    }
+}
+mutation createRhStructureInterne($structureInterne : RhTedStructureInterneInput){
+    createRhTedStructureInterne(structureInterne: $structureInterne){
+        id
+        libStructureAr
+        libStructureFr
+        pere {
+            id
+            libStructureAr
+            libStructureFr
+        }
+    }
+}

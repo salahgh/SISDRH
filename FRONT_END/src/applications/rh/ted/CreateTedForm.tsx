@@ -15,9 +15,9 @@ import {
   CreateTedDocument,
   TedArmesDocument,
   TedDtoInput,
-} from "../../_generated_gql_/graphql.ts";
+} from "../../../_generated_gql_/graphql.ts";
 import { useMutation, useQuery } from "@apollo/client";
-import useSnackBarNotifications from "../common/notifications/useSnackBarNotifications.tsx";
+import useSnackBarNotifications from "../../common/notifications/useSnackBarNotifications.tsx";
 
 export const CreateTedForm = ({ page }) => {
   const initialValues: TedDtoInput = {
