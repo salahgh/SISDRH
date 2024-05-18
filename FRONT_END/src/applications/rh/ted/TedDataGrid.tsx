@@ -1,11 +1,11 @@
-import { CreateEntityDialog } from "../common/UserAdministration/roles/CreateEntityDialog.tsx";
-import { CreateTedForm } from "./ted/CreateTedForm.tsx";
+import { CreateEntityDialog } from "../../common/UserAdministration/roles/CreateEntityDialog.tsx";
+import { CreateTedForm } from "./CreateTedForm.tsx";
 import { Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import {
   AllTedsPagedDocument,
   PaginationInput,
-} from "../../_generated_gql_/graphql.ts";
+} from "../../../_generated_gql_/graphql.ts";
 import { useQuery } from "@apollo/client";
 
 export const TedDataGrid = () => {

@@ -1,7 +1,7 @@
 package com.example.grh_n.rh.servieces.ted;
 
 
-import com.example.grh_n.rh.entities.REntities.ted.RhRArmementTed;
+
 import com.example.grh_n.rh.entities.REntities.ted.RhRTed;
 import com.example.grh_n.rh.entities.REntities.ted.TedDto;
 import com.example.grh_n.rh.repos.ted.RhRTedRepository;
@@ -65,7 +65,6 @@ public class TedService {
                 .specialiteTed(specialityTedService.findByhId(tedDto.getIdArmementTed()))
                 .arme(armeService.armeById(tedDto.getIdArme()))
                 .habilitation(habilitationService.findById(tedDto.getIdArmementTed()))
-                .typeStructureSn(typeStructureSnService.findById(tedDto.getIdTypeStructureSn()))
                 .qualification(qualificationService.findById(tedDto.getIdQualification()))
                 .fonction(fonctionService.fonctionById(tedDto.getIdFonction()))
                 .poste(posteService.findById(tedDto.getIdPoste()))

@@ -28,7 +28,6 @@ public class TedDto {
     // todo voir le cas du off superieur !!!
     private Long idCatGrade;
 
-    private String idTypeStructureSn;
     private String idFonction;
 
 }

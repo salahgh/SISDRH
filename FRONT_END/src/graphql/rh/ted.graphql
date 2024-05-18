@@ -38,13 +38,6 @@ query tedById($tedId : Long){
             libSpecialiteAr
             libSpecialiteFr
         }
-        typeStructureSn {
-            id
-            libAr
-            libFr
-            abrAr
-            abrFr
-        }
         fonction {
             id
             chef
@@ -59,6 +52,11 @@ query tedById($tedId : Long){
                     id
                     libStructureAr
                     libStructureFr
+                }
+                typeStructureInterne {
+                    id
+                    libAr
+                    libFr
                 }
             }
         }
@@ -105,13 +103,6 @@ query allTedsPaged($page : PaginationInput){
                 libSpecialiteAr
                 libSpecialiteFr
             }
-            typeStructureSn {
-                id
-                libAr
-                libFr
-                abrAr
-                abrFr
-            }
             fonction {
                 id
                 chef
@@ -126,6 +117,11 @@ query allTedsPaged($page : PaginationInput){
                         id
                         libStructureAr
                         libStructureFr
+                    }
+                    typeStructureInterne {
+                        id
+                        libAr
+                        libFr
                     }
                 }
             }

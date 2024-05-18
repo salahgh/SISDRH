@@ -48,7 +48,4 @@ public class RhRTed {
     @JoinColumn(name = "ID_CAT_GRADE")
     private RhRCatGrade catGrade ;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_TYPE_STRUCTURE_SN")
-    private RhRTypeStructureSn typeStructureSn ;
 }

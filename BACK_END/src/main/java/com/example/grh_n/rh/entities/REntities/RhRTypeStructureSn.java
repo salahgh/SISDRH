@@ -1,5 +1,6 @@
 package com.example.grh_n.rh.entities.REntities;
 
+import com.example.grh_n.rh.entities.REntities.ted.RhTedNum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,9 +18,6 @@ public class RhRTypeStructureSn {
     @Id
     private String id;
 
-    @OneToMany(mappedBy = "typeStructureSn")
-    List<RhRStructureSn> structureSn ;
-
     @Column(name = "LIB_AR")
     private String libAr;
 
@@ -31,5 +29,8 @@ public class RhRTypeStructureSn {
 
     @Column(name = "ABR_AR")
     private String AbrAr;
+
+    @OneToOne
+    private RhTedNum tedNum ;
 
 }

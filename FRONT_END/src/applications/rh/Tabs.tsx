@@ -1,6 +1,6 @@
 import { Box, Stack, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { TedDataGrid } from "./TedDataGrid.tsx";
+import { TedDataGrid } from "./ted/TedDataGrid.tsx";
 import { Organigram } from "./organigramme/Organigram.tsx";
 import React from "react";
 
