@@ -191,22 +191,47 @@ query findRhTedStructureInterneById($id : String){
         id
         libStructureAr
         libStructureFr
+        typeStructureInterne {
+            id
+            libAr
+            libFr
+        }
         fils {
             id
             libStructureAr
             libStructureFr
+            typeStructureInterne {
+                id
+                libAr
+                libFr
+            }
             fils {
                 id
                 libStructureAr
                 libStructureFr
+                typeStructureInterne {
+                    id
+                    libAr
+                    libFr
+                }
                 fils {
                     id
                     libStructureAr
                     libStructureFr
+                    typeStructureInterne {
+                        id
+                        libAr
+                        libFr
+                    }
                     fils {
                         id
                         libStructureAr
                         libStructureFr
+                        typeStructureInterne {
+                            id
+                            libAr
+                            libFr
+                        }
                     }
                 }
             }

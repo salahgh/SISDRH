@@ -75,6 +75,7 @@ export const Organigram = () => {
       ></CreateEntityDialog>
       {data && (
         <TreeView
+          dir={"ltr"}
           aria-label="file system navigator"
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
