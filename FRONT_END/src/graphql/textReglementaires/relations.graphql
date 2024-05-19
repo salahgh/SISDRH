@@ -1,0 +1,105 @@
+
+
+mutation createOcrResultRelation($relationType : String , $objectId : String , $subjectId : String){
+    createOcrResultRelation(objectId: $objectId , relationTypeId: $relationType , subjectId: $subjectId){
+        id {
+            object
+            relationType
+            subject
+        }
+    }
+}
+
+mutation deleteOcrResultRelation($id : OcrResultRelationKeyInput) {
+    deleteOcrResultRelation(ocrResultRelationKey: $id)
+}
+
+query ocrResultRelationById($id : OcrResultRelationKeyInput){
+    ocrResultRelationById(ocrResultRelationKey: $id){
+        id {
+            object
+            relationType
+            subject
+        }
+    }
+}
+
+query ocrResultRelationByObjectId($objectId : String){
+    ocrResultRelationByObjectId(objectId: $objectId){
+        id {
+            object
+            relationType
+            subject
+        }
+        relationType {
+            id
+            libTypeRelationAr
+            libTypRelationFr
+            subjectLib
+            objectLib
+        }
+        subject {
+            id
+            originalFileName
+            reference
+            dateReference
+            typeTexteReglementaire {
+                id
+                libTypeTexteFr
+                libTypeTexteAr
+            }
+            confidentialite {
+                id
+                libConfidentialiteFr
+                libConfidentialiteAr
+            }
+        }
+    }
+}
+
+query ocrResultRelationBySubjectId($subjectId : String){
+    ocrResultRelationBySubjectId(subjectId: $subjectId){
+        id {
+            object
+            relationType
+            subject
+        }
+        relationType {
+            id
+            libTypeRelationAr
+            libTypRelationFr
+            subjectLib
+            objectLib
+        }
+        object {
+            id
+            originalFileName
+            reference
+            dateReference
+            typeTexteReglementaire {
+                id
+                libTypeTexteFr
+                libTypeTexteAr
+            }
+            confidentialite {
+                id
+                libConfidentialiteFr
+                libConfidentialiteAr
+            }
+        }
+    }
+}
+
+query findOcrResultEntityJpabyReference($ref : String){
+    findOcrResultEntityJpabyReference(ref: $ref){
+        id
+    }
+}
+
+query allOcrResultRelatioTypes{
+    allOcrResultRelatioTypes{
+        id
+        libTypeRelationAr
+        libTypRelationFr
+    }
+}

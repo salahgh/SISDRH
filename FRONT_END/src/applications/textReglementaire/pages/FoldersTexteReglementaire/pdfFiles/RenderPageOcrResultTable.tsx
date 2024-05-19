@@ -74,7 +74,6 @@ const ToolTipChildWrapper = React.forwardRef(({ children, ...other }, ref) => {
 export function RenderPageOcrResultTable() {
   const [confidentialiteOpen, setConfidentialiteOpen] = useState(false);
   const selectedFolder = useSelector(selectSelectedFolder);
-  const selectedFileId = useSelector(selectSelectedFileId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const hasOcrResultDirectGrant = useHasAuthorities(
@@ -199,7 +198,8 @@ export function RenderPageOcrResultTable() {
 
   function handleShowPdf(row) {
     dispatch(setSelectedFileId(row.id));
-    navigate(getLink(routs.PdfFilePage));
+    // navigate(getLink(routs.PdfFilePage));
+    navigate(`${getLink(routs.PdfFilePage)}/${row?.id}`);
   }
 
   // todo add the privilege check for pin add

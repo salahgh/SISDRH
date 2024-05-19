@@ -4,7 +4,6 @@ import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectElasticSearchInput,
-  selectSelectedFileId,
   selectSelectedPageIndex,
   setSelectedPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
@@ -18,9 +17,10 @@ import { NetWorkErrorComponent } from "../../errors/NetWorkErrorComponent.tsx";
 import { selectSelectedPdfViewer } from "../../../../../redux/features/folderAndFiles/foldersSlice.ts";
 import PdfViewerToggleButton from "../../../../textReglementaire/pages/PdfFile/PdfViewerToggleButton.tsx";
 import { PanAndZoomViewer } from "../../../../textReglementaire/pages/ocr/searchPage/PanAndZoomViewer.tsx";
+import { useParams } from "react-router-dom";
 
 const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
-  const selectedFileId = useSelector(selectSelectedFileId);
+  const selectedFileId = useParams().fildId;
   const pageIndex = useSelector(selectSelectedPageIndex);
   const dispatch = useDispatch();
 

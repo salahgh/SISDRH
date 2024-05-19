@@ -129,7 +129,7 @@ export const router = createBrowserRouter([
         element: <ApplicationChoice />,
       },
       {
-        path: routs.PdfFilePage.name,
+        path: routs.PdfFilePage.name + "/:fildId",
         element: <PdfFile />,
       },
       {

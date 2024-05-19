@@ -278,6 +278,11 @@ public class OcrResultService {
                         )
                 ).fetch() ;
     }
+
+    @GraphQLQuery
+    public List<OcrResultEntityJpa> findOcrResultEntityJpabyReference(String ref){
+       return ocrResultRepository.findByReferenceLike(ref);
+    }
 }
 
 

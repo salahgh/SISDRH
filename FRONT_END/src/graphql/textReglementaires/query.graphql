@@ -57,3 +57,101 @@ query confidentialiteCount{
         count_
     }
 }
+query GetPdfFile($fileSignatue : String){
+    ocrResultByid(fileSignatue: $fileSignatue){
+        originalFileName ,
+        id ,
+        folders {
+            id ,
+            name ,
+            description
+        },
+        ocrDone ,
+        numberOfPapers ,
+        typeTexteReglementaire {
+            libTypeTexteFr ,
+            libTypeTexteAr
+        },
+        confidentialite {
+            libConfidentialiteAr
+            libConfidentialiteFr
+            id
+        }
+        reference,
+        dateReference,
+        executedAt ,
+        terminatedAt ,
+        objects {
+            id {
+                relationType
+            }
+            relationType {
+                objectLib
+            }
+        }
+    }
+}
+query findAllOcrResultEntityByFoldersContaining ( $folderId : Long ,    $pagination : PaginationInput){
+    findAllOcrResultEntityByFoldersContaining(
+        pageable: $pagination , folderId: $folderId
+    ) {
+        content {
+            id ,
+            numberOfPapers ,
+            originalFileName ,
+            ocrDone,
+            ocrResultUserGrants {
+                id {
+                    type
+                    userId
+                    ocrResultId
+                }
+                user {
+                    id
+                    personnel {
+                        matricule
+                        noma
+                        pnoma
+                        nom
+                        pnom
+                    }
+                }
+            }
+            typeTexteReglementaire {
+                id ,
+                libTypeTexteAr ,
+                libTypeTexteFr
+            }
+            folders {
+                id ,
+                description,
+                name
+            }
+            ocrResultPinned {
+                id
+            }
+            confidentialite {
+                id
+                libConfidentialiteAr
+                libConfidentialiteFr
+            }
+            objects {
+                id {
+                    object
+                    relationType
+                    subject
+                }
+                relationType {
+                    objectLib
+                }
+            }
+            dateReference
+            reference
+        }
+        totalElements
+        pageable {
+            pageSize
+            pageNumber
+        }
+    }
+}

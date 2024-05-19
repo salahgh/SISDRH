@@ -24,7 +24,6 @@ export function CreateEntityDialog({
   setOpen: Dispatch<SetStateAction<any>>;
   title: string;
   content: ReactElement;
-
   fullWidth: boolean;
   maxWidth: "xs" | "sm" | "md" | "lg" | "xl";
   padding?: number;
@@ -43,7 +42,7 @@ export function CreateEntityDialog({
           </IconButton>
         </Stack>
       </DialogTitle>
-      <DialogContent sx={{ width: "100%", padding: 10 }}>
+      <DialogContent sx={{ width: "100%", padding: padding }}>
         {cloneElement(content, { setOpen })}
       </DialogContent>
     </Dialog>
