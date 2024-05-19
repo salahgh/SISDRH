@@ -2,20 +2,20 @@ import {
   FindByidApiArg,
   OcrResultEntityElastic2,
   useFindByidQuery,
-} from "../../../../redux/mainApi";
+} from "../../../../../redux/mainApi.ts";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectSelectedFileId,
   selectSelectedPageIndex,
   selectSelectedSinglePdfViewerFileId,
   setSelectedPageIndex,
-} from "../../../../redux/features/elasticSearch/selectedResultLineSlice";
+} from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { CircularProgress, Stack } from "@mui/material";
 import { Pagination } from "@mui/lab";
 import { ErrorOutline } from "@mui/icons-material";
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { FindOcrResultEntityESbyIdDocument } from "../../../../_generated_gql_/graphql.ts";
+import { FindOcrResultEntityESbyIdDocument } from "../../../../../_generated_gql_/graphql.ts";
 
 const PdfViewerText = () => {
   const selctedFileId: string = useSelector(

@@ -7,14 +7,15 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 @GraphQLApi
 public class OcrResultRelationsService {
 
-    private final OcrResultRelationsRepository ocrResultRelationsRepository ;
-    private final OcrResultService ocrResultService ;
+    private final OcrResultRelationsRepository ocrResultRelationsRepository;
+    private final OcrResultService ocrResultService;
     private final OcrResultRelationTypeRepository ocrResultRelationTypeRepository;
 
     public OcrResultRelationsService(OcrResultRelationsRepository ocrResultRelationsRepository, OcrResultService ocrResultService,
@@ -25,7 +26,9 @@ public class OcrResultRelationsService {
     }
 
     @GraphQLMutation
-    public OcrResultRelation createOcrResultRelation(String subjectId , String objectId , String relationTypeId) {
+    public OcrResultRelation createOcrResultRelation(String subjectId, String objectId, String relationTypeId) {
+
+        OcrResultRelationType ocrResultRelationType = ocrResultRelationTypeRepository.findById(relationTypeId).orElseThrow(() -> new EntityNotFoundException("not found"));
 
         OcrResultRelation ocrResultRelation = OcrResultRelation.builder()
                 .id(OcrResultRelationKey.builder()
@@ -35,42 +38,43 @@ public class OcrResultRelationsService {
                         .build()
                 ).object(ocrResultService.findById(objectId))
                 .subject(ocrResultService.findById(subjectId))
+                .relationType(ocrResultRelationType)
                 .build();
-        return ocrResultRelationsRepository.save(ocrResultRelation) ;
+        return ocrResultRelationsRepository.save(ocrResultRelation);
     }
 
     @GraphQLQuery
-    public OcrResultRelation getOcrResultRelationById(OcrResultRelationKey ocrResultRelationKey){
+    public OcrResultRelation getOcrResultRelationById(OcrResultRelationKey ocrResultRelationKey) {
         return ocrResultRelationsRepository.findById(ocrResultRelationKey).orElseThrow(
                 () -> new EntityNotFoundException("ocrResultRelation with id " + ocrResultRelationKey + " does not exist")
-        ) ;
+        );
     }
 
     @GraphQLQuery
-    public List<OcrResultRelation> getOcrResultRelationBySubjectId(String subjectId){
+    public List<OcrResultRelation> getOcrResultRelationBySubjectId(String subjectId) {
         return ocrResultRelationsRepository.findBySubjectId(subjectId);
     }
 
     @GraphQLQuery
-    public List<OcrResultRelation> getOcrResultRelationByObjectId(String objectId){
+    public List<OcrResultRelation> getOcrResultRelationByObjectId(String objectId) {
         return ocrResultRelationsRepository.findByObjectId(objectId);
     }
 
     @GraphQLQuery
-    public List<OcrResultRelation> getAllOcrResultRelatios(){
+    public List<OcrResultRelation> getAllOcrResultRelatios() {
         return IteratorUtils.toList(ocrResultRelationsRepository.findAll().iterator());
     }
 
     @GraphQLMutation
-    public boolean deleteOcrResultRelation (OcrResultRelationKey ocrResultRelationKey) {
+    public boolean deleteOcrResultRelation(OcrResultRelationKey ocrResultRelationKey) {
         ocrResultRelationsRepository.delete(
                 ocrResultRelationsRepository.findById(ocrResultRelationKey).orElseThrow(
                         () -> new EntityNotFoundException("relation with id " + ocrResultRelationKey + " does not exist")));
-        return true ;
+        return true;
     }
 
     @GraphQLQuery
-    public List<OcrResultRelationType> getAllOcrResultRelatioTypes(){
+    public List<OcrResultRelationType> getAllOcrResultRelatioTypes() {
         return IteratorUtils.toList(ocrResultRelationTypeRepository.findAll().iterator());
     }
 
