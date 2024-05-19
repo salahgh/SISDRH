@@ -120,13 +120,13 @@ public class ProductSearchService {
                                                         .path("pages.paragraphs.lines")
                                                         .query(nq -> nq
                                                                 .bool(nb -> nb
-                                                                        .should(s1 -> s1
-                                                                                .wildcard(w -> w
-                                                                                        .field("pages.paragraphs.lines.text")
-                                                                                        .caseInsensitive(true)
-                                                                                        .value("*" + elasticSearchInput.searchToken + "*")
-                                                                                )
-                                                                        )
+//                                                                        .should(s1 -> s1
+//                                                                                .wildcard(w -> w
+//                                                                                        .field("pages.paragraphs.lines.text")
+//                                                                                        .caseInsensitive(true)
+//                                                                                        .value("*" + elasticSearchInput.searchToken + "*")
+//                                                                                )
+//                                                                        )
 //                                                                        .should(s2 -> s2
 //                                                                                .fuzzy(f -> f
 //                                                                                        .field("pages.paragraphs.lines.text")

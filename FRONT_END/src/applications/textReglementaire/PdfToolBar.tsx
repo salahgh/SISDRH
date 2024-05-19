@@ -68,7 +68,9 @@ export const PdfToolBar = ({
         {showGoToPdf && (
           <IconButton
             size={"large"}
-            onClick={() => navigate(getLink(routs.PdfFilePage))}
+            onClick={() =>
+              navigate(`${getLink(routs.PdfFilePage)}/${selectedFileId}`)
+            }
           >
             <Avatar sx={{}} variant={"square"} src={ASSETS.PDF}></Avatar>
           </IconButton>
