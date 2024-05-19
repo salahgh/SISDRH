@@ -81,6 +81,9 @@ public class ProductSearchService {
         if(elasticSearchInput.getReference() == null || elasticSearchInput.getReference().isEmpty()){
             elasticSearchInput.setReference("*");
         }
+   if(elasticSearchInput.getSearchToken() == null || elasticSearchInput.getSearchToken().isEmpty()){
+            elasticSearchInput.setSearchToken("_");
+        }
 
 
         PageRequest hitsPageable = PageRequest.of(elasticSearchInput.getPage() , elasticSearchInput.getSize()) ;
@@ -127,13 +130,13 @@ public class ProductSearchService {
 //                                                                                        .value("*" + elasticSearchInput.searchToken + "*")
 //                                                                                )
 //                                                                        )
-//                                                                        .should(s2 -> s2
-//                                                                                .fuzzy(f -> f
-//                                                                                        .field("pages.paragraphs.lines.text")
-//                                                                                        .value(elasticSearchInput.searchToken)
-//                                                                                        .fuzziness("1")
-//                                                                                )
-//                                                                        )
+                                                                        .should(s2 -> s2
+                                                                                .fuzzy(f -> f
+                                                                                        .field("pages.paragraphs.lines.text")
+                                                                                        .value(elasticSearchInput.searchToken)
+                                                                                        .fuzziness("1")
+                                                                                )
+                                                                        )
                                                                         .should(s3 -> s3
                                                                                 .matchPhrase(mf -> mf
                                                                                         .field("pages.paragraphs.lines.text")
