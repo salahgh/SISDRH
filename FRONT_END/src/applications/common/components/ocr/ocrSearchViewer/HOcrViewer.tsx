@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectElasticSearchInput,
+  selectSelectedFileId,
   selectSelectedPageIndex,
   setSelectedPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
@@ -21,6 +22,7 @@ import { useParams } from "react-router-dom";
 
 const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
   const selectedFileId = useParams().fildId;
+  const selectedFileId_ = useSelector(selectSelectedFileId);
   const pageIndex = useSelector(selectSelectedPageIndex);
   const dispatch = useDispatch();
 
@@ -28,13 +30,15 @@ const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
     dispatch(setSelectedPageIndex(page));
   }
 
+  const s = selectedFileId ? selectedFileId : selectedFileId_;
+
   const {
     data: ocrResultJpa,
     error: ocrResultJpaError,
     loading: ocrResultJpaLoading,
   } = useQuery(GetPdfFileDocument, {
     variables: {
-      fileSignatue: selectedFileId ? selectedFileId : "-1",
+      fileSignatue: s ? s : "-1",
     },
   });
 
@@ -48,7 +52,7 @@ const HOcrViewer = ({ showGoToPdf, showDeletePdfFile }) => {
     OcrResultPdfDocument,
     {
       variables: {
-        id: selectedFileId,
+        id: s,
       },
     },
   );
