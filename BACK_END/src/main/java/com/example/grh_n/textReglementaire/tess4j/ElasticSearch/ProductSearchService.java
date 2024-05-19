@@ -78,6 +78,10 @@ public class ProductSearchService {
             );
         }
 
+        if(elasticSearchInput.getReference() == null || elasticSearchInput.getReference().isEmpty()){
+            elasticSearchInput.setReference("*");
+        }
+
 
         PageRequest hitsPageable = PageRequest.of(elasticSearchInput.getPage() , elasticSearchInput.getSize()) ;
         PageRequest innerHitsPageable = PageRequest.of(elasticSearchInput.getInnerPage() , elasticSearchInput.getInnerSize());
