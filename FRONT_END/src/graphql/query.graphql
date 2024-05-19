@@ -416,21 +416,7 @@ query User($matricule : String){
         }
     }
 }
-query allUsersPaged($pageable : PaginationInput){
-    allUsersPaged(pageable: $pageable){
-        content {
-            id ,
-            personnel {
-                matricule,
-                noma,
-                pnoma
-                nom
-                pnom
-            }
-        }
-        totalElements
-    }
-}
+
 query UserAuthorities($matricule : String) {
     user(matricule: $matricule){
         id
