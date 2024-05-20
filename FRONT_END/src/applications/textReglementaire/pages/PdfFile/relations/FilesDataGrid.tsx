@@ -26,6 +26,7 @@ import { Theme } from "@mui/material/styles";
 import { CustomPagination } from "../../../../pam/mainDataGrid/CustomPagination.tsx";
 import { CustomNoResultOverlay } from "../../../../pam/mainDataGrid/CustomNoResultOverlay.tsx";
 import { ConfidentialiteChip } from "../../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip.tsx";
+import { OcrDoneChip } from "./OcrDoneChip.tsx";
 
 const rowHeight = 60;
 
@@ -179,23 +180,24 @@ export const FilesDataGrid = ({ selectedFolderId, setSelectedFile }) => {
             </Stack>
 
             {rowParams?.row?.ocrDone !== "o" ? (
-              <>
-                <Stack
-                  sx={{ padding: 1 }}
-                  direction={"row"}
-                  alignItems={"center"}
-                  spacing={1}
-                >
-                  <Error sx={{ color: orange["800"], width: 35, height: 35 }} />
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={20}
-                    color={orange["800"]}
-                  >
-                    OCR
-                  </Typography>
-                </Stack>
-              </>
+              // <>
+              //   <Stack
+              //     sx={{ padding: 1 }}
+              //     direction={"row"}
+              //     alignItems={"center"}
+              //     spacing={1}
+              //   >
+              //     <Error sx={{ color: orange["800"], width: 35, height: 35 }} />
+              //     <Typography
+              //       fontWeight={"bold"}
+              //       fontSize={20}
+              //       color={orange["800"]}
+              //     >
+              //       OCR
+              //     </Typography>
+              //   </Stack>
+              // </>
+              <OcrDoneChip ocrDone={rowParams?.row?.ocrDone}></OcrDoneChip>
             ) : null}
             <Stack
               sx={{ padding: 1 }}

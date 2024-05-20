@@ -1,7 +1,6 @@
 import HOcrViewer from "../../../common/components/ocr/ocrSearchViewer/HOcrViewer.tsx";
 import { Stack } from "@mui/material";
-import { TextRelationsList } from "./relations/TextRelationsList.tsx";
-import { useParams } from "react-router-dom";
+import { PdfFileLeftDrawer } from "./PdfFileLeftDrawer.tsx";
 
 const PdfFile = () => {
   return (
@@ -16,7 +15,7 @@ const PdfFile = () => {
           <HOcrViewer showGoToPdf={false} showDeletePdfFile={true} />
         </Stack>
         <Stack flex={1}>
-          <TextRelationsList></TextRelationsList>
+          <PdfFileLeftDrawer />
         </Stack>
       </Stack>
     </div>

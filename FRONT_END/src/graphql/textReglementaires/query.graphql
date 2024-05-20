@@ -81,6 +81,7 @@ query GetPdfFile($fileSignatue : String){
         dateReference,
         executedAt ,
         terminatedAt ,
+        createdDate,
         objects {
             id {
                 relationType

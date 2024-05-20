@@ -1,10 +1,10 @@
-import { selectSelectedFileId } from "../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
+import { selectSelectedFileId } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { useSelector } from "react-redux";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   CreateOcrResultRelationDocument,
   OcrResultRelationBySubjectIdDocument,
-} from "../../../../_generated_gql_/graphql.ts";
+} from "../../../../../_generated_gql_/graphql.ts";
 
 export const TextReglementairesRelations = () => {
   const selectedFileId = useSelector(selectSelectedFileId);

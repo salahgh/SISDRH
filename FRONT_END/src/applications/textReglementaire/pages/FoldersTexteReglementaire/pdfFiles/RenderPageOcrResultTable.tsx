@@ -9,12 +9,7 @@ import {
 import { GridColDef, GridEventListener } from "@mui/x-data-grid";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { orange } from "@mui/material/colors";
-import {
-  AutoStoriesOutlined,
-  Error,
-  PictureAsPdfOutlined,
-} from "@mui/icons-material";
+import { AutoStoriesOutlined, PictureAsPdfOutlined } from "@mui/icons-material";
 
 import { useMutation, useQuery } from "@apollo/client";
 import {
@@ -33,15 +28,10 @@ import {
 } from "../../../../../redux/features/folderAndFiles/foldersSlice";
 import { useNavigate } from "react-router-dom";
 import { getLink, routs } from "../../../../../routing/routs";
-import {
-  selectSelectedFileId,
-  setSelectedFileId,
-} from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
+import { setSelectedFileId } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { PagePreview } from "./PagePreview";
 import ASSETS from "../../../../../resources/ASSETS";
 import { ConfidentialiteChip } from "./ConfidentialiteChip";
-import ConfidentialiteForm from "../ConfidentialiteForm";
-import OcrResultUserGrantsAvatarGroup from "./OcrResultUserGrantsAvatarGroup";
 import UsersChoiceDialog from "./UsersChoice";
 import useSnackBarNotifications from "../../../../common/notifications/useSnackBarNotifications.tsx";
 import { useHasAuthorities } from "../../../../../security/useHasAuthoritie.ts";
@@ -53,6 +43,7 @@ import { ActionBar } from "../folders/ActionBar.tsx";
 import { PdfFileActions } from "./PdfFileActions.tsx";
 import { SearchHitOcrResultEntityElastic2 } from "../../../../../redux/mainApi.ts";
 import { useAppSelector } from "../../../../../redux/hooks.ts";
+import { OcrDoneChip } from "../../PdfFile/relations/OcrDoneChip.tsx";
 
 const rowHeight = 60;
 
@@ -326,17 +317,18 @@ export function RenderPageOcrResultTable() {
     {
       field: "ocrDone",
       headerName: "عدد الصفحات",
-      width: 130,
+      width: 150,
       renderCell: (rowParams) => {
         return (
           <Stack
             direction={"row"}
-            spacing={4}
+            spacing={1}
             justifyContent={"center"}
+            alignItems={"center"}
             className={"w-full"}
           >
             <Stack
-              sx={{ padding: 1, width: 70 }}
+              sx={{ padding: 1, width: 80 }}
               direction={"row"}
               alignItems={"center"}
               spacing={1}
@@ -347,42 +339,22 @@ export function RenderPageOcrResultTable() {
                 {rowParams.row.numberOfPapers}
               </Typography>
             </Stack>
-            {hasOcrResultDirectGrant && (
-              <OcrResultUserGrantsAvatarGroup
-                userIds={rowParams?.row?.ocrResultUserGrants?.map(
-                  (grant) => grant?.user?.personnel?.matricule,
-                )}
-                onClick={() => {
-                  setOcrResultId(rowParams?.row?.id);
-                  setUsersChoiceOpen(true);
-                }}
-              />
-            )}
-            {rowParams?.row?.ocrDone !== "o" ? (
-              <>
-                <Stack
-                  sx={{ padding: 1 }}
-                  direction={"row"}
-                  alignItems={"center"}
-                  spacing={1}
-                >
-                  <Error sx={{ color: orange["800"], width: 35, height: 35 }} />
-                  <Typography
-                    fontWeight={"bold"}
-                    fontSize={20}
-                    color={orange["800"]}
-                  >
-                    OCR
-                  </Typography>
-                </Stack>
-              </>
-            ) : null}
-            <Stack
-              sx={{ padding: 1 }}
-              direction={"row"}
-              alignItems={"center"}
-              spacing={1}
-            ></Stack>
+            {/*{hasOcrResultDirectGrant && (*/}
+            {/*  <OcrResultUserGrantsAvatarGroup*/}
+            {/*    userIds={rowParams?.row?.ocrResultUserGrants?.map(*/}
+            {/*      (grant) => grant?.user?.personnel?.matricule,*/}
+            {/*    )}*/}
+            {/*    onClick={() => {*/}
+            {/*      setOcrResultId(rowParams?.row?.id);*/}
+            {/*      setUsersChoiceOpen(true);*/}
+            {/*    }}*/}
+            {/*  />*/}
+            {/*)}*/}
+
+            <OcrDoneChip
+              // showDone={true}
+              ocrDone={rowParams?.row?.ocrDone}
+            ></OcrDoneChip>
           </Stack>
         );
       },
