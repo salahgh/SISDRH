@@ -59,7 +59,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "matricule"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @ManyToMany
 //    @ManyToMany
@@ -68,7 +68,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "matricule"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id"))
     @ToString.Exclude
-    private Set<Privilege> privileges;
+    private List<Privilege> privileges;
 
 //    @ManyToMany(fetch = FetchType.EAGER)
     @ManyToMany
@@ -77,7 +77,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "matricule"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id"))
     @ToString.Exclude
-    private Set<Privilege> privileges_restriction;
+    private List<Privilege> privileges_restriction;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personnel_id")

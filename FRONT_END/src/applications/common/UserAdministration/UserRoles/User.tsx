@@ -303,7 +303,7 @@ const User = ({ matricule }: { matricule?: string | null }) => {
             </>
           )}
         </Stack>
-        <Stack sx={{ width: "25%" }}>
+        <Stack sx={{ width: "25%", overflow: "auto" }}>
           <Button
             variant={"contained"}
             onClick={() => setAddPrivilegeOpen(true)}
