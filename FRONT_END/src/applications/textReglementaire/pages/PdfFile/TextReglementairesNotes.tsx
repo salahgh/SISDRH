@@ -30,9 +30,12 @@ import {
 import { useSelector } from "react-redux";
 import { selectSelectedFileId } from "../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { selectLoggedInUser } from "../../../../redux/features/auth/userSlice.ts";
+import { useParams } from "react-router-dom";
 
 export const TextReglementairesNotes = () => {
-  const selectedFileId = useSelector(selectSelectedFileId);
+  const selectedFileId = useParams().fildId;
+  const selectedFileId_ = useSelector(selectSelectedFileId);
+  const s = selectedFileId ? selectedFileId : selectedFileId_;
   const username = useSelector(selectLoggedInUser).matricule;
   const [editMode, setEditMode] = useState<number>(-1);
   const [value, setValue] = useState("");
@@ -41,7 +44,7 @@ export const TextReglementairesNotes = () => {
   const { data: notes } = useQuery(NotesByTextIdAndOwnerIdDocument, {
     variables: {
       userName: username,
-      ocrResultId: selectedFileId,
+      ocrResultId: s,
       pageable: {
         pageNumber: 0,
         pageSize: 50,
@@ -55,7 +58,7 @@ export const TextReglementairesNotes = () => {
         query: NotesByTextIdAndOwnerIdDocument,
         variables: {
           userName: username,
-          ocrResultId: selectedFileId,
+          ocrResultId: s,
           pageable: {
             pageNumber: 0,
             pageSize: 50,
@@ -71,7 +74,7 @@ export const TextReglementairesNotes = () => {
         query: NotesByTextIdAndOwnerIdDocument,
         variables: {
           userName: username,
-          ocrResultId: selectedFileId,
+          ocrResultId: s,
           pageable: {
             pageNumber: 0,
             pageSize: 50,
@@ -87,7 +90,7 @@ export const TextReglementairesNotes = () => {
         query: NotesByTextIdAndOwnerIdDocument,
         variables: {
           userName: username,
-          ocrResultId: selectedFileId,
+          ocrResultId: s,
           pageable: {
             pageNumber: 0,
             pageSize: 50,
@@ -104,7 +107,7 @@ export const TextReglementairesNotes = () => {
     create({
       variables: {
         note: {
-          textReglemetaireId: selectedFileId,
+          textReglemetaireId: s,
         },
       },
     })
@@ -150,7 +153,7 @@ export const TextReglementairesNotes = () => {
   }
 
   return (
-    <Paper sx={{ height: "100%", p: 1 }}>
+    <Stack sx={{ height: "100%", p: 1 }}>
       <Typography
         variant={"h3"}
         sx={{
@@ -256,6 +259,6 @@ export const TextReglementairesNotes = () => {
           );
         })}
       </List>
-    </Paper>
+    </Stack>
   );
 };
