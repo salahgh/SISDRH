@@ -1,17 +1,20 @@
 import { SetStateAction, useRef, useState } from "react";
 import * as React from "react";
-import {  Stack, TextField, Typography } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useQuery } from "@apollo/client";
 import { AllTypeTexteReglementairesDocument } from "../../../../_generated_gql_/graphql";
 import EditFileNameForm from "./EditFileNameForm";
 import { FormikProps, FormikValues } from "formik";
-import { OcrResultEntityJpaRequest, UplodComponentData } from "./uploadMainPage/types.ts";
+import {
+  OcrResultEntityJpaRequest,
+  UplodComponentData,
+} from "./uploadMainPage/types.ts";
 import { UPLOAD_STATUS } from "./uploadMainPage/constants.ts";
 import { getOcrResultEntityJpaRequestFromFileName } from "./fileUploadInput/tools.ts";
 
-export const EditFileName = (props: {
+export const EditTextInfo = (props: {
   indexToBeEdited: number;
   filesList: UplodComponentData[] | undefined;
   open: boolean;
@@ -41,7 +44,6 @@ export const EditFileName = (props: {
   });
 
   const formikRef = useRef<FormikProps<FormikValues>>();
-
   const { data, loading, error } = useQuery(AllTypeTexteReglementairesDocument);
 
   function handleChange(
@@ -108,37 +110,6 @@ export const EditFileName = (props: {
           onChange={(e) => handleChange(e)}
           sx={{ width: "100%" }}
         />
-        {ocrRequest?.reference !== null && (
-          <>
-            <Stack direction={"row"}>
-              <Typography> reference : </Typography>
-              <Typography> {ocrRequest?.reference} </Typography>
-            </Stack>
-            <Stack direction={"row"}>
-              <Typography> date reference : </Typography>
-              {
-                <Typography>
-                  {" "}
-                  {ocrRequest?.dateReference &&
-                    format(ocrRequest?.dateReference, "EEEE d MMMM yyyy", {
-                      locale: fr,
-                    })}{" "}
-                </Typography>
-              }
-            </Stack>
-            <Stack direction={"row"}>
-              <Typography> type du rexte : </Typography>
-              <Typography>
-                {" "}
-                {
-                  data?.allTypeTexteReglementaires?.filter(
-                    (item) => item.id == ocrRequest?.typeTexteReglementaire?.id,
-                  )[0].libTypeTexteFr
-                }{" "}
-              </Typography>
-            </Stack>
-          </>
-        )}
         <EditFileNameForm
           formikRef={formikRef}
           handleSave={handleSave}

@@ -13,7 +13,7 @@ import {
   selectSelectedFolder,
   setSelectedFolder,
 } from "../../../../../redux/features/folderAndFiles/foldersSlice";
-import { CreateEntityDialog } from "../../../../common/UserAdministration/roles/CreateEntityDialog.tsx";
+import { FormDialogue } from "../../../../common/components/dialogs/FormDialogue.tsx";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { FolderSkelotonLoader } from "./FolderSkelotonLoader.tsx";
 
@@ -48,7 +48,7 @@ export function UserFolders() {
         alignItems={"center"}
         justifyContent={"center"}
       >
-        <CreateEntityDialog
+        <FormDialogue
           open={open}
           setOpen={setOpen}
           title={"create a folder"}

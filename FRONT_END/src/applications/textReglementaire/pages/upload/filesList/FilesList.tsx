@@ -10,27 +10,28 @@ import {
   ListItemButton,
   ListItemText,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Delete, Edit, PictureAsPdfOutlined } from "@mui/icons-material";
 import { blueGrey, green, red } from "@mui/material/colors";
 import { Dispatch, SetStateAction, useState } from "react";
 import { EditEntityDialog } from "../../OcrJobMonitoring/EditEntityDialog.tsx";
-import { EditFileName } from "../EditFileName.tsx";
+import { EditTextInfo } from "../EditTextInfo.tsx";
 import { getAvatarBgColor, getBgColor, getStatusIcon } from "../tools.tsx";
 import { UplodComponentData } from "../uploadMainPage/types.ts";
 import { UPLOAD_STATUS } from "../uploadMainPage/constants.ts";
 import ASSETS from "../../../../../resources/ASSETS.ts";
+import { FormDialogue } from "../../../../common/components/dialogs/FormDialogue.tsx";
 
 export default function FilesList({
-                                    uploadResponse,
-                                    filesList,
-                                    selectedItem,
-                                    hundleSelection,
-                                    setFilesList,
-                                    glocalUploadStatus,
-                                    setSelectedItemIndex
-                                  }: {
+  uploadResponse,
+  filesList,
+  selectedItem,
+  hundleSelection,
+  setFilesList,
+  glocalUploadStatus,
+  setSelectedItemIndex,
+}: {
   uploadResponse: any;
   filesList: UplodComponentData[] | undefined;
   selectedItem: number;
@@ -75,7 +76,7 @@ export default function FilesList({
   return (
     <>
       {filesList?.some(
-        (item) => item.status === UPLOAD_STATUS.NEED_EDITING
+        (item) => item.status === UPLOAD_STATUS.NEED_EDITING,
       ) && (
         <Alert variant={"outlined"} severity="error">
           <Stack
@@ -86,20 +87,25 @@ export default function FilesList({
             flexGrow={1}
             spacing={10}
           >
-            <Tooltip placement={"left"}
-                     componentsProps={{
-                       tooltip: {
-                         sx: {
-                           bgcolor: "#a1a1a1" ,
-                           width : 600
-                         }
-                       }
-                     }}
-                     title={<Stack sx={{width : 800, height : 400 , bgcolor : '#eeeeee'}}>
-                       <img src={ASSETS.exemple_nom_document}/>
-                     </Stack>}>
+            <Tooltip
+              placement={"left"}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: "#a1a1a1",
+                    width: 600,
+                  },
+                },
+              }}
+              title={
+                <Stack sx={{ width: 800, height: 400, bgcolor: "#eeeeee" }}>
+                  <img src={ASSETS.exemple_nom_document} />
+                </Stack>
+              }
+            >
               <Typography fontSize={16} fontWeight={"lighter"}>
-                بعض الملفات التي تريد رفعها تحتوي على أخطاء في إسم الملف، يرجى تصحيح الأخطاء أولا
+                بعض الملفات التي تريد رفعها تحتوي على أخطاء في إسم الملف، يرجى
+                تصحيح الأخطاء أولا
               </Typography>
             </Tooltip>
 
@@ -113,14 +119,12 @@ export default function FilesList({
         </Alert>
       )}
 
-      <EditEntityDialog
+      <FormDialogue
         open={open}
         setOpen={setOpen}
-        title={"edit"}
-        fullWidth={true}
-        maxWidth={"xl"}
+        title={"تحيين معلومات النص القانوني"}
         content={
-          <EditFileName
+          <EditTextInfo
             indexToBeEdited={indexToBeEdited}
             filesList={filesList}
             setOpen={setOpen}
@@ -129,7 +133,10 @@ export default function FilesList({
             setFilesList={setFilesList}
           />
         }
-      />
+        fullWidth={true}
+        maxWidth={""}
+        mode={"update"}
+      ></FormDialogue>
 
       <List
         dense={true}
@@ -154,7 +161,7 @@ export default function FilesList({
                       ? item.status
                       : undefined,
                   false,
-                  false
+                  false,
                 ),
                 "&:hover": {
                   backgroundColor: getBgColor(
@@ -164,8 +171,8 @@ export default function FilesList({
                         ? item.status
                         : undefined,
                     true,
-                    false
-                  )
+                    false,
+                  ),
                 },
                 "&.Mui-selected": {
                   backgroundColor: getBgColor(
@@ -175,8 +182,8 @@ export default function FilesList({
                         ? item.status
                         : undefined,
                     false,
-                    true
-                  )
+                    true,
+                  ),
                 },
                 "&:hover.Mui-selected": {
                   backgroundColor: getBgColor(
@@ -186,9 +193,9 @@ export default function FilesList({
                         ? item.status
                         : undefined,
                     true,
-                    true
-                  )
-                }
+                    true,
+                  ),
+                },
               }}
             >
               {glocalUploadStatus === UPLOAD_STATUS.NEW &&
@@ -196,7 +203,7 @@ export default function FilesList({
                   <ListItemAvatar sx={{ width: 60, height: 40 }}>
                     <Avatar
                       sx={{
-                        bgcolor: "#fdfdfd"
+                        bgcolor: "#fdfdfd",
                       }}
                       variant={"rounded"}
                     >
@@ -211,7 +218,7 @@ export default function FilesList({
                   </ListItemAvatar>
                 )}
               {((glocalUploadStatus === UPLOAD_STATUS.NEW &&
-                  hoveredIndex !== index) ||
+                hoveredIndex !== index) ||
                 glocalUploadStatus === UPLOAD_STATUS.DONE_UPLOADING) && (
                 <ListItemAvatar sx={{ width: 60, height: 40 }}>
                   <Avatar
@@ -219,9 +226,9 @@ export default function FilesList({
                       bgcolor: getAvatarBgColor(
                         glocalUploadStatus === UPLOAD_STATUS.DONE_UPLOADING
                           ? uploadResponse[index].status
-                          : glocalUploadStatus
+                          : glocalUploadStatus,
                       ),
-                      color: blueGrey[500]
+                      color: blueGrey[500],
                     }}
                     variant={"rounded"}
                   >
@@ -248,8 +255,8 @@ export default function FilesList({
                         bgcolor: red["200"],
                         color: red["900"],
                         "&:hover": {
-                          bgcolor: red["300"]
-                        }
+                          bgcolor: red["300"],
+                        },
                       }}
                       size={"large"}
                     >
@@ -258,16 +265,16 @@ export default function FilesList({
                   </>
                 )}
               {((glocalUploadStatus === UPLOAD_STATUS.NEW &&
-                  hoveredIndex !== index) ||
+                hoveredIndex !== index) ||
                 glocalUploadStatus === UPLOAD_STATUS.DONE_UPLOADING) && (
                 <IconButton
                   sx={{
                     bgcolor: getAvatarBgColor(
                       glocalUploadStatus === UPLOAD_STATUS.DONE_UPLOADING
                         ? uploadResponse[index].status
-                        : glocalUploadStatus
+                        : glocalUploadStatus,
                     ),
-                    color: green["900"]
+                    color: green["900"],
                   }}
                   size={"large"}
                 >
@@ -276,7 +283,7 @@ export default function FilesList({
                       ? uploadResponse[index].status
                       : glocalUploadStatus === UPLOAD_STATUS.NEW
                         ? item.status
-                        : undefined
+                        : undefined,
                   )}
                 </IconButton>
               )}

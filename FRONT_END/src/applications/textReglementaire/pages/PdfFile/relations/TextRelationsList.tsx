@@ -1,4 +1,4 @@
-import { CreateEntityDialog } from "../../../../common/UserAdministration/roles/CreateEntityDialog.tsx";
+import { FormDialogue } from "../../../../common/components/dialogs/FormDialogue.tsx";
 import { useState } from "react";
 import { GetTextDialogue } from "./GetTextDialogue.tsx";
 import {
@@ -131,7 +131,7 @@ export const TextRelationsList = () => {
 
   return (
     <div>
-      <CreateEntityDialog
+      <FormDialogue
         open={open}
         setOpen={setOpen}
         title={title}
@@ -147,7 +147,7 @@ export const TextRelationsList = () => {
         fullWidth={true}
         maxWidth={"xl"}
         padding={0}
-      ></CreateEntityDialog>
+      ></FormDialogue>
       <div className={"flex p-2 w-full justify-center"}>
         <Button
           variant={"contained"}

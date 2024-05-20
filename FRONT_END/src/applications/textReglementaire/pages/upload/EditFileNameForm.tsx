@@ -1,12 +1,6 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import {
-  Field,
-  Form,
-  Formik,
-  FormikHelpers,
-  FormikValues,
-} from "formik";
+import { Field, Form, Formik, FormikHelpers, FormikValues } from "formik";
 import {
   Typography,
   Stack,
@@ -14,10 +8,7 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useTheme } from "@mui/material/styles";
-import { Dispatch, SetStateAction, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Dispatch, SetStateAction } from "react";
 import ASSETS from "../../../../resources/ASSETS";
 import { ErrorResponse } from "../../../../redux/mainApi";
 import { useQuery } from "@apollo/client";
@@ -27,60 +18,34 @@ import {
 } from "../../../../_generated_gql_/graphql";
 import { TextField } from "formik-mui";
 import { ConfidentialiteChip } from "../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip";
-import {
-  OcrResultEntityJpaRequest,
-} from "./uploadMainPage/UploadMainPage.tsx";
+import { OcrResultEntityJpaRequest } from "./uploadMainPage/UploadMainPage.tsx";
 import { format, getYear } from "date-fns";
 import * as yup from "yup";
-import useSnackBarNotifications from "../../../common/notifications/useSnackBarNotifications.tsx";
 import { DatePicker } from "formik-mui-x-date-pickers";
 import { getOcrResultEntityJpaRequestFromFileName } from "./fileUploadInput/tools.ts";
 
-export interface DiaglogError {
-  errorResponse: ErrorResponse | undefined;
-  status: string | undefined;
-}
-
 export default function EditFileNameForm({
   setFormikValues,
-  ocrRequest,
   setOcrRequest,
   setValue,
   handleSave,
   formikRef,
 }: {
   setFormikValues: any;
-  ocrRequest: OcrResultEntityJpaRequest;
   setOcrRequest: React.Dispatch<SetStateAction<OcrResultEntityJpaRequest>>;
   setValue: Dispatch<SetStateAction<string | undefined>>;
   handleSave: (ocrRequest: OcrResultEntityJpaRequest) => void;
   formikRef: any;
 }) {
-  const [diaglogError, setDiaglogError] = useState<DiaglogError>({
-    errorResponse: undefined,
-    status: undefined,
-  });
-
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { handleShowErrorSnackBar, handleShowInfoSnackBar } =
-    useSnackBarNotifications();
-
   // todo skeleton loader for type of documents toggle button groups
 
-  const {
-    data: allTypeTexteReglementaires,
-    loading: loadingAllTypeTextReglementaires,
-  } = useQuery(AllTypeTexteReglementairesDocument);
-
+  const { data: allTypeTexteReglementaires } = useQuery(
+    AllTypeTexteReglementairesDocument,
+  );
 
   // todo skeleton loader for confidentialites toggle button groups
 
-  const {
-    data: allConfidentialites,
-    loading,
-  } = useQuery(AllConfidentialitesDocument);
+  const { data: allConfidentialites } = useQuery(AllConfidentialitesDocument);
 
   const handleSubmit = async (
     values: FormikValues,
@@ -118,14 +83,11 @@ export default function EditFileNameForm({
   };
   const validationSchema = yup.object().shape({
     reference: yup.string().required("la reference est obligatoire"),
-
     dateReference: yup.string().required("date reference est obligaroire"),
-
     idConfidentialite: yup.string(),
     idTypeText: yup.string().required(),
   });
 
-  // @ts-ignore
   return (
     <Stack
       direction={"column"}
@@ -148,12 +110,10 @@ export default function EditFileNameForm({
           submitForm,
           isSubmitting,
           isValid,
-          handleReset,
           values,
           dirty,
           setFieldValue,
         }) => {
-
           return (
             <Form style={{ padding: 0, width: "100%" }}>
               <Stack alignItems={"center"} spacing={3}>

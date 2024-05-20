@@ -5,7 +5,7 @@ import EmptyListComponent from "../../../../components/EmptyListComponent";
 import { Add, Search } from "@mui/icons-material";
 import { Dispatch, SetStateAction, useState } from "react";
 import DynamicForm from "../../../../openApi/DynamicForm";
-import { CreateEntityDialog } from "./CreateEntityDialog";
+import { FormDialogue } from "../../components/dialogs/FormDialogue.tsx";
 import { LoadingButton } from "@mui/lab";
 import { PrivilegeListItem } from "./PrivilegeListItem";
 import { useQuery } from "@apollo/client";
@@ -42,7 +42,7 @@ export function PriviligesListAll({
 
   return (
     <Stack direction={"column"} padding={1}>
-      {/*<CreateEntityDialog*/}
+      {/*<FormDialogue*/}
       {/*    open={open}*/}
       {/*    setOpen={setOpen}*/}
       {/*    title={"creation d'un privilege"}*/}
