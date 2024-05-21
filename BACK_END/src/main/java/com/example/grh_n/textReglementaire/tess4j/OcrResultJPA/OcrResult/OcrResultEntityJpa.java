@@ -45,6 +45,12 @@ public class OcrResultEntityJpa {
    @JoinColumn(name = "type")
    private TypeTexteReglementaire typeTexteReglementaire ;
 
+   @ManyToOne(fetch = FetchType.LAZY)
+   private RTextDomaine domaine ;
+
+   @ManyToOne()
+   private RTextAutorite textAutorite ;
+
    @OneToMany(mappedBy = "ocrResultEntityJpa" , cascade = CascadeType.REMOVE)
    List<OcrResultPageAsImage> ocrResultPagesAsImages ;
 

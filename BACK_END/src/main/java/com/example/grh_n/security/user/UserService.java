@@ -129,6 +129,7 @@ public class UserService {
       Set<Role> roles = user.getRoles() ;
       roles.add(role) ;
       user.setRoles(roles);
+
       userRepository.save(user) ;
       return true ;
    }
