@@ -10,7 +10,7 @@ const PdfFile = () => {
       style={{
         height: "calc(100vh - 65px)",
       }}
-      className={"p-1 overflow-clip"}
+      className={"overflow-clip"}
     >
       <Stack direction={"row"} height={"100%"}>
         <Stack flex={3}>
