@@ -6,41 +6,51 @@ import {
   Button,
   Paper,
   Tooltip,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Chip,
+  TextField as MuiTextField,
+  Autocomplete as MuiAutoComplete,
 } from "@mui/material";
 import { TextField, ToggleButtonGroup } from "formik-mui";
 
 import { useQuery } from "@apollo/client";
 import {
+  Business,
   Deselect,
-  Error,
   ExpandLess,
   ExpandMore,
   RestartAltRounded,
   SearchRounded,
+  SelectAll,
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
   selectElasticSearchInput,
   setElasticSearchInput,
-} from "../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
+} from "../../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import {
   ConfidentialiteCountDocument,
+  FindAllDomainesDocument,
+  FindAllTextAutoritiesDocument,
+  FindAllTextAutoritiesQuery,
   TypeTextReglementaireCountDocument,
-} from "../../../../_generated_gql_/graphql.ts";
+} from "../../../../../_generated_gql_/graphql.ts";
 import { DatePicker } from "formik-mui-x-date-pickers";
-import { ConfidentialiteChip } from "../../../textReglementaire/pages/FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip.tsx";
-import { arraysContainSameElements } from "../../utilities/utilities.ts";
-import { AutoSubmit } from "../formik/AutoSubmit.tsx";
-import { useAppDispatch } from "../../../../redux/hooks.ts";
+import { ConfidentialiteChip } from "../../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip.tsx";
+import { arraysContainSameElements } from "../../../../common/utilities/utilities.ts";
+import { AutoSubmit } from "../../../../common/components/formik/AutoSubmit.tsx";
+import { useAppDispatch } from "../../../../../redux/hooks.ts";
 import {
   closeSearchPanel,
   openSearchPanel,
   selectTextReglementaireSearchPanelOpen,
-} from "../../../../redux/features/elasticSearch/textReglemetaireUISlice.ts";
+} from "../../../../../redux/features/elasticSearch/textReglemetaireUISlice.ts";
 import { LoadingButton } from "@mui/lab";
-import { LoadingConfidentialiteButtons } from "../../../textReglementaire/pages/ocr/searchPage/LoadingConfidentialiteButtons.tsx";
-import { setSelectedPdfViewer } from "../../../../redux/features/folderAndFiles/foldersSlice.ts";
+import { LoadingConfidentialiteButtons } from "./LoadingConfidentialiteButtons.tsx";
+import { setSelectedPdfViewer } from "../../../../../redux/features/folderAndFiles/foldersSlice.ts";
 
 // todo choose icons for type texte reglmentaire and for confidentialite
 
@@ -55,6 +65,9 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
 
   const { data: allConfidentialites, loading: loadingConfidentialites } =
     useQuery(ConfidentialiteCountDocument);
+
+  const { data: autorites } = useQuery(FindAllTextAutoritiesDocument);
+  const { data: domaines } = useQuery(FindAllDomainesDocument);
 
   useEffect(() => {
     console.log(
@@ -314,40 +327,151 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
                 </Stack>
 
                 {open && (
-                  <Stack justifyContent={"center"} spacing={1}>
-                    <LoadingButton
-                      sx={{
-                        height: 60,
-                        width: 180,
-                        fontSize: 18,
-                        fontWeight: "bold",
-                      }}
-                      variant={"contained"}
-                      startIcon={
-                        <SearchRounded sx={{ width: 40, height: 40 }} />
-                      }
-                      loading={isLoading}
-                      type={"submit"}
-                    ></LoadingButton>
-
-                    <LoadingButton
-                      sx={{
-                        height: 60,
-                        width: 180,
-                        fontSize: 18,
-                        fontWeight: "bold",
-                      }}
-                      variant={"outlined"}
-                      startIcon={
-                        <RestartAltRounded
-                          sx={{ width: 40, height: 40, fontSize: "bold" }}
+                  <>
+                    <Stack
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      spacing={1}
+                    >
+                      <Field
+                        component={ToggleButtonGroup}
+                        name="domaines"
+                        type="checkbox"
+                        exlusive={true}
+                      >
+                        {domaines?.findAllDomaines?.map((option) => (
+                          <Tooltip title={option?.libFr}>
+                            <ToggleButton
+                              key={option?.id}
+                              value={option?.id}
+                              aria-label={option?.libAr}
+                            >
+                              <Typography>{option?.libAr}</Typography>
+                            </ToggleButton>
+                          </Tooltip>
+                        ))}
+                        {loadingConfidentialites && (
+                          <LoadingConfidentialiteButtons size={4} />
+                        )}
+                      </Field>
+                      {autorites && (
+                        <MuiAutoComplete
+                          name={"autorites"}
+                          multiple
+                          fullWidth={true}
+                          id="autorites"
+                          options={[
+                            {
+                              id: "-1",
+                              rhRunite: {
+                                abreviationAr: "الكل",
+                                abreviationFr: "الكل",
+                                libUniteeAr: "الكل",
+                              },
+                            },
+                            ...autorites?.findAllTextAutorities,
+                          ]}
+                          renderOption={(
+                            props,
+                            option: FindAllTextAutoritiesQuery["findAllTextAutorities"][0],
+                          ) => {
+                            return (
+                              <Tooltip
+                                placement={"right"}
+                                title={option?.rhRunite?.libUniteeAr}
+                              >
+                                <ListItem dir={"ltr"} {...props}>
+                                  <ListItemAvatar>
+                                    {option?.id === "-1" ? (
+                                      <SelectAll></SelectAll>
+                                    ) : (
+                                      <Business></Business>
+                                    )}
+                                  </ListItemAvatar>
+                                  <ListItemText
+                                    sx={{ textAlign: "center" }}
+                                    primary={option?.rhRunite.abreviationFr}
+                                  ></ListItemText>
+                                </ListItem>
+                              </Tooltip>
+                            );
+                          }}
+                          freeSolo
+                          onChange={(e, value) => {
+                            console.log(value);
+                            setFieldValue(
+                              "autorites",
+                              value?.map((item) => item?.id),
+                            ).then(() => null);
+                          }}
+                          renderTags={(value, getTagProps) =>
+                            value.map((option, index) => (
+                              <Chip
+                                variant="outlined"
+                                label={option?.rhRunite?.abreviationFr}
+                                {...getTagProps({ index })}
+                                icon={
+                                  option?.id === "-1" ? (
+                                    <SelectAll></SelectAll>
+                                  ) : (
+                                    <Business></Business>
+                                  )
+                                }
+                              />
+                            ))
+                          }
+                          getOptionKey={(
+                            option: FindAllTextAutoritiesQuery["findAllTextAutorities"][0],
+                          ) => option?.id}
+                          getOptionLabel={(
+                            option: FindAllTextAutoritiesQuery["findAllTextAutorities"][0],
+                          ) => option?.rhRunite?.abreviationFr}
+                          renderInput={(params) => (
+                            <MuiTextField
+                              fullWidth={true}
+                              {...params}
+                              sx={{ height: 30 }}
+                              label="الهيئة"
+                            />
+                          )}
                         />
-                      }
-                      loading={isLoading}
-                      // type={"submit"}
-                      onClick={handleReset}
-                    ></LoadingButton>
-                  </Stack>
+                      )}
+                    </Stack>
+                    <Stack justifyContent={"center"} spacing={1}>
+                      <LoadingButton
+                        sx={{
+                          height: 60,
+                          width: 180,
+                          fontSize: 18,
+                          fontWeight: "bold",
+                        }}
+                        variant={"contained"}
+                        startIcon={
+                          <SearchRounded sx={{ width: 40, height: 40 }} />
+                        }
+                        loading={isLoading}
+                        type={"submit"}
+                      ></LoadingButton>
+
+                      <LoadingButton
+                        sx={{
+                          height: 60,
+                          width: 180,
+                          fontSize: 18,
+                          fontWeight: "bold",
+                        }}
+                        variant={"outlined"}
+                        startIcon={
+                          <RestartAltRounded
+                            sx={{ width: 40, height: 40, fontSize: "bold" }}
+                          />
+                        }
+                        loading={isLoading}
+                        // type={"submit"}
+                        onClick={handleReset}
+                      ></LoadingButton>
+                    </Stack>
+                  </>
                 )}
               </Stack>
             </Paper>

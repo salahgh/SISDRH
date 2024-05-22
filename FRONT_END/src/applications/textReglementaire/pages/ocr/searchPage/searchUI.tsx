@@ -2,6 +2,7 @@ import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
+  ElasticSearchInput,
   FindElasticOcrResultsAllCriteriasApiArg,
   useFindElasticOcrResultsAllCriteriasMutation,
 } from "../../../../../redux/mainApi";
@@ -22,7 +23,7 @@ import {
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { selectLoggedInUser } from "../../../../../redux/features/auth/userSlice";
-import ElasticSearchForm from "../../../../common/components/forms/ElasticSearchForm.tsx";
+import ElasticSearchForm from "./ElasticSearchForm.tsx";
 import HOcrViewer from "../../../../common/components/ocr/ocrSearchViewer/HOcrViewer.tsx";
 import { selectTextReglementaireSearchPanelOpen } from "../../../../../redux/features/elasticSearch/textReglemetaireUISlice.ts";
 
@@ -84,13 +85,15 @@ const SearchUI = () => {
             return true;
           } else return false;
         }),
+        autorites: values.autorites,
         reference: values.reference,
+        domaines: values.domaines,
       }),
     );
     helpers.setSubmitting(false);
   };
   // todo change color selection for toggle buttons
-  const getResults = (values) => {
+  const getResults = (values: ElasticSearchInput) => {
     const searchInput: FindElasticOcrResultsAllCriteriasApiArg = {
       elasticSearchInput: {
         dateReferenceDebut: values.dateReferenceDebut,
@@ -99,6 +102,8 @@ const SearchUI = () => {
         searchToken: values.searchToken,
         idsTypeTextReglementaire: values.idsTypeTextReglementaire,
         isConfidentialite: values.isConfidentialite,
+        domaines: values.domaines,
+        autorites: values.autorites,
         page: hitsPage.pageNumber,
         size: hitsPage.pageSize ? hitsPage.pageSize : 10,
         innerPage: innerHitsPage.pageNumber,

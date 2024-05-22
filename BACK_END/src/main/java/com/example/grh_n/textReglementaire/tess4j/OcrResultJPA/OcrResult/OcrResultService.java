@@ -1,7 +1,6 @@
 package com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult;
 
 import com.example.grh_n.dbdsn.entities.dto.CountParDiplomeCivile;
-import com.example.grh_n.security.user.OcrResultUserGrantService;
 import com.example.grh_n.security.user.User;
 import com.example.grh_n.security.user.UserService;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrIndexElasticRepository;

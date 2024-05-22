@@ -20,7 +20,7 @@ public class AutoriteService {
     }
 
     @GraphQLQuery
-    public List<RTextAutorite> getAllTextAutorities() {
+    public List<RTextAutorite> findAllTextAutorities() {
         return (List<RTextAutorite>) autoriteRepository.findAll();
     }
 }

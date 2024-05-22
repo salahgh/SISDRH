@@ -156,3 +156,30 @@ query findAllOcrResultEntityByFoldersContaining ( $folderId : Long ,    $paginat
         }
     }
 }
+query findAllDomaines{
+    findAllDomaines{
+        id
+        libAr
+        libFr
+    }
+}
+query findAllTextAutorities{
+    findAllTextAutorities {
+        id
+        rhRunite {
+            abreviationAr
+            abreviationFr
+            dessoute
+            libUniteeAr
+            libUniteeFr
+            regionMilitaire {
+                id
+                libAbrRegionAr
+                libAbrRegionFr
+                libRegionAr
+                libRegionFr
+                trie
+            }
+        }
+    }
+}

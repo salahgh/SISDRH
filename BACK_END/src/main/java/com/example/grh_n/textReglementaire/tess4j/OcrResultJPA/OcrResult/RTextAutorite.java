@@ -14,7 +14,7 @@ import lombok.*;
 public class RTextAutorite {
 
     @Id
-    Long id ;
+    String id ;
 
     @OneToOne
     @MapsId("id")

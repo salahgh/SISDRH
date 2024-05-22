@@ -10,7 +10,6 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { Dispatch, SetStateAction } from "react";
 import ASSETS from "../../../../resources/ASSETS";
-import { ErrorResponse } from "../../../../redux/mainApi";
 import { useQuery } from "@apollo/client";
 import {
   AllConfidentialitesDocument,

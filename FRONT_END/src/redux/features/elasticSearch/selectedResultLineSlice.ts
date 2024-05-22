@@ -9,6 +9,8 @@ interface ElasticSearchInputInterface {
   searchToken: string;
   idsTypeTextReglementaire: string[];
   isConfidentialite: string[];
+  domaines: string[];
+  autorites: string[];
 }
 
 interface InitialStateInterface {
@@ -41,6 +43,8 @@ const initialState: InitialStateInterface = {
     searchToken: "",
     idsTypeTextReglementaire: [],
     isConfidentialite: [],
+    autorites: [],
+    domaines: [],
   },
 };
 

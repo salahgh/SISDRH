@@ -13,7 +13,7 @@ public class RhRunite {
 
     @Id
     @Column(name = "ID", nullable = false, precision = 0)
-    private Long id;
+    private String id;
 
     @Column(name = "LIB_UNITEE_FR", nullable = true)
     private String libUniteeFr;
