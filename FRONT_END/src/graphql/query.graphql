@@ -66,13 +66,7 @@ query MemoryUsage{
         max
         used
     }}
-query AllTypeTexteReglementaires {
-    allTypeTexteReglementaires {
-        id ,
-        libTypeTexteAr ,
-        libTypeTexteFr
-    }
-}
+
 query TypeTexteReglementaireByLibFr($libFr : String){
     typeTexteReglementaireByLib(lib: $libFr){
         libTypeTexteFr ,

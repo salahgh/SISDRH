@@ -350,9 +350,9 @@ export default function ElasticSearchForm({ handleSubmit, isLoading }) {
                             </ToggleButton>
                           </Tooltip>
                         ))}
-                        {loadingConfidentialites && (
-                          <LoadingConfidentialiteButtons size={4} />
-                        )}
+                        {/*{loadingConfidentialites && (*/}
+                        {/*  <LoadingConfidentialiteButtons size={4} />*/}
+                        {/*)}*/}
                       </Field>
                       {autorites && (
                         <MuiAutoComplete

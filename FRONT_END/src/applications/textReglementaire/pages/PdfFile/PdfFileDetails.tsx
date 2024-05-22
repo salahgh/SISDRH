@@ -17,6 +17,7 @@ import * as React from "react";
 import { format } from "date-fns";
 import { useState } from "react";
 import { FormDialogue } from "../../../common/components/dialogs/FormDialogue.tsx";
+import UpdateTextInfoForm from "../upload/UpdateTextInfoForm.tsx";
 
 export const PdfFileDetails = () => {
   const selectedFileId = useParams().fildId;
@@ -45,8 +46,25 @@ export const PdfFileDetails = () => {
         open={open}
         setOpen={setOpen}
         title={"تحيين معلومات النص القانوني"}
-        content={<div>content</div>}
-        fullWidth={false}
+        content={
+          <div>
+            <UpdateTextInfoForm
+              initialValues={{
+                reference: ocrResultJpa?.ocrResultByid?.reference,
+                dateReference: ocrResultJpa?.ocrResultByid?.dateReference,
+                idAutorite: ocrResultJpa?.ocrResultByid?.textAutorite?.id,
+                idDomaine: ocrResultJpa?.ocrResultByid?.domaine?.id,
+                idTypeTextReglementaire:
+                  ocrResultJpa?.ocrResultByid?.typeTexteReglementaire?.id,
+                isConfidentialite:
+                  ocrResultJpa?.ocrResultByid?.confidentialite?.id,
+                id: ocrResultJpa?.ocrResultByid?.id,
+              }}
+              setOpen={setOpen}
+            ></UpdateTextInfoForm>
+          </div>
+        }
+        fullWidth={true}
         maxWidth={"xl"}
         mode={"update"}
       ></FormDialogue>
@@ -118,6 +136,21 @@ export const PdfFileDetails = () => {
             ocrResultJpa?.ocrResultByid?.confidentialite.libConfidentialiteAr,
         }}
       />
+      <Typography variant={"h5"}>
+        {"المجال: " + ocrResultJpa?.ocrResultByid?.domaine?.libAr}
+      </Typography>
+      <Stack direction={"row"} spacing={1}>
+        <Typography variant={"h5"}>هيئة الصدور: </Typography>
+        <Typography
+          fontWeight={"bold"}
+          variant={"h5"}
+          sx={{ color: "#eb6c02" }}
+        >
+          {ocrResultJpa?.ocrResultByid?.textAutorite?.rhRunite?.abreviationFr
+            ? ocrResultJpa?.ocrResultByid?.textAutorite?.rhRunite?.abreviationFr
+            : "غير محدد"}{" "}
+        </Typography>
+      </Stack>
       <Button
         fullWidth={true}
         variant={"contained"}
