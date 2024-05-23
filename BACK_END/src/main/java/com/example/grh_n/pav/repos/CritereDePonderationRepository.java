@@ -1,6 +1,6 @@
 package com.example.grh_n.pav.repos;
 
-import com.example.grh_n.pam.entities.RhPoste;
+import com.example.grh_n.rh.entities.REntities.ted.RhPoste;
 import com.example.grh_n.pav.entities.CritereDePonderation;
 import com.example.grh_n.rh.entities.REntities.RhRGrade;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;

@@ -179,6 +179,10 @@ export const routs = {
     name: "PavHome",
     protected: true,
   },
+  RhHome: {
+    name: "RhHome",
+    protected: true,
+  },
 };
 
 export const getLink = (item: { protected: boolean; name: string }) => {

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ToString
-@Table(name = "TED_R_QUALIFICATION")
+@Table(name = "RH_TED_R_QUALIFICATION")
 public class RhRQualification {
 
     @Id

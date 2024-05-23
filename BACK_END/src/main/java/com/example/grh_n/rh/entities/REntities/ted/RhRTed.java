@@ -14,6 +14,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@Table(name = "RH_TED_R")
 public class RhRTed {
 
     @Id
@@ -25,34 +26,26 @@ public class RhRTed {
     private String observation ;
 
     @ManyToOne
-    @JoinColumn(name = "ID_HABILITATION")
     private Habilitation habilitation;
 
     @ManyToOne
-    @JoinColumn(name = "ID_QUALIFICATION")
     private RhRQualification qualification ;
 
     @ManyToOne
-    @JoinColumn(name = "ID_ARME")
     private RhRArme arme ;
 
     @ManyToOne
-    @JoinColumn(name = "ID_SPECIALITE_TED")
     private RhRSpecialiteTed specialiteTed ;
 
     @ManyToOne
-    @JoinColumn(name = "ID_ARMEMENT")
     private RhRArmementTed armementTed ;
 
+    @ManyToOne RhTedFonction fonction ;
+    @ManyToOne RhPoste poste ;
 
     // todo voir le cas du off superieur !!!
     @ManyToOne
     @JoinColumn(name = "ID_CAT_GRADE")
     private RhRCatGrade catGrade ;
-
-    @ManyToOne
-    @JoinColumn(name = "ID_TYPE_STRUCTURE_SN")
-    private RhRTypeStructureSn typeStructureSn ;
-
 
 }

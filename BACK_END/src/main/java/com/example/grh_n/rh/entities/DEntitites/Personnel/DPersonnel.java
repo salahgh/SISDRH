@@ -2,7 +2,7 @@ package com.example.grh_n.rh.entities.DEntitites.Personnel;
 
 import com.example.grh_n.Photos.Photo;
 import com.example.grh_n.dbdsn.entities.PamOff2024;
-import com.example.grh_n.pam.entities.RhPoste;
+import com.example.grh_n.rh.entities.REntities.ted.RhPoste;
 import com.example.grh_n.rh.entities.REntities.RhRArme;
 import com.example.grh_n.rh.entities.REntities.RhRGrade;
 import jakarta.persistence.*;

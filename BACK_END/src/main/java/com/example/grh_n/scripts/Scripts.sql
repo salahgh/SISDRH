@@ -77,6 +77,21 @@ select * from A_USER AU ;
 
 select * from A_USER_PRIVILEGE AUP ;
 
+select LIB_STRUCTURE_AR , trim(replace(LIB_STRUCTURE_AR , 'ـ' , '')) from RH_TED_STRUCTURE_INTERNE where LIB_STRUCTURE_AR like '%ـ%';
+update RH_TED_STRUCTURE_INTERNE set LIB_STRUCTURE_AR = trim(replace(LIB_STRUCTURE_AR , 'ـ' , '')) ;
+
+commit ;
+
+select *
+from RH_TED_TYPE_STRUCTURE_INTERNE ;
+insert into RH_TED_TYPE_STRUCTURE_INTERNE (ID, LIB_AR, LIB_FR) VALUES (5 , 'مفتشية' , 'inspection') ;
+insert into RH_TED_TYPE_STRUCTURE_INTERNE (ID, LIB_AR, LIB_FR) VALUES (6 , 'مديرية فرعية' , 'sous-direction') ;
+update RH_TED_STRUCTURE_INTERNE set TED_NUM_ID = '5004' ;
+update RH_TED_STRUCTURE_INTERNE set TYPE_STRUCTURE_INTERNE_ID = 6 where ID = '102' ;
+commit  ;
+
+select *
+from RH_TED_TYPE_STRUCTURE_INTERNE;
 
 
 

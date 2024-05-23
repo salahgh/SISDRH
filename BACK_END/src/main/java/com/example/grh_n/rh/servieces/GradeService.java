@@ -7,6 +7,7 @@ import com.example.grh_n.rh.repos.RhRCatGradeRepository;
 import com.example.grh_n.rh.repos.RhRGradeRepository;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +17,8 @@ import java.util.Optional;
 @GraphQLApi
 public class GradeService {
 
-    private final RhRGradeRepository rhRGradeRepository ;
-    private final RhRCatGradeRepository rhRCatGradeRepository ;
+    private final RhRGradeRepository rhRGradeRepository;
+    private final RhRCatGradeRepository rhRCatGradeRepository;
 
     public GradeService(RhRGradeRepository rhRGradeRepository, RhRCatGradeRepository rhRCatGradeRepository) {
         this.rhRGradeRepository = rhRGradeRepository;
@@ -26,21 +27,21 @@ public class GradeService {
 
     @GraphQLQuery
     public Optional<RhRGrade> getGradeById(Long gradeId) {
-        return rhRGradeRepository.findById(gradeId) ;
+        return rhRGradeRepository.findById(gradeId);
     }
 
     @GraphQLQuery
-    public List<RhRGrade> getAllGrades(){
+    public List<RhRGrade> getAllGrades() {
         return (List<RhRGrade>) rhRGradeRepository.findAll();
     }
 
     @GraphQLQuery
-    public Optional<RhRCatGrade> getCatGradById(Long id) {
-        return rhRCatGradeRepository.findById(id);
+    public RhRCatGrade getCatGradById(Long id) {
+        return rhRCatGradeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("catGrade with id " + id + " does not exist"));
     }
 
     @GraphQLQuery
-    public List<RhRCatGrade> getAllCatGrades(){
+    public List<RhRCatGrade> getAllCatGrades() {
         return (List<RhRCatGrade>) rhRCatGradeRepository.findAll();
     }
 

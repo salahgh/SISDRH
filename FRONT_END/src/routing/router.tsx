@@ -17,6 +17,7 @@ import PdfFile from "../applications/textReglementaire/pages/PdfFile/PdfFile.tsx
 import UploadMainPage from "../applications/textReglementaire/pages/upload/uploadMainPage/UploadMainPage.tsx";
 import SearchUI from "../applications/textReglementaire/pages/ocr/searchPage/searchUI.tsx";
 import OcrJobMain from "../applications/textReglementaire/pages/OcrJobMonitoring/OcrJobMain.tsx";
+import { Home } from "../applications/rh/Home.tsx";
 import SettingTabs from "../applications/common/UserAdministration/user/SettingsTabs.tsx";
 
 export const router = createBrowserRouter([
@@ -56,6 +57,11 @@ export const router = createBrowserRouter([
         path: routs.PersonnelNoteDataGrid.name,
         element: <PersonnelNoteDataGrid />,
       },
+      {
+        path: routs.RhHome.name,
+        element: <Home />,
+      },
+
       //
       //     {
       //       path: routs.User.name,

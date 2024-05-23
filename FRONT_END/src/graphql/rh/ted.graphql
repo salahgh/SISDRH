@@ -1,0 +1,248 @@
+query tedById($tedId : Long){
+    tedById(tedId: $tedId){
+        id
+        arme {
+            id
+            libArmeFr
+            libArmeAr
+        }
+        armementTed {
+            id
+            libArmementAr
+            libArmementFr
+        }
+        catGrade {
+            cat
+            catGrade
+            libCatAr
+            libCatFr
+            libCatGradeAr
+            libCatGradeFr
+        }
+        habilitation {
+            id
+            abbreviation
+            libHabilitationAr
+            libHabilitationFr
+        }
+        nombre
+        observation
+        qualification {
+            id
+            libQualificatinFr
+            libQualificationAr
+            tri
+        }
+        specialiteTed {
+            id
+            libSpecialiteAr
+            libSpecialiteFr
+        }
+        fonction {
+            id
+            chef
+            adjoint
+            libFonctionAr
+            libFonctionFr
+            structureInterne {
+                id
+                libStructureAr
+                libStructureFr
+                pere {
+                    id
+                    libStructureAr
+                    libStructureFr
+                }
+                typeStructureInterne {
+                    id
+                    libAr
+                    libFr
+                }
+            }
+        }
+    }
+}
+query allTedsPaged($page : PaginationInput){
+    allTedsPaged(pageable: $page){
+        content {
+            id
+            arme {
+                id
+                libArmeFr
+                libArmeAr
+            }
+            armementTed {
+                id
+                libArmementAr
+                libArmementFr
+            }
+            catGrade {
+                cat
+                catGrade
+                libCatAr
+                libCatFr
+                libCatGradeAr
+                libCatGradeFr
+            }
+            habilitation {
+                id
+                abbreviation
+                libHabilitationAr
+                libHabilitationFr
+            }
+            nombre
+            observation
+            qualification {
+                id
+                libQualificatinFr
+                libQualificationAr
+                tri
+            }
+            specialiteTed {
+                id
+                libSpecialiteAr
+                libSpecialiteFr
+            }
+            fonction {
+                id
+                chef
+                adjoint
+                libFonctionAr
+                libFonctionFr
+                structureInterne {
+                    id
+                    libStructureAr
+                    libStructureFr
+                    pere {
+                        id
+                        libStructureAr
+                        libStructureFr
+                    }
+                    typeStructureInterne {
+                        id
+                        libAr
+                        libFr
+                    }
+                }
+            }
+        }
+        numberOfElements
+    }
+}
+mutation deleteTed($id : Long){
+    deleteTed(id: $id)
+}
+mutation createTed($tedDtoInput : TedDtoInput){
+    createTed(tedDto: $tedDtoInput){
+        id
+    }
+}
+query allCatGrades{
+    allCatGrades {
+        cat
+        catGrade
+        libCatAr
+        libCatFr
+        libCatGradeAr
+        libCatGradeFr
+    }
+}
+query allAremementTed{
+    allAremementTed{
+        id
+        libArmementAr
+        libArmementFr
+    }
+}
+query tedArmes{
+    tedArmes {
+        id
+        libArmeAr
+        libArmeFr
+    }
+}
+query allSpecialitesTed{
+    allSpecialitesTed {
+        id
+        libSpecialiteAr
+        libSpecialiteFr
+    }
+}
+query allQualifications{
+    allQualifications {
+        id
+        libQualificatinFr
+        libQualificationAr
+    }
+}
+query allPostes{
+    allPostes {
+        idPoste
+        trie_
+    }
+}
+
+query findRhTedStructureInterneById($id : String){
+    findRhTedStructureInterneById(id: $id){
+        id
+        libStructureAr
+        libStructureFr
+        typeStructureInterne {
+            id
+            libAr
+            libFr
+        }
+        fils {
+            id
+            libStructureAr
+            libStructureFr
+            typeStructureInterne {
+                id
+                libAr
+                libFr
+            }
+            fils {
+                id
+                libStructureAr
+                libStructureFr
+                typeStructureInterne {
+                    id
+                    libAr
+                    libFr
+                }
+                fils {
+                    id
+                    libStructureAr
+                    libStructureFr
+                    typeStructureInterne {
+                        id
+                        libAr
+                        libFr
+                    }
+                    fils {
+                        id
+                        libStructureAr
+                        libStructureFr
+                        typeStructureInterne {
+                            id
+                            libAr
+                            libFr
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+mutation createRhStructureInterne($structureInterne : RhTedStructureInterneInput){
+    createRhTedStructureInterne(structureInterne: $structureInterne){
+        id
+        libStructureAr
+        libStructureFr
+        pere {
+            id
+            libStructureAr
+            libStructureFr
+        }
+    }
+}

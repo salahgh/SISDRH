@@ -63,6 +63,7 @@ public class OcrResultSearchService {
     @PostMapping
     public SearchHits<OcrResultEntityElastic_2> findElasticOcrResultsAllCriterias(
             @RequestBody ElasticSearchInput elasticSearchInput
+
     ) {
 
         logger.info(elasticSearchInput.toString());
