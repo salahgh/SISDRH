@@ -17,3 +17,13 @@ insert into R_OCR_RESULT_RELATION_TYPE(ID, LIB_TYP_RELATION_FR, LIB_TYPE_RELATIO
 VALUES (2, 'ANULE', 'يبيب') ;
 
 commit;
+
+insert into RTEXT_AUTORITE select * from RTEXT_AUTORITE@GRH_N_LINK;
+select * from GRH_N.RTEXT_AUTORITE@GRH_N_LINK;
+
+insert into RTEXT_DOMAINE select * from GRH_N.RTEXT_DOMAINE@GRH_N_LINK;
+select * from GRH_N.RTEXT_DOMAINE@GRH_N_LINK;
+
+select DOMAINE_ID  from OCR_RESULT ;
+update OCR_RESULT set DOMAINE_ID = 1 ;
+commit ;

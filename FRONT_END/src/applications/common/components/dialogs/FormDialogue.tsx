@@ -58,7 +58,9 @@ export function FormDialogue({
           </Avatar>
         </Stack>
       </DialogTitle>
-      <DialogContent sx={{ width: "100%", padding: padding }}>
+      <DialogContent
+        sx={{ width: "100%", padding: padding, height: "calc(100vh)" }}
+      >
         {cloneElement(content, { setOpen })}
       </DialogContent>
     </Dialog>

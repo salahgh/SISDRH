@@ -2,7 +2,10 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectSelectedFileId } from "../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { useQuery } from "@apollo/client";
-import { GetPdfFileDocument } from "../../../../_generated_gql_/graphql.ts";
+import {
+  GetPdfFileDocument,
+  OcrResultPdfDocument,
+} from "../../../../_generated_gql_/graphql.ts";
 import { Button, Stack, Typography } from "@mui/material";
 import { OcrDoneChip } from "./relations/OcrDoneChip.tsx";
 import {
@@ -34,6 +37,15 @@ export const PdfFileDetails = () => {
     },
   });
 
+  const { data: pdfFile, loading: pdfFileLoading } = useQuery(
+    OcrResultPdfDocument,
+    {
+      variables: {
+        id: s,
+      },
+    },
+  );
+
   const [open, setOpen] = useState(false);
 
   function handlShowUpdateDetailsFormDialogue() {
@@ -47,22 +59,21 @@ export const PdfFileDetails = () => {
         setOpen={setOpen}
         title={"تحيين معلومات النص القانوني"}
         content={
-          <div>
-            <UpdateTextInfoForm
-              initialValues={{
-                reference: ocrResultJpa?.ocrResultByid?.reference,
-                dateReference: ocrResultJpa?.ocrResultByid?.dateReference,
-                idAutorite: ocrResultJpa?.ocrResultByid?.textAutorite?.id,
-                idDomaine: ocrResultJpa?.ocrResultByid?.domaine?.id,
-                idTypeTextReglementaire:
-                  ocrResultJpa?.ocrResultByid?.typeTexteReglementaire?.id,
-                isConfidentialite:
-                  ocrResultJpa?.ocrResultByid?.confidentialite?.id,
-                id: ocrResultJpa?.ocrResultByid?.id,
-              }}
-              setOpen={setOpen}
-            ></UpdateTextInfoForm>
-          </div>
+          <UpdateTextInfoForm
+            initialValues={{
+              reference: ocrResultJpa?.ocrResultByid?.reference,
+              dateReference: ocrResultJpa?.ocrResultByid?.dateReference,
+              idAutorite: ocrResultJpa?.ocrResultByid?.textAutorite?.id,
+              idDomaine: ocrResultJpa?.ocrResultByid?.domaine?.id,
+              idTypeTextReglementaire:
+                ocrResultJpa?.ocrResultByid?.typeTexteReglementaire?.id,
+              isConfidentialite:
+                ocrResultJpa?.ocrResultByid?.confidentialite?.id,
+              id: ocrResultJpa?.ocrResultByid?.id,
+            }}
+            setOpen={setOpen}
+            pdfData={pdfFile?.ocrResultPdf}
+          ></UpdateTextInfoForm>
         }
         fullWidth={true}
         maxWidth={"xl"}

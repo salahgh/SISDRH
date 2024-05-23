@@ -1,12 +1,12 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import { Field, Form, Formik, FormikHelpers, FormikValues } from "formik";
+import { Field, Form, Formik, FormikValues } from "formik";
 import {
   Typography,
   Stack,
   ToggleButton,
   Tooltip,
-  ToggleButtonGroup,
+  LinearProgress,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import ASSETS from "../../../../resources/ASSETS";
@@ -34,9 +34,11 @@ import { Dispatch, SetStateAction } from "react";
 export default function UpdateTextInfoForm({
   initialValues,
   setOpen,
+  pdfData,
 }: {
   initialValues: OcrResultUpdateDtoInput;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  pdfData: string;
 }) {
   // todo skeleton loader for type of documents toggle button groups
 
@@ -84,141 +86,156 @@ export default function UpdateTextInfoForm({
       alignItems={"center"}
       justifyContent={"space-between"}
       padding={0}
-      spacing={3}
+      spacing={1}
+      height={"100%"}
     >
-      <Avatar sx={{ width: 100, height: 100, bgcolor: "secondary.main" }}>
-        <img src={ASSETS.PDF} style={{ width: 60, height: 60 }} alt={"f"} />
-      </Avatar>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({
-          submitForm,
-          isSubmitting,
-          isValid,
-          values,
-          dirty,
-          setFieldValue,
-        }) => {
+        {({ submitForm, isSubmitting, isValid, dirty }) => {
           return (
-            <Form style={{ padding: 0, width: "100%" }}>
-              <Stack alignItems={"center"} spacing={3}>
-                <Stack direction={"row"} spacing={2}>
-                  <Field
-                    component={TextField}
-                    label="reference "
-                    name={"reference"}
-                    inputProps={{
-                      style: {
-                        textAlign: "center",
-                        width: 150,
-                      },
-                    }}
-                  />
-
-                  <Field
-                    component={DatePicker}
-                    name={"dateReference"}
-                    label={"Date reference"}
-                    format="dd/MM/yyyy"
-                    inputProps={{
-                      style: {
-                        textAlign: "center",
-                        width: 200,
-                      },
-                    }}
-                  />
-                </Stack>
-
-                <Field
-                  component={MuiToggleButtonGroup}
-                  name="idTypeTextReglementaire"
-                  type="checkbox"
-                  exclusive={true}
+            <Form style={{ padding: 0, width: "100%", height: "100%" }}>
+              <Stack
+                width={"100%"}
+                direction={"row"}
+                className={""}
+                height={"100%"}
+                spacing={1}
+              >
+                <Stack
+                  width={"50%"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  spacing={1}
                 >
-                  {allTypeTexteReglementaires?.allTypeTexteReglementaires.map(
-                    (option) => (
-                      <Tooltip title={option?.libTypeTexteFr}>
+                  <Stack direction={"row"} spacing={1}>
+                    <Field
+                      component={TextField}
+                      label="reference "
+                      name={"reference"}
+                      inputProps={{
+                        style: {
+                          textAlign: "center",
+                          width: 150,
+                        },
+                      }}
+                    />
+
+                    <Field
+                      component={DatePicker}
+                      name={"dateReference"}
+                      label={"Date reference"}
+                      format="dd/MM/yyyy"
+                      inputProps={{
+                        style: {
+                          textAlign: "center",
+                          width: 200,
+                        },
+                      }}
+                    />
+                  </Stack>
+
+                  <Field
+                    component={MuiToggleButtonGroup}
+                    name="idTypeTextReglementaire"
+                    type="checkbox"
+                    exclusive={true}
+                  >
+                    {allTypeTexteReglementaires?.allTypeTexteReglementaires.map(
+                      (option) => (
+                        <Tooltip title={option?.libTypeTexteFr}>
+                          <ToggleButton
+                            key={option?.id}
+                            value={option?.id}
+                            aria-label={option?.libTypeTexteAr}
+                          >
+                            <Typography>{option?.libTypeTexteAr}</Typography>
+                          </ToggleButton>
+                        </Tooltip>
+                      ),
+                    )}
+                  </Field>
+
+                  <Field
+                    component={MuiToggleButtonGroup}
+                    name="isConfidentialite"
+                    type="checkbox"
+                    exclusive={true}
+                  >
+                    {allConfidentialites?.allConfidentialites
+                      ?.filter((item) => true)
+                      ?.map((option) => (
                         <ToggleButton
-                          key={option?.id}
                           value={option?.id}
-                          aria-label={option?.libTypeTexteAr}
+                          aria-label={option?.libConfidentialiteAr}
+                          sx={{ width: "100%" }}
                         >
-                          <Typography>{option?.libTypeTexteAr}</Typography>
+                          <ConfidentialiteChip confidentialite={option} />
                         </ToggleButton>
-                      </Tooltip>
-                    ),
-                  )}
-                </Field>
+                      ))}
+                  </Field>
 
-                <Field
-                  component={MuiToggleButtonGroup}
-                  name="isConfidentialite"
-                  type="checkbox"
-                  exclusive={true}
-                >
-                  {allConfidentialites?.allConfidentialites
-                    ?.filter((item) => true)
-                    ?.map((option) => (
+                  <Field
+                    component={MuiToggleButtonGroup}
+                    name="idDomaine"
+                    type="checkbox"
+                    exclusive={true}
+                  >
+                    {allDomaines?.findAllDomaines?.map((option) => (
                       <ToggleButton
                         value={option?.id}
-                        aria-label={option?.libConfidentialiteAr}
-                        sx={{ width: "100%" }}
+                        aria-label={option?.libAr}
                       >
-                        <ConfidentialiteChip confidentialite={option} />
+                        <Typography>{option?.libAr}</Typography>
                       </ToggleButton>
                     ))}
-                </Field>
+                  </Field>
 
-                <Field
-                  component={MuiToggleButtonGroup}
-                  name="idDomaine"
-                  type="checkbox"
-                  exclusive={true}
-                >
-                  {allDomaines?.findAllDomaines?.map((option) => (
-                    <ToggleButton
-                      value={option?.id}
-                      aria-label={option?.libAr}
-                      sx={{ width: "100%" }}
-                    >
-                      <Typography>{option?.libAr}</Typography>
-                    </ToggleButton>
-                  ))}
-                </Field>
-
-                <Field
-                  component={MuiToggleButtonGroup}
-                  name="idAutorite"
-                  type="checkbox"
-                  exclusive={true}
-                >
-                  {allAutorites?.findAllTextAutorities?.map((option) => (
-                    <ToggleButton
-                      value={option?.id}
-                      aria-label={option?.rhRunite.abreviationFr}
-                      sx={{ width: "100%" }}
-                    >
-                      <Typography>{option?.rhRunite.abreviationFr}</Typography>
-                    </ToggleButton>
-                  ))}
-                </Field>
-
-                <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                  <LoadingButton
-                    style={{
-                      textAlign: "center",
-                      width: 300,
-                    }}
-                    variant="contained"
-                    onClick={submitForm}
-                    sx={{ mt: 3, mb: 2 }}
-                    disabled={!(isValid && dirty)}
-                    loading={isSubmitting}
-                    // startIcon={<Save/>}
+                  <Field
+                    component={MuiToggleButtonGroup}
+                    name="idAutorite"
+                    type="checkbox"
+                    exclusive={true}
                   >
-                    <Typography fontWeight={"bold"} variant={"h5"}>
-                      OK
-                    </Typography>
-                  </LoadingButton>
+                    {allAutorites?.findAllTextAutorities?.map((option) => (
+                      <ToggleButton
+                        value={option?.id}
+                        aria-label={option?.rhRunite.abreviationFr}
+                      >
+                        <Typography>
+                          {option?.rhRunite.abreviationFr}
+                        </Typography>
+                      </ToggleButton>
+                    ))}
+                  </Field>
+
+                  <Stack direction={"row"} spacing={1} alignItems={"center"}>
+                    <LoadingButton
+                      style={{
+                        textAlign: "center",
+                        width: 300,
+                      }}
+                      variant="contained"
+                      onClick={submitForm}
+                      sx={{ mt: 3, mb: 2 }}
+                      disabled={!(isValid && dirty)}
+                      loading={isSubmitting}
+                      // startIcon={<Save/>}
+                    >
+                      <Typography fontWeight={"bold"} variant={"h5"}>
+                        OK
+                      </Typography>
+                    </LoadingButton>
+                  </Stack>
+                </Stack>
+                <Stack width={"50%"} className={""}>
+                  {pdfData ? (
+                    <iframe
+                      src={"data:application/pdf;base64," + pdfData}
+                      width="100%"
+                      height="100%"
+                    ></iframe>
+                  ) : (
+                    <LinearProgress></LinearProgress>
+                  )}
                 </Stack>
               </Stack>
             </Form>

@@ -2,8 +2,6 @@ import HOcrViewer from "../../../common/components/ocr/ocrSearchViewer/HOcrViewe
 import { Stack } from "@mui/material";
 import { PdfFileLeftDrawer } from "./PdfFileLeftDrawer.tsx";
 
-import { TextReglementairesNotes } from "./TextReglementairesNotes.tsx";
-
 const PdfFile = () => {
   return (
     <div
