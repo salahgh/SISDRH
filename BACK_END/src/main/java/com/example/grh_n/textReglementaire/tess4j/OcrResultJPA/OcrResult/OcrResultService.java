@@ -1,19 +1,15 @@
 package com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult;
 
 import com.example.grh_n.dbdsn.entities.dto.CountParDiplomeCivile;
-import com.example.grh_n.security.user.OcrResultUserGrantService;
 import com.example.grh_n.security.user.User;
 import com.example.grh_n.security.user.UserService;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrIndexElasticRepository;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrResultEntityElastic_2;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.HOCRToJSON;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.ConfidentialiteCountDto;
+import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.*;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImage;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageEmbeddedId;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.pageAsImage.OcrResultPageAsImageRepository;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.QConfidentialiteCountDto;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.QTypeTextReglementaireCountDto;
-import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.TypeTextReglementaireCountDto;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.Folder;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.folder.FolderRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,6 +19,7 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +41,11 @@ import java.util.stream.StreamSupport;
 public class OcrResultService {
 
     private final OCRResultCrudRepository ocrResultRepository;
-    private final OcrIndexElasticRepository ocrResultEntityElastic2 ;
+    private final OcrIndexElasticRepository ocrResultEntityElastic2;
     private final TypeTexteReglementaireRepository typeTexteReglementaireRepository;
     private final ConfidentialiteRepository confidentialiteRepository;
+    private final DomaineService domaineService;
+    private final AutoriteService autoriteService;
     private final UserService userService;
 
     // todo discuss security issues when using the userService ;
@@ -60,7 +59,7 @@ public class OcrResultService {
             (
                     OCRResultCrudRepository ocrResultRepository, OcrIndexElasticRepository ocrResultEntityElastic2,
                     TypeTexteReglementaireRepository typeTexteReglementaireRepository,
-                    ConfidentialiteRepository confidentialiteRepository, UserService userService,
+                    ConfidentialiteRepository confidentialiteRepository, DomaineService domaineService, AutoriteService autoriteService, UserService userService,
                     OcrIndexElasticRepository ocrIndexElasticRepository_,
                     OcrResultPageAsImageRepository ocrResultPageAsImageRepository, EntityManager em,
                     FolderRepository folderRepository) {
@@ -68,6 +67,8 @@ public class OcrResultService {
         this.ocrResultEntityElastic2 = ocrResultEntityElastic2;
         this.typeTexteReglementaireRepository = typeTexteReglementaireRepository;
         this.confidentialiteRepository = confidentialiteRepository;
+        this.domaineService = domaineService;
+        this.autoriteService = autoriteService;
         this.userService = userService;
         this.ocrIndexElasticRepository = ocrIndexElasticRepository_;
         this.ocrResultPageAsImageRepository = ocrResultPageAsImageRepository;
@@ -109,6 +110,7 @@ public class OcrResultService {
                 .orElse(null);
     }
 
+
     @GraphQLQuery(name = "waitingForOcrAll")
     public Page<OcrResultEntityJpa> getWaitingPdfs(Pageable pageable) {
         return ocrResultRepository.getWaitingPdfs(pageable);
@@ -132,10 +134,10 @@ public class OcrResultService {
     public void deletePdfFile(String id) {
         OcrResultEntityJpa ocrResultEntityJpa = ocrResultRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("ocr result with id " + id + " not found")
-        ) ;
+        );
         ocrIndexElasticRepository.deleteById(id);
         ocrResultEntityJpa.setOcrDone("n");
-        ocrResultRepository.save(ocrResultEntityJpa) ;
+        ocrResultRepository.save(ocrResultEntityJpa);
         List<Folder> folders = ocrResultEntityJpa.getFolders();
         for (Folder folder : folders) {
             List<OcrResultEntityJpa> folderOcrFiles = folder.getPdfFiles();
@@ -154,7 +156,7 @@ public class OcrResultService {
 
     @GraphQLQuery
     public List<TypeTexteReglementaire> getTypeTexteReglementaireByLib(String lib) {
-        QTypeTexteReglementaire qTypeTexteReglementaire = QTypeTexteReglementaire.typeTexteReglementaire ;
+        QTypeTexteReglementaire qTypeTexteReglementaire = QTypeTexteReglementaire.typeTexteReglementaire;
         BooleanExpression expression = qTypeTexteReglementaire.libTypeTexteAr.like(lib).or(qTypeTexteReglementaire.libTypeTexteAr.like(lib));
         return (List<TypeTexteReglementaire>) typeTexteReglementaireRepository.findAll(expression);
     }
@@ -216,8 +218,7 @@ public class OcrResultService {
         ocrResultEntityJpa.setConfidentialite(confidentialite);
         ocrResultRepository.save(ocrResultEntityJpa);
 
-        OcrResultEntityElastic_2 ocrResultEntityElastic_2 = ocrIndexElasticRepository.findById(ocrResultId)
-                .orElseThrow(() -> new EntityNotFoundException("elastic search entitity with id " + ocrResultId + " not found"));
+        OcrResultEntityElastic_2 ocrResultEntityElastic_2 = findOcrResultEntityESbyId(ocrResultId);
         ocrResultEntityElastic_2.setLibConfidentialiteFr(confidentialite.getLibConfidentialiteFr());
         ocrResultEntityElastic_2.setLibConfidentialiteAr(confidentialite.getLibConfidentialiteAr());
         ocrIndexElasticRepository.save(ocrResultEntityElastic_2);
@@ -228,32 +229,32 @@ public class OcrResultService {
         return ocrIndexElasticRepository.findById(fileId).orElseThrow(() -> new EntityNotFoundException("file with id = " + fileId + " does not exist"));
     }
 
-    public Page<OcrResultEntityJpa> findAllByOwner(User user , Pageable pageable){
-        return ocrResultRepository.findAllByOwner(user,pageable);
+    public Page<OcrResultEntityJpa> findAllByOwner(User user, Pageable pageable) {
+        return ocrResultRepository.findAllByOwner(user, pageable);
     }
 
-    public Page<OcrResultEntityJpa> findAll_(Pageable pageable){
+    public Page<OcrResultEntityJpa> findAll_(Pageable pageable) {
         return ocrResultRepository.findAll_(pageable);
     }
 
-    public Page<OcrResultEntityJpa> findAllPagedByFoldersContaining(Folder folder , Pageable pageable){
-        return ocrResultRepository.findAllPagedByFoldersContaining(folder , pageable);
+    public Page<OcrResultEntityJpa> findAllPagedByFoldersContaining(Folder folder, Pageable pageable) {
+        return ocrResultRepository.findAllPagedByFoldersContaining(folder, pageable);
     }
 
     @GraphQLQuery
-    public List<TypeTextReglementaireCountDto> typeTextReglementaireCount(){
-        QTypeTexteReglementaire qTypeTexteReglementaire = QTypeTexteReglementaire.typeTexteReglementaire ;
-        QOcrResultEntityJpa qOcrResultEntityJpa = QOcrResultEntityJpa.ocrResultEntityJpa ;
+    public List<TypeTextReglementaireCountDto> typeTextReglementaireCount() {
+        QTypeTexteReglementaire qTypeTexteReglementaire = QTypeTexteReglementaire.typeTexteReglementaire;
+        QOcrResultEntityJpa qOcrResultEntityJpa = QOcrResultEntityJpa.ocrResultEntityJpa;
         JPAQuery<CountParDiplomeCivile> query = new JPAQuery<CountParDiplomeCivile>(em);
         return query.from(qOcrResultEntityJpa)
                 .join(qTypeTexteReglementaire).on(qOcrResultEntityJpa.typeTexteReglementaire.id.eq(qTypeTexteReglementaire.id))
-                .groupBy(qTypeTexteReglementaire.libTypeTexteAr , qTypeTexteReglementaire.libTypeTexteFr , qTypeTexteReglementaire.id)
+                .groupBy(qTypeTexteReglementaire.libTypeTexteAr, qTypeTexteReglementaire.libTypeTexteFr, qTypeTexteReglementaire.id)
                 .orderBy(qTypeTexteReglementaire.id.asc())
                 .select(
                         new QTypeTextReglementaireCountDto(
-                                qTypeTexteReglementaire.id ,
-                                qTypeTexteReglementaire.libTypeTexteAr ,
-                                qTypeTexteReglementaire.libTypeTexteFr ,
+                                qTypeTexteReglementaire.id,
+                                qTypeTexteReglementaire.libTypeTexteAr,
+                                qTypeTexteReglementaire.libTypeTexteFr,
                                 qOcrResultEntityJpa.count()
                         )
                 )
@@ -262,26 +263,56 @@ public class OcrResultService {
 
     @GraphQLQuery
     public List<ConfidentialiteCountDto> confidentialiteCount() {
-        QConfidentialite qConfidentialite = QConfidentialite.confidentialite ;
-        QOcrResultEntityJpa qOcrResultEntityJpa = QOcrResultEntityJpa.ocrResultEntityJpa ;
+        QConfidentialite qConfidentialite = QConfidentialite.confidentialite;
+        QOcrResultEntityJpa qOcrResultEntityJpa = QOcrResultEntityJpa.ocrResultEntityJpa;
         JPAQuery<CountParDiplomeCivile> query = new JPAQuery<CountParDiplomeCivile>(em);
         return query.from(qOcrResultEntityJpa)
                 .join(qConfidentialite).on(qOcrResultEntityJpa.confidentialite.id.eq(qConfidentialite.id))
-                .groupBy(qConfidentialite.id , qConfidentialite.libConfidentialiteAr , qConfidentialite.libConfidentialiteFr)
+                .groupBy(qConfidentialite.id, qConfidentialite.libConfidentialiteAr, qConfidentialite.libConfidentialiteFr)
                 .orderBy(qConfidentialite.id.asc())
                 .select(
                         new QConfidentialiteCountDto(
-                                qConfidentialite.id ,
-                                qConfidentialite.libConfidentialiteAr ,
-                                qConfidentialite.libConfidentialiteFr ,
+                                qConfidentialite.id,
+                                qConfidentialite.libConfidentialiteAr,
+                                qConfidentialite.libConfidentialiteFr,
                                 qOcrResultEntityJpa.count()
                         )
-                ).fetch() ;
+                ).fetch();
     }
 
     @GraphQLQuery
-    public List<OcrResultEntityJpa> findOcrResultEntityJpabyReference(String ref){
-       return ocrResultRepository.findByReferenceLike(ref);
+    public List<OcrResultEntityJpa> findOcrResultEntityJpabyReference(String ref) {
+        return ocrResultRepository.findByReferenceLike(ref);
+    }
+
+    @GraphQLMutation
+    @Transactional
+    public void updateOcrResultEntitityJpa(OcrResultUpdateDto ocrResultUpdateDto) {
+
+        OcrResultEntityJpa resultEntityJpa = this.findById(ocrResultUpdateDto.getId());
+        OcrResultEntityElastic_2 resultEntityElastic2 = this.findOcrResultEntityESbyId(ocrResultUpdateDto.getId());
+
+        resultEntityJpa.setOcrDone(ocrResultUpdateDto.getOcrDone());
+        resultEntityJpa.setReference(ocrResultUpdateDto.getReference());
+        resultEntityJpa.setDateReference(ocrResultUpdateDto.getDateReference());
+        resultEntityJpa.setDomaine(domaineService.findDomaineById(ocrResultUpdateDto.getIdDomaine()));
+        resultEntityJpa.setTextAutorite(autoriteService.findAutoriteById(ocrResultUpdateDto.getIdAutorite()));
+        resultEntityJpa.setConfidentialite(confidentialiteRepository.findById(ocrResultUpdateDto.getIsConfidentialite()).orElseThrow(() -> new EntityNotFoundException("type text not found")));
+        resultEntityJpa.setOriginalFileName(ocrResultUpdateDto.getOriginalFileName());
+        this.save(resultEntityJpa);
+
+        resultEntityElastic2.setDateReference(ocrResultUpdateDto.getDateReference());
+        resultEntityElastic2.setOriginalFileName(resultEntityJpa.getOriginalFileName());
+        resultEntityElastic2.setReference(resultEntityJpa.getReference());
+        resultEntityElastic2.setLibTypeTexteAr(resultEntityJpa.getTypeTexteReglementaire().getLibTypeTexteAr());
+        resultEntityElastic2.setLibTypeTexteFr(resultEntityJpa.getTypeTexteReglementaire().getLibTypeTexteFr());
+        if (resultEntityJpa.getConfidentialite() != null) {
+            resultEntityElastic2.setLibConfidentialiteAr(resultEntityJpa.getConfidentialite().getLibConfidentialiteAr());
+            resultEntityElastic2.setLibConfidentialiteFr(resultEntityJpa.getConfidentialite().getLibConfidentialiteFr());
+        }
+        resultEntityElastic2.setIdDomaine(ocrResultUpdateDto.getIdDomaine());
+        resultEntityElastic2.setIdAutorite(ocrResultUpdateDto.getIdAutorite());
+        this.save(resultEntityElastic2);
     }
 }
 

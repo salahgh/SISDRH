@@ -44,6 +44,10 @@ public class OcrResultEntityElastic_2 {
 
     private String libUrgenceFr;
 
+    private String idDomaine ;
+
+    private String idAutorite ;
+
     private Integer numberOfPapers;
 
     private String owner ;

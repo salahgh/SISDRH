@@ -21,6 +21,8 @@ public class ElasticSearchInput {
    String searchToken ;
    List<String> idsTypeTextReglementaire ;
    List<String> isConfidentialite ;
+   List<String> domaines ;
+   List<String> autorites ;
    Integer page ;
    Integer size ;
    Integer innerPage ;

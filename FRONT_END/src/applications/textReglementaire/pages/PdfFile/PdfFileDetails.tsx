@@ -2,24 +2,25 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectSelectedFileId } from "../../../../redux/features/elasticSearch/selectedResultLineSlice.ts";
 import { useQuery } from "@apollo/client";
-import { GetPdfFileDocument } from "../../../../_generated_gql_/graphql.ts";
-import { Stack, Typography } from "@mui/material";
+import {
+  GetPdfFileDocument,
+  OcrResultPdfDocument,
+} from "../../../../_generated_gql_/graphql.ts";
+import { Button, Stack, Typography } from "@mui/material";
 import { OcrDoneChip } from "./relations/OcrDoneChip.tsx";
 import {
-  Add,
-  AddCircle,
   AutoStoriesOutlined,
   CheckCircleOutline,
+  ModeEditRounded,
   PlayArrow,
-  StartOutlined,
-  Terminal,
   Upload,
-  UploadFile,
 } from "@mui/icons-material";
 import { ConfidentialiteChip } from "../FoldersTexteReglementaire/pdfFiles/ConfidentialiteChip.tsx";
 import * as React from "react";
-import { parseAndFormatDate } from "../../../common/utilities/utilities.ts";
 import { format } from "date-fns";
+import { useState } from "react";
+import { FormDialogue } from "../../../common/components/dialogs/FormDialogue.tsx";
+import UpdateTextInfoForm from "../upload/UpdateTextInfoForm.tsx";
 
 export const PdfFileDetails = () => {
   const selectedFileId = useParams().fildId;
@@ -36,8 +37,48 @@ export const PdfFileDetails = () => {
     },
   });
 
+  const { data: pdfFile, loading: pdfFileLoading } = useQuery(
+    OcrResultPdfDocument,
+    {
+      variables: {
+        id: s,
+      },
+    },
+  );
+
+  const [open, setOpen] = useState(false);
+
+  function handlShowUpdateDetailsFormDialogue() {
+    setOpen(true);
+  }
+
   return (
     <Stack spacing={1} padding={1} alignItems={"start"}>
+      <FormDialogue
+        open={open}
+        setOpen={setOpen}
+        title={"تحيين معلومات النص القانوني"}
+        content={
+          <UpdateTextInfoForm
+            initialValues={{
+              reference: ocrResultJpa?.ocrResultByid?.reference,
+              dateReference: ocrResultJpa?.ocrResultByid?.dateReference,
+              idAutorite: ocrResultJpa?.ocrResultByid?.textAutorite?.id,
+              idDomaine: ocrResultJpa?.ocrResultByid?.domaine?.id,
+              idTypeTextReglementaire:
+                ocrResultJpa?.ocrResultByid?.typeTexteReglementaire?.id,
+              isConfidentialite:
+                ocrResultJpa?.ocrResultByid?.confidentialite?.id,
+              id: ocrResultJpa?.ocrResultByid?.id,
+            }}
+            setOpen={setOpen}
+            pdfData={pdfFile?.ocrResultPdf}
+          ></UpdateTextInfoForm>
+        }
+        fullWidth={true}
+        maxWidth={"xl"}
+        mode={"update"}
+      ></FormDialogue>
       <Typography fontSize={25} fontWeight={"bold"}>
         {ocrResultJpa?.ocrResultByid?.typeTexteReglementaire?.libTypeTexteFr +
           " "}
@@ -106,6 +147,30 @@ export const PdfFileDetails = () => {
             ocrResultJpa?.ocrResultByid?.confidentialite.libConfidentialiteAr,
         }}
       />
+      <Typography variant={"h5"}>
+        {"المجال: " + ocrResultJpa?.ocrResultByid?.domaine?.libAr}
+      </Typography>
+      <Stack direction={"row"} spacing={1}>
+        <Typography variant={"h5"}>هيئة الصدور: </Typography>
+        <Typography
+          fontWeight={"bold"}
+          variant={"h5"}
+          sx={{ color: "#eb6c02" }}
+        >
+          {ocrResultJpa?.ocrResultByid?.textAutorite?.rhRunite?.abreviationFr
+            ? ocrResultJpa?.ocrResultByid?.textAutorite?.rhRunite?.abreviationFr
+            : "غير محدد"}{" "}
+        </Typography>
+      </Stack>
+      <Button
+        fullWidth={true}
+        variant={"contained"}
+        color={"warning"}
+        startIcon={<ModeEditRounded></ModeEditRounded>}
+        onClick={() => handlShowUpdateDetailsFormDialogue()}
+      >
+        <Typography fontWeight={"bold"}>تحيين</Typography>
+      </Button>
     </Stack>
   );
 };

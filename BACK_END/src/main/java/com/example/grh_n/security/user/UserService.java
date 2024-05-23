@@ -126,9 +126,10 @@ public class UserService {
       Role role = roleRepository.findByName(roleName).orElseThrow(
               () -> new EntityNotFoundException("role does not exist role_id " + roleName)
       );
-      Set<Role> roles = user.getRoles() ;
+      List<Role> roles = user.getRoles() ;
       roles.add(role) ;
       user.setRoles(roles);
+
       userRepository.save(user) ;
       return true ;
    }

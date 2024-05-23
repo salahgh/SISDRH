@@ -70,12 +70,27 @@ query GetPdfFile($fileSignatue : String){
         numberOfPapers ,
         typeTexteReglementaire {
             libTypeTexteFr ,
-            libTypeTexteAr
+            libTypeTexteAr ,
+            id
         },
         confidentialite {
             libConfidentialiteAr
             libConfidentialiteFr
             id
+        },
+        textAutorite {
+            id
+            rhRunite {
+                abreviationAr
+                abreviationFr
+                libUniteeAr
+                libUniteeFr
+            }
+        }
+        domaine {
+            id
+            libAr
+            libFr
         }
         reference,
         dateReference,
@@ -154,5 +169,43 @@ query findAllOcrResultEntityByFoldersContaining ( $folderId : Long ,    $paginat
             pageSize
             pageNumber
         }
+    }
+}
+query findAllDomaines{
+    findAllDomaines{
+        id
+        libAr
+        libFr
+    }
+}
+query findAllTextAutorities{
+    findAllTextAutorities {
+        id
+        rhRunite {
+            abreviationAr
+            abreviationFr
+            dessoute
+            libUniteeAr
+            libUniteeFr
+            regionMilitaire {
+                id
+                libAbrRegionAr
+                libAbrRegionFr
+                libRegionAr
+                libRegionFr
+                trie
+            }
+        }
+    }
+}
+
+mutation updateOcrResultEntitityJpa($ocrResultUpdateDto : OcrResultUpdateDtoInput){
+    updateOcrResultEntitityJpa(ocrResultUpdateDto: $ocrResultUpdateDto)
+}
+query AllTypeTexteReglementaires {
+    allTypeTexteReglementaires {
+        id ,
+        libTypeTexteAr ,
+        libTypeTexteFr
     }
 }

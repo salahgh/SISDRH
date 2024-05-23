@@ -1,0 +1,143 @@
+POST https://192.213.71.243:9200/ocr_index/_update_by_query
+Authorization: Basic elastic XC=PnENICX2VNJd2MbD*
+Content-Type: application/json
+
+{
+  "script": {
+    "source": "ctx._source['idDomaine'] = 1",
+    "lang": "painless"
+  },
+  "query" : {
+    "match_all": {}
+  }
+}
+
+<> 2024-05-22T145701.200.json
+
+###
+
+GET https://192.213.71.243:9200/ocr_index/_mapping
+Authorization: Basic elastic XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices
+Authorization: Basic elastic XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T144248.200.txt
+
+###
+
+GET https://192.213.71.243:9200/ocr_index/_mapping
+Authorization: Basic elastic XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices
+Authorization: Basic elastic XC=PnENICX2VNJd2MbD*
+
+
+<> 2024-05-22T122929.200.txt
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices%20Authorization%20Basic%20elastic%20Authorization:%20Basic%20XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T122725.401.json
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices%20Authorization%20Basic%20elastic%20Authorization:%20Basic%20XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T122713.401.json
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices%20Authorization%20Basic%20elastic%20Authorization:%20Basic%20XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T122658.401.json
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices%20Authorization%20Basic%20elastic%20Authorization:%20Basic%20XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T122646.401.json
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices%20Authorization%20Basic%20elastic%20Authorization:%20Basic%20XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T122636.401.json
+
+###
+
+GET https://192.213.71.243:9200/_cat/indices%20Authorization:%20Basic%20elastic%20Authorization:%20Basic%20XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T120751.401.json
+
+###
+
+GET https://192.213.71.243:9200/_cat/indicesAuthorization:%20Basic%20elastic%20Authorization:%20Basic%20XC=PnENICX2VNJd2MbD*
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T120738.401.json
+
+###
+
+GET https://192.213.71.243:9200/_cat/indicesAccept:%20application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T115147.401.json
+
+###
+
+GET https://192.213.71.243:9200/Accept:%20application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T114951.401.json
+
+###
+
+GET https://192.213.71.243:9200/Accept:%20application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.9)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-05-22T114948.401.json
+
+###
+

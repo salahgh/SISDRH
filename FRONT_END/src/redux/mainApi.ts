@@ -94,7 +94,7 @@ const injectedRtkApi = api
             body: queryArg.authenticationRequest,
           }),
           invalidatesTags: ["authentication-controller"],
-        }
+        },
       ),
     }),
     overrideExisting: false,
@@ -309,6 +309,8 @@ export type ElasticSearchInput = {
   searchToken?: string;
   idsTypeTextReglementaire?: string[];
   isConfidentialite?: string[];
+  domaines?: string[];
+  autorites?: string[];
   page?: number;
   size?: number;
   innerPage?: number;

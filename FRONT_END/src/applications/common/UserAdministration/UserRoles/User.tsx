@@ -7,7 +7,7 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
-import { CreateEntityDialog } from "../roles/CreateEntityDialog";
+import { FormDialogue } from "../../components/dialogs/FormDialogue.tsx";
 import { useEffect, useState } from "react";
 import { GetStackEditable } from "../GetStackEditable";
 import {
@@ -139,7 +139,7 @@ const User = ({ matricule }: { matricule?: string | null }) => {
 
   return (
     <>
-      <CreateEntityDialog
+      <FormDialogue
         title={"ajouter des roles"}
         content={
           <List>
@@ -168,7 +168,7 @@ const User = ({ matricule }: { matricule?: string | null }) => {
         setOpen={setAddRolesOpen}
       />
 
-      <CreateEntityDialog
+      <FormDialogue
         title={"ajouter des roles"}
         content={
           <List>
@@ -197,7 +197,7 @@ const User = ({ matricule }: { matricule?: string | null }) => {
         setOpen={setAddPrivilegeOpen}
       />
 
-      <CreateEntityDialog
+      <FormDialogue
         title={"ajouter des roles"}
         content={
           <List>
@@ -303,7 +303,7 @@ const User = ({ matricule }: { matricule?: string | null }) => {
             </>
           )}
         </Stack>
-        <Stack sx={{ width: "25%" }}>
+        <Stack sx={{ width: "25%", overflow: "auto" }}>
           <Button
             variant={"contained"}
             onClick={() => setAddPrivilegeOpen(true)}

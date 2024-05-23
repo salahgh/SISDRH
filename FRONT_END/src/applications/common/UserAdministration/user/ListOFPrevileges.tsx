@@ -14,7 +14,7 @@ function ListOFPrevileges({
   handleDelete?: any;
 }) {
   return (
-    <List>
+    <List dir={"ltr"} dense={true}>
       {privileges?.map((privilege) => (
         <PrivilegeListItem handleDelete={handleDelete} privilege={privilege} />
       ))}
