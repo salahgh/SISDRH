@@ -6,16 +6,15 @@ import {
   ListItemButton,
   ListItemText,
   Stack,
+  Typography,
 } from "@mui/material";
 import { FormDialogue } from "../../components/dialogs/FormDialogue.tsx";
 import { useEffect, useState } from "react";
-import { GetStackEditable } from "../GetStackEditable";
+import { UserHabilitations } from "../habilitation/UserHabilitations.tsx";
 import {
   PrivilegesEnum,
-  RolesEnum,
   UserAddPrivilegeDocument,
   UserAddPrivilegeRestrictionDocument,
-  UserAddRoleDocument,
   UserDeletePrivilegeDocument,
   UserDeletePrivilegeRestrictionDocument,
   UserDocument,
@@ -27,6 +26,8 @@ import useSnackBarNotifications from "../../notifications/useSnackBarNotificatio
 import { RoleListItem } from "../roles/RoleListItem";
 import ListOFPrevileges from "../user/ListOFPrevileges";
 import ASSETS from "../../../../resources/ASSETS";
+import { CustomNoResultOverlay } from "../../../pam/mainDataGrid/CustomNoResultOverlay.tsx";
+import { AddRolesForm } from "../roles/AddRolesForm.tsx";
 
 const User = ({ matricule }: { matricule?: string | null }) => {
   const [addRolesOpen, setAddRolesOpen] = useState<boolean>(false);
@@ -49,17 +50,6 @@ const User = ({ matricule }: { matricule?: string | null }) => {
 
   const { handleShowGraphQlErrorSnackBar, handleShowInfoSnackBar } =
     useSnackBarNotifications();
-
-  const [addRoleMutation] = useMutation(UserAddRoleDocument, {
-    refetchQueries: [
-      {
-        query: UserDocument,
-        variables: {
-          matricule: matricule,
-        },
-      },
-    ],
-  });
 
   const [userAddPrivilege] = useMutation(UserAddPrivilegeDocument, {
     refetchQueries: [
@@ -140,36 +130,34 @@ const User = ({ matricule }: { matricule?: string | null }) => {
   return (
     <>
       <FormDialogue
-        title={"ajouter des roles"}
+        title={
+          "إضافة أدوار لل" +
+          user?.user?.personnel?.grade?.libGradeAr +
+          " " +
+          user?.user?.personnel?.noma +
+          " " +
+          user?.user?.personnel?.pnoma
+        }
         content={
-          <List>
-            {Object.values(RolesEnum).map((item, index) => {
-              return (
-                <ListItemButton
-                  onClick={() => {
-                    addRoleMutation({
-                      variables: { userName: matricule, roleName: item },
-                    })
-                      .then((result) => {
-                        handleShowInfoSnackBar("role " + item + " added");
-                      })
-                      .catch((error) =>
-                        handleShowGraphQlErrorSnackBar(JSON.stringify(error)),
-                      );
-                  }}
-                >
-                  <ListItemText primary={item} />
-                </ListItemButton>
-              );
-            })}
-          </List>
+          <AddRolesForm
+            roles={user?.user?.roles}
+            matricule={matricule}
+          ></AddRolesForm>
         }
         open={addRolesOpen}
         setOpen={setAddRolesOpen}
+        mode={"update"}
+        maxWidth={"xl"}
+        fullWidth={true}
       />
 
       <FormDialogue
-        title={"ajouter des roles"}
+        title={
+          "إضافة أدوار للمستخدم" +
+          user?.user?.personnel?.noma +
+          " " +
+          user?.user?.personnel?.pnoma
+        }
         content={
           <List>
             {Object.values(PrivilegesEnum).map((item, index) => {
@@ -232,7 +220,11 @@ const User = ({ matricule }: { matricule?: string | null }) => {
         padding={1}
         height={"100%"}
       >
-        <Stack sx={{ width: 210 }} alignItems={"center"}>
+        <Stack
+          sx={{ width: 220 }}
+          className={"bg-amber-200"}
+          alignItems={"center"}
+        >
           <AvatarPhoto
             size={160}
             matricule={user?.user?.personnel?.matricule}
@@ -240,34 +232,31 @@ const User = ({ matricule }: { matricule?: string | null }) => {
             avatarVariant={"rounded"}
             borderRadius={10}
           />
-          <GetStackEditable
+          <UserHabilitations
             username={user?.user?.personnel?.matricule}
-          ></GetStackEditable>
+          ></UserHabilitations>
         </Stack>
-        <Stack sx={{ width: "25%" }} spacing={2}>
+        <Stack sx={{ width: "25%" }} spacing={1}>
           <Button
             startIcon={<AddCircleOutline />}
             variant={"contained"}
             onClick={() => setAddRolesOpen(true)}
           >
-            ajouter
+            <Typography fontWeight={"bold"}> إضفة دور</Typography>
           </Button>
           {user?.user?.roles?.length === 0 ? (
-            <div>
-              <img
-                src={ASSETS.emptyInbox}
-                alt={"empty"}
-                style={{ width: "70px" }}
-              />
+            <div
+              style={{ width: "100%" }}
+              className={"flex flex-row justify-center"}
+            >
+              <CustomNoResultOverlay width={90}></CustomNoResultOverlay>
             </div>
           ) : (
-            <>
-              <ListOFRoles
-                setSelectedRoleId={setSelectedRoleId}
-                selectedRoleId={selectedRoleId}
-                roles={user?.user?.roles}
-              />
-            </>
+            <ListOFRoles
+              setSelectedRoleId={setSelectedRoleId}
+              selectedRoleId={selectedRoleId}
+              roles={user?.user?.roles}
+            />
           )}
         </Stack>
         <Stack sx={{ width: "25%" }}>

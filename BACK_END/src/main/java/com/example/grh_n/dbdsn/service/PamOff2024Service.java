@@ -1,14 +1,20 @@
 package com.example.grh_n.dbdsn.service;
 
 import com.example.grh_n.dbdsn.entities.*;
+import com.example.grh_n.dbdsn.entities.QPamOff2024;
 import com.example.grh_n.dbdsn.entities.dto.*;
+import com.example.grh_n.dbdsn.entities.dto.QCountParArme;
+import com.example.grh_n.dbdsn.entities.dto.QCountParCsn;
 import com.example.grh_n.dbdsn.entities.dto.QCountParDiplomeCivile;
+import com.example.grh_n.dbdsn.entities.dto.QCountParDiplomeMilitaire;
+import com.example.grh_n.dbdsn.entities.dto.QCountParGradeDto;
+import com.example.grh_n.dbdsn.entities.dto.QCountParPostes;
 import com.example.grh_n.dbdsn.repos.DemandeRadiationRepository;
 import com.example.grh_n.dbdsn.repos.PamOff2024Repository;
 import com.example.grh_n.dbdsn.repos.ReportPosteRealiseRepository;
-import com.example.grh_n.pam.entities.QRhPoste;
 import com.example.grh_n.rh.entities.REntities.QRDiplomeCivile;
 import com.example.grh_n.rh.entities.REntities.QRDiplomeMilitaire;
+import com.example.grh_n.rh.entities.REntities.ted.QRhPoste;
 import com.querydsl.jpa.impl.JPAQuery;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;

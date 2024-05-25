@@ -17,19 +17,19 @@ export function FormDialogue({
   setOpen,
   title,
   content,
-  fullWidth,
-  maxWidth,
+  fullWidth = false,
+  maxWidth = "md",
   padding,
   mode = "create",
 }: {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
   title: string;
   content: ReactElement;
-  fullWidth: boolean;
-  maxWidth: "xs" | "sm" | "md" | "lg" | "xl";
+  fullWidth?: boolean;
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl";
   padding?: number;
-  mode: "update" | "create";
+  mode?: "update" | "create";
 }) {
   return (
     <Dialog open={open} fullWidth={fullWidth} maxWidth={maxWidth}>

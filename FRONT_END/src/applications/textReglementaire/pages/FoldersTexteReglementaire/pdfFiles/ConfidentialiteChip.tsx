@@ -111,7 +111,9 @@ export const ConfidentialiteChip = ({
         libConfidentialiteAr === "سري جدا" ||
         libConfidentialiteAr === "سري دفاع"
           ? "error"
-          : "warning"
+          : libConfidentialiteAr === "عادي"
+            ? "success"
+            : "warning"
       }
       avatar={
         <Avatar

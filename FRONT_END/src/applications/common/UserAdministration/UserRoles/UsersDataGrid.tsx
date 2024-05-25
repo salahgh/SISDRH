@@ -13,6 +13,7 @@ import { CustomNoResultOverlay } from "../../../pam/mainDataGrid/CustomNoResultO
 import { StripedDataGrid } from "../../../pam/mainDataGrid/StripedDataGrid.tsx";
 import {
   AllUsersPagedDocument,
+  Direction,
   PaginationInput,
 } from "../../../../_generated_gql_/graphql.ts";
 import { useQuery } from "@apollo/client";
@@ -29,7 +30,7 @@ const UsersDataGrid = () => {
     pageNumber: 0,
     pageSize: 100,
     sort: {
-      orders: [{ property: "personnel.grade.grade", direction: "ASC" }],
+      orders: [{ property: "personnel.grade.grade", direction : Direction.Asc}],
     },
   });
 

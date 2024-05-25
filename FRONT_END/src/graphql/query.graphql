@@ -373,6 +373,13 @@ query User($matricule : String){
             pnom
             noma
             pnoma
+            grade {
+                grade
+                libGradeFr
+                libGradeAr
+                abrGradeAr
+                abrGradeFr
+            }
         }
         habilitation {
             id
@@ -423,69 +430,6 @@ query UserAuthorities($matricule : String) {
             pnoma
             nom
             pnom
-        }
-    }
-}
-query findAllRoles{
-    findAllRoles{
-        id
-        description
-        name
-        privileges {
-            id
-            name
-            description
-        }
-    }
-}
-query findAllRolesPaged($paginationInput : PaginationInput){
-    allRolesPaged(pageable: $paginationInput){
-        totalElements
-        content {
-            id
-            name
-            description
-            privileges {
-                id
-                name
-                description
-            }
-        }
-    }
-}
-query findRoleById($roleId : String){
-    findRoleById(roleId: $roleId){
-        id
-        name
-        description
-        privileges {
-            name
-            description
-            id
-        }
-    }
-}
-query allPrivileges{
-    allPrivileges {
-        id
-        description
-        name
-    }
-}
-query privilegeById($privilegeById : Long){
-    privilegeById(PrivilegeId: $privilegeById){
-        name
-        description
-        id
-    }
-}
-query allPrivilegesPaged ($paginationInput : PaginationInput){
-    allPrivilegesPaged(pageable: $paginationInput){
-        totalElements
-        content {
-            id
-            description
-            name
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Avatar, lighten, Skeleton, Stack } from "@mui/material";
+import { Avatar, CircularProgress, Stack } from "@mui/material";
 import * as React from "react";
 import { OverridableStringUnion } from "@mui/types";
 import { AvatarPropsVariantOverrides } from "@mui/material/Avatar/Avatar";
@@ -41,66 +41,56 @@ const AvatarPhoto = React.forwardRef((props: AvatarPhotoProps, ref) => {
   );
 
   return (
-    <>
-      {loading && (
-        <Skeleton
-          variant={"rounded"}
-          width={size}
-          height={size}
-          animation={"pulse"}
-          sx={{ borderRadius: borderRadius }}
-        />
+    <Stack
+      justifyContent={"center"}
+      alignItems={"center"}
+      width={size}
+      height={size}
+      borderRadius={avatarVariant === "rounded" ? borderRadius : null}
+      border={"solid 1px"}
+      // borderColor={(theme) => theme?.palette.warning.dark}
+      // sx={{
+      //   backgroundColor: (theme: Theme) =>
+      //     lighten(theme.palette.warning.light, 0.5),
+      // }}
+    >
+      {error && !loading && (
+        <Error
+          sx={{ color: (theme: Theme) => theme.palette.warning.dark }}
+        ></Error>
       )}
-      {error && (
-        <Stack
-          justifyContent={"center"}
-          alignItems={"center"}
-          width={size}
-          height={size}
-          borderRadius={avatarVariant === "rounded" ? borderRadius : null}
-          border={"solid 2px"}
-          borderColor={(theme) => theme?.palette.warning.dark}
-          sx={{
-            backgroundColor: (theme: Theme) =>
-              lighten(theme.palette.warning.light, 0.5),
-          }}
-        >
-          <Error
-            sx={{ color: (theme: Theme) => theme.palette.warning.dark }}
-          ></Error>
-        </Stack>
-      )}
+
+      {loading && <CircularProgress></CircularProgress>}
+
       {data && !loading && !error && (
-        <animated.div style={springs}>
-          <Avatar
-            ref={ref}
-            {...other}
-            imgProps={{
-              style: {
-                objectFit: "contain",
-                objectPosition: "top",
-                padding: 0,
-                backgroundColor: "#dcdcdc",
-                borderWidth: 0,
-              },
-            }}
-            src={buildPhotoSrc(
-              data?.getThumbnailByMatriculeAndSize?.thumbData,
-              data?.getThumbnailByMatriculeAndSize?.photo?.format,
-            )}
-            sx={{
-              width: size,
-              height: size,
-              borderRadius: avatarVariant === "rounded" ? borderRadius : null,
-              "& .MuiAvatar-rounded": {
-                borderRadius: borderRadius,
-              },
-            }}
-            variant={avatarVariant}
-          ></Avatar>
-        </animated.div>
+        <Avatar
+          ref={ref}
+          {...other}
+          imgProps={{
+            style: {
+              objectFit: "contain",
+              objectPosition: "top",
+              padding: 0,
+              backgroundColor: "#dcdcdc",
+              borderWidth: 0,
+            },
+          }}
+          src={buildPhotoSrc(
+            data?.getThumbnailByMatriculeAndSize?.thumbData,
+            data?.getThumbnailByMatriculeAndSize?.photo?.format,
+          )}
+          sx={{
+            width: size,
+            height: size,
+            borderRadius: avatarVariant === "rounded" ? borderRadius : null,
+            "& .MuiAvatar-rounded": {
+              borderRadius: borderRadius,
+            },
+          }}
+          variant={avatarVariant}
+        ></Avatar>
       )}
-    </>
+    </Stack>
   );
 });
 

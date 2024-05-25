@@ -1,4 +1,3 @@
-import { CreateEntityDialog } from "../../common/UserAdministration/roles/CreateEntityDialog.tsx";
 import { CreateTedForm } from "./CreateTedForm.tsx";
 import { Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
@@ -7,6 +6,7 @@ import {
   PaginationInput,
 } from "../../../_generated_gql_/graphql.ts";
 import { useQuery } from "@apollo/client";
+import { FormDialogue } from "../../common/components/dialogs/FormDialogue.tsx";
 
 export const TedDataGrid = () => {
   const [page, setPage] = useState<PaginationInput>({
@@ -28,14 +28,16 @@ export const TedDataGrid = () => {
 
   return (
     <>
-      <CreateEntityDialog
+      <FormDialogue
         open={open}
         setOpen={setOpen}
         title={"ajouter TED"}
         content={<CreateTedForm page={page} />}
         fullWidth={false}
         maxWidth={"xl"}
-      ></CreateEntityDialog>
+        mode={"create"}
+        padding={1}
+      ></FormDialogue>
       <Button color={"primary"} onClick={handleAddTedButtonClick}>
         {" "}
         ajouter

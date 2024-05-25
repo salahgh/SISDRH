@@ -1,0 +1,86 @@
+
+
+query allUsersPaged($pageable : PaginationInput){
+    allUsersPaged(pageable: $pageable){
+        content {
+            id ,
+            personnel {
+                matricule,
+                noma,
+                pnoma
+                nom
+                pnom
+            }
+        }
+        totalElements
+    }
+}
+query findAllRoles{
+    findAllRoles {
+        id
+        name
+        privileges {
+            id
+            name
+            description
+        }
+        description
+
+    }
+}
+query allPrivileges{
+    allPrivileges {
+        id
+        name
+        description
+        roles {
+            id
+            name
+            description
+        }
+    }
+}
+query findAllRolesPaged($paginationInput : PaginationInput){
+    allRolesPaged(pageable: $paginationInput){
+        totalElements
+        content {
+            id
+            name
+            description
+            privileges {
+                id
+                name
+                description
+            }
+        }
+    }
+}
+query findRoleById($roleId : String){
+    findRoleById(roleId: $roleId){
+        id
+        name
+        description
+        privileges {
+            name
+            description
+            id
+        }
+    }
+}
+query privilegeById($privilegeById : Long){
+    privilegeById(PrivilegeId: $privilegeById){
+        name
+        description
+        id
+    }
+}
+query allPrivilegesPaged ($paginationInput : PaginationInput){
+    allPrivilegesPaged(pageable: $paginationInput){
+        totalElements
+        content {
+            id
+            description
+            name
+        }
+    }
+}

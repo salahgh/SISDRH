@@ -8,8 +8,8 @@ import { SyntheticEvent, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { RenderItem } from "./RenderItem.tsx";
-import { CreateEntityDialog } from "../../common/UserAdministration/roles/CreateEntityDialog.tsx";
 import { CreateStructrueInterneForm } from "./CreateStructrueInterneForm.tsx";
+import { FormDialogue } from "../../common/components/dialogs/FormDialogue.tsx";
 
 export const Organigram = () => {
   const { data } = useQuery(FindRhTedStructureInterneByIdDocument, {
@@ -65,14 +65,16 @@ export const Organigram = () => {
 
   return (
     <div>
-      <CreateEntityDialog
+      <FormDialogue
         open={open}
         setOpen={setOpen}
         title={"create new structure"}
         content={<CreateStructrueInterneForm pere={selectedPerer} />}
         fullWidth={false}
         maxWidth={"md"}
-      ></CreateEntityDialog>
+        mode={"create"}
+        padding={1}
+      ></FormDialogue>
       {data && (
         <TreeView
           dir={"ltr"}

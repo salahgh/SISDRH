@@ -1,46 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { FindAllRolesDocument } from "../../../../_generated_gql_/graphql";
 import { TranserListDialog } from "../roles/TranserListDialog";
-import { Box, InputAdornment, Stack, TextField } from "@mui/material";
-import { RolesList } from "./RolesList";
+import { Box, Button, InputAdornment, Stack, TextField } from "@mui/material";
 import { Add, Search } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
+import { ListOFRoles } from "../user/ListOFRoles.tsx";
+import { RoleListItem } from "./RoleListItem.tsx";
+import ListOFPrevileges from "../user/ListOFPrevileges.tsx";
+import { FormDialogue } from "../../components/dialogs/FormDialogue.tsx";
+import TransferList from "../TransferList.tsx";
 
 const RolesAsociatedPriviligesList = () => {
   const [roleSearchName, setRoleSearchName] = useState<string>("");
-  const [selectedRoleId, setSelectedRoleId] = useState<
-    string | null | undefined
-  >(null);
-  const { data: allRoles, error, loading } = useQuery(FindAllRolesDocument);
+  const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [createRoleOpen, setCreateRoleOpen] = useState<boolean>(false);
   const [TransferListOpen, setTransferListOpen] = useState<boolean>(false);
 
+  const { data: allRoles, loading, error } = useQuery(FindAllRolesDocument);
+  const [selectedRoleID, setSelectedRoleID] = useState();
+  const [filteredRoles, setFilteredRoles] = useState([]);
+
+  useEffect(() => {
+    if (allRoles) {
+      setFilteredRoles(
+        allRoles?.findAllRoles?.filter((item) =>
+          item?.name.includes(roleSearchName?.toUpperCase()),
+        ),
+      );
+    }
+  }, [allRoles, roleSearchName]);
+
   return (
-    <>
-      <TranserListDialog
+    <Stack width={"100%"} direction={"row"}>
+      <Button onClick={() => setTransferListOpen(true)}> add </Button>
+
+      <FormDialogue
         open={TransferListOpen}
-        roleId={selectedRoleId}
-        onClick={() => setTransferListOpen(false)}
-        transferListOpen={setTransferListOpen}
-      />
-      {/*<FormDialogue*/}
-      {/*    open={createRoleOpen}*/}
-      {/*    setOpen={setCreateRoleOpen}*/}
-      {/*    title={"creation d'un role"}*/}
-      {/*    content={*/}
-      {/*        <DynamicForm method={"post"}*/}
-      {/*                     endpointPath={"/roles"}*/}
-      {/*                     setOpen={setCreateRoleOpen}*/}
-      {/*                     requestBodyName={"roleDto"}*/}
-      {/*                     exludedFields={{*/}
-      {/*                         privileges: true*/}
-      {/*                     }}*/}
-      {/*        />*/}
-      {/*    }*/}
-      {/*/>*/}
-      <Box sx={{ width: 400 }}>
-        <Stack direction={"row"} spacing={1}>
+        title={"dsdfsdf"}
+        content={
+          <TransferList
+            setTransferListOpen={setTransferListOpen}
+            role={
+              filteredRoles?.filter((role) => role.id === selectedRoleID)[0]
+            }
+          />
+        }
+      ></FormDialogue>
+
+      <Stack>
+        <Stack sx={{ width: 400 }} direction={"row"} spacing={1}>
           <TextField
             size={"small"}
             InputProps={{
@@ -63,33 +72,28 @@ const RolesAsociatedPriviligesList = () => {
             add
           </LoadingButton>
         </Stack>
-        <RolesList
-          handleSelectRole={(roleId: string | null) =>
-            setSelectedRoleId(roleId)
-          }
-          selectedRoleId={selectedRoleId}
-          setTransferlistOpen={setTransferListOpen}
-        />
-      </Box>
-      {/*<Box sx={{width: 400}}>*/}
-      {/*    {*/}
-      {/*        selectedRole && roles?.filter((role) => role.id === selectedRole.id)[0]*/}
-      {/*        && <RoleListItem setTransferListOpen={setTransferListOpen} role={selectedRole}/>*/}
-      {/*    }*/}
-      {/*    {*/}
-      {/*        selectedRole*/}
-      {/*        && roles?.filter((role) => role.id === selectedRole.id)[0]?.privileges?.length === 0*/}
-      {/*        && <div>ce role ne contient pas de privileges</div>*/}
-      {/*    }*/}
-      {/*    {*/}
-      {/*        selectedRole && roles?.filter((role) => role.id === selectedRole.id)[0]?.privileges?.map(*/}
-      {/*            (privilege) => (*/}
-      {/*                <PrivilegeListItem tileVariant={'h6'} privilege={privilege}/>*/}
-      {/*            )*/}
-      {/*        )*/}
-      {/*    }*/}
-      {/*</Box>*/}
-    </>
+        <Stack width={400}>
+          <ListOFRoles
+            roles={filteredRoles}
+            selectedRoleId={selectedRoleID}
+            setSelectedRoleId={setSelectedRoleID}
+            hilight={roleSearchName}
+          ></ListOFRoles>
+        </Stack>
+      </Stack>
+      <Stack width={"33%"}>
+        {selectedRoleID &&
+          filteredRoles?.filter((role) => role.id === selectedRoleID)[0] && (
+            <ListOFPrevileges
+              handleDelete={() => null}
+              privileges={
+                filteredRoles?.filter((role) => role.id === selectedRoleID)[0]
+                  ?.privileges
+              }
+            ></ListOFPrevileges>
+          )}
+      </Stack>
+    </Stack>
   );
 };
 
