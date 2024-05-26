@@ -6,7 +6,7 @@ import {
   Stack,
 } from "@mui/material";
 import ASSETS from "../../../../../../resources/ASSETS.ts";
-import ListOFPrevileges from "../../ListOFPrevileges.tsx";
+import ListOFPrevileges from "../../../privileges/ListOFPrevileges.tsx";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   PrivilegesEnum,

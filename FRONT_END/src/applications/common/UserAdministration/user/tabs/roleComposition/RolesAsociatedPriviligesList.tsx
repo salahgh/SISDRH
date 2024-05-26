@@ -5,7 +5,7 @@ import { Button, InputAdornment, Stack, TextField } from "@mui/material";
 import { Add, Search } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { ListOFRoles } from "../../ListOFRoles.tsx";
-import ListOFPrevileges from "../../ListOFPrevileges.tsx";
+import ListOFPrevileges from "../../../privileges/ListOFPrevileges.tsx";
 import { FormDialogue } from "../../../../components/dialogs/FormDialogue.tsx";
 import TransferList from "../../../TransferList.tsx";
 

@@ -38,7 +38,7 @@ public class PrivilegeService {
 
    @GraphQLQuery
    public List<Privilege> getAllPrivileges() {
-      return IteratorUtils.toList(privilegeRepository.findAll().iterator()) ;
+      return privilegeRepository.findAllOrdered() ;
    }
 
 

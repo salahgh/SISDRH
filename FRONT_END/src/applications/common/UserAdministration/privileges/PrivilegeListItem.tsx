@@ -1,31 +1,27 @@
-import { PrivilegeDto } from "../../../../redux/mainApi.ts";
 import {
   Avatar,
   IconButton,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Typography,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { green } from "@mui/material/colors";
 import { DeleteForever } from "@mui/icons-material";
+import { Privilege } from "../../../../_generated_gql_/graphql.ts";
 
 export function PrivilegeListItem({
-  selectedPrivilege,
+  selectedPrivilegeId,
   privilege,
+  handleDelete,
+  handleSelectPrivilege,
+  handleClick,
 }: {
-  selectedPrivilege?: PrivilegeDto | null;
-  privilege: {
-    __typename?: "Privilege";
-    id?: any | null;
-    description?: string | null;
-    name?: string | null;
-  } | null;
-  handleSelectPrivilege?: Dispatch<SetStateAction<PrivilegeDto | null>>;
-  tileVariant?: string;
-  displayId?: boolean;
-  handleDelete?: any;
+  selectedPrivilegeId?: string | null;
+  privilege: Privilege;
+  handleSelectPrivilege?: Dispatch<SetStateAction<string | null>>;
+  handleDelete?: (privilegeName: string) => void;
+  handleClick?: (privilegeName: string) => void;
 }) {
   // todo delete icon displayed only when hovered
 
@@ -37,7 +33,15 @@ export function PrivilegeListItem({
       onMouseLeave={() => setHovered(false)}
       dir={"ltr"}
       sx={{ margin: 0.3, bgcolor: "#e8e8e8", borderRadius: 3 }}
-      selected={selectedPrivilege == privilege}
+      selected={selectedPrivilegeId == privilege?.id}
+      onClick={() => {
+        if (handleSelectPrivilege) {
+          handleSelectPrivilege(privilege?.id);
+        }
+        if (handleClick) {
+          handleClick(privilege?.name);
+        }
+      }}
     >
       <ListItemAvatar>
         <Avatar
@@ -47,21 +51,22 @@ export function PrivilegeListItem({
             height: 25,
           }}
         >
-          P
+          {hovered && handleDelete ? (
+            <IconButton
+              sx={{ bgcolor: "#fdcece", width: 25, height: 25 }}
+              onClick={() => handleDelete(privilege?.name)}
+            >
+              <DeleteForever sx={{ color: "#d22f2f", width: 23, height: 23 }} />
+            </IconButton>
+          ) : (
+            "P"
+          )}
         </Avatar>
       </ListItemAvatar>
       <ListItemText
         sx={{ overflow: "auto", textAlign: "right" }}
         primary={privilege.name}
       ></ListItemText>
-      <IconButton
-        sx={{ width: 25, height: 25 }}
-        onClick={() => handleDelete(privilege)}
-      >
-        {hovered && (
-          <DeleteForever sx={{ color: "#d22f2f", width: 23, height: 23 }} />
-        )}
-      </IconButton>
     </ListItemButton>
   );
 }

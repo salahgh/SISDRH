@@ -4,11 +4,13 @@ import {
   ListItemButton,
   ListItemText,
   Stack,
+  Typography,
 } from "@mui/material";
 import ASSETS from "../../../../../../resources/ASSETS.ts";
-import ListOFPrevileges from "../../ListOFPrevileges.tsx";
+import ListOFPrevileges from "../../../privileges/ListOFPrevileges.tsx";
 import { useMutation, useQuery } from "@apollo/client";
 import {
+  AllPrivilegesDocument,
   PrivilegesEnum,
   UserAddPrivilegeDocument,
   UserDeletePrivilegeDocument,
@@ -19,6 +21,7 @@ import { useState } from "react";
 import useSnackBarNotifications from "../../../../notifications/useSnackBarNotifications.tsx";
 import { FormDialogue } from "../../../../components/dialogs/FormDialogue.tsx";
 import { selectSelectedUser } from "../../../../../../redux/features/userAdministration/userAdministrationSlice.ts";
+import { CustomNoResultOverlay } from "../../../../../pam/mainDataGrid/CustomNoResultOverlay.tsx";
 
 export const DirectUserPrivileges = () => {
   const matricule = useSelector(selectSelectedUser);
@@ -61,60 +64,55 @@ export const DirectUserPrivileges = () => {
     ],
   });
 
-  const handleDeletePrivilege = (privilege) => {
+  const handleDeletePrivilege = (privilegeName) => {
     userDeletePrivilege({
       variables: {
         userName: matricule,
-        privilegeName: privilege?.name,
+        privilegeName: privilegeName,
       },
     })
-      .then(() => handleShowInfoSnackBar("deleted"))
+      .then(() => null)
       .catch((e) => handleShowGraphQlErrorSnackBar(JSON.stringify(e)));
   };
 
-  function handleAddPrivilge(item) {
+  function handleAddPrivilege(privilegeName) {
     userAddPrivilege({
-      variables: { username: matricule, privilegeName: item },
+      variables: { username: matricule, privilegeName: privilegeName },
     })
-      .then((result) => {
-        handleShowInfoSnackBar("privilege " + item + " added");
+      .then((r) => {
+        handleShowInfoSnackBar("privilege " + privilegeName + " added");
       })
       .catch((error) => handleShowGraphQlErrorSnackBar(JSON.stringify(error)));
   }
+
+  const { data: privilges, loading, error } = useQuery(AllPrivilegesDocument);
 
   return (
     <Stack sx={{ overflow: "auto" }}>
       <FormDialogue
         title={
-          "إضافة أدوار للمستخدم" +
+          "إضافة إمتياز مباشر لل" +
+          user?.user?.personnel?.grade?.libGradeAr +
+          " " +
           user?.user?.personnel?.noma +
           " " +
           user?.user?.personnel?.pnoma
         }
         content={
-          <List>
-            {Object.values(PrivilegesEnum).map((item, index) => {
-              return (
-                <ListItemButton onClick={() => handleAddPrivilge(item)}>
-                  <ListItemText primary={item} />
-                </ListItemButton>
-              );
-            })}
-          </List>
+          <ListOFPrevileges
+            privileges={privilges?.allPrivileges}
+            handleClick={handleAddPrivilege}
+          ></ListOFPrevileges>
         }
         open={addPrivilegeOpen}
         setOpen={setAddPrivilegeOpen}
       />
       <Button variant={"contained"} onClick={() => setAddPrivilegeOpen(true)}>
-        ACCORDER UN PRIVILEGE
+        <Typography fontWeight={"bold"}> إضافة إمتياز مباشر</Typography>
       </Button>
       {user?.user?.privileges?.length === 0 ? (
-        <div>
-          <img
-            src={ASSETS.emptyInbox}
-            alt={"empty"}
-            style={{ width: "70px" }}
-          />
+        <div className={"flex flex-row center"}>
+          <CustomNoResultOverlay width={90}></CustomNoResultOverlay>
         </div>
       ) : (
         <ListOFPrevileges
