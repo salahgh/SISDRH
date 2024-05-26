@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Matricule } from "../../components/Matricule.tsx";
 import GradeAvatar from "../../../rh/GradeAvatar.tsx";
 import { ArmeAvatar } from "../../../rh/ArmeAvatar.tsx";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 export function UserHabilitations({ username }: { username?: string | null }) {
   const { data, loading, error, refetch } = useQuery(GetLoggedInUserDocument, {
@@ -56,11 +57,15 @@ export function UserHabilitations({ username }: { username?: string | null }) {
         </Typography>
       </IconButton>
 
-      <Stack alignItems={"center"} spacing={1} padding={1}>
+      <Grid2 container={true} spacing={1}>
         {data?.user?.habilitation?.confidentialites?.map((item, index) => {
-          return <ConfidentialiteChip confidentialite={item} />;
+          return (
+            <Grid2>
+              <ConfidentialiteChip confidentialite={item} />
+            </Grid2>
+          );
         })}
-      </Stack>
+      </Grid2>
     </Stack>
   );
 }

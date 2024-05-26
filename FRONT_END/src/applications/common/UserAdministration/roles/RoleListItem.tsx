@@ -1,7 +1,6 @@
 import {
   Avatar,
   IconButton,
-  ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
@@ -30,7 +29,6 @@ export interface RoleListItemProps {
   setTransferListOpen?: Dispatch<SetStateAction<boolean>>;
   displayId?: boolean;
   bgcolor?: string;
-  listItemProps?: ListItemProps;
   hilight?: string;
 }
 
@@ -41,12 +39,11 @@ export function RoleListItem({
   setTransferListOpen,
   displayId,
   bgcolor,
-  listItemProps,
   hilight,
 }: RoleListItemProps) {
   const matricule = useSelector(selectSelectedUser);
 
-  const [hovered, setHovered] = useState();
+  const [hovered, setHovered] = useState<boolean>();
 
   const [deleteRoleMutation] = useMutation(UserDeleteRoleDocument, {
     refetchQueries: [
@@ -86,7 +83,6 @@ export function RoleListItem({
       }}
       selected={isSelected}
       onClick={() => setSelectedRoleId && setSelectedRoleId(role?.id)}
-      {...listItemProps}
     >
       <ListItemAvatar>
         <Avatar
@@ -111,19 +107,19 @@ export function RoleListItem({
         }
         secondary={displayId && role?.id}
       ></ListItemText>
-      {setTransferListOpen && (
-        <IconButton onClick={() => setTransferListOpen(true)}>
-          <AddCircleOutline sx={{ fontSize: 35 }}></AddCircleOutline>
-        </IconButton>
-      )}
-      {hovered && (
-        <IconButton
-          sx={{ width: 35, height: 35 }}
-          onClick={() => handleDelete(role)}
-        >
-          <DeleteForever sx={{ color: "#d22f2f", width: 30, height: 30 }} />
-        </IconButton>
-      )}
+      {/*{setTransferListOpen && (*/}
+      {/*  <IconButton onClick={() => setTransferListOpen(true)}>*/}
+      {/*    <AddCircleOutline sx={{ fontSize: 35 }}></AddCircleOutline>*/}
+      {/*  </IconButton>*/}
+      {/*)}*/}
+      {/*{hovered && (*/}
+      {/*  <IconButton*/}
+      {/*    sx={{ width: 35, height: 35 }}*/}
+      {/*    onClick={() => handleDelete(role)}*/}
+      {/*  >*/}
+      {/*    <DeleteForever sx={{ color: "#d22f2f", width: 30, height: 30 }} />*/}
+      {/*  </IconButton>*/}
+      {/*)}*/}
     </ListItemButton>
   );
 }

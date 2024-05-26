@@ -1,4 +1,4 @@
-import { PrivilegeDto } from "../../../../redux/mainApi";
+import { PrivilegeDto } from "../../../../redux/mainApi.ts";
 import { InputAdornment, List, Stack, TextField } from "@mui/material";
 import { NetWorkErrorComponent } from "../../../../components/errors/NetWorkErrorComponent";
 import EmptyListComponent from "../../../../components/EmptyListComponent";
@@ -7,9 +7,9 @@ import { Dispatch, SetStateAction, useState } from "react";
 import DynamicForm from "../../../../openApi/DynamicForm";
 import { FormDialogue } from "../../components/dialogs/FormDialogue.tsx";
 import { LoadingButton } from "@mui/lab";
-import { PrivilegeListItem } from "./PrivilegeListItem";
+import { PrivilegeListItem } from "./PrivilegeListItem.tsx";
 import { useQuery } from "@apollo/client";
-import { AllPrivilegesDocument } from "../../../../_generated_gql_/graphql";
+import { AllPrivilegesDocument } from "../../../../_generated_gql_/graphql.ts";
 
 export function PriviligesListAll({
   selectedPrivilege,

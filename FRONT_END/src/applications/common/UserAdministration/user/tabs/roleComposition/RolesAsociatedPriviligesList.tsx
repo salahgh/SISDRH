@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { FindAllRolesDocument } from "../../../../_generated_gql_/graphql";
-import { TranserListDialog } from "../roles/TranserListDialog";
-import { Box, Button, InputAdornment, Stack, TextField } from "@mui/material";
+import { FindAllRolesDocument } from "../../../../../../_generated_gql_/graphql.ts";
+import { Button, InputAdornment, Stack, TextField } from "@mui/material";
 import { Add, Search } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { ListOFRoles } from "../user/ListOFRoles.tsx";
-import { RoleListItem } from "./RoleListItem.tsx";
-import ListOFPrevileges from "../user/ListOFPrevileges.tsx";
-import { FormDialogue } from "../../components/dialogs/FormDialogue.tsx";
-import TransferList from "../TransferList.tsx";
+import { ListOFRoles } from "../../ListOFRoles.tsx";
+import ListOFPrevileges from "../../ListOFPrevileges.tsx";
+import { FormDialogue } from "../../../../components/dialogs/FormDialogue.tsx";
+import TransferList from "../../../TransferList.tsx";
 
 const RolesAsociatedPriviligesList = () => {
   const [roleSearchName, setRoleSearchName] = useState<string>("");

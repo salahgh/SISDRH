@@ -1,4 +1,4 @@
-import { PrivilegeListItem } from "../roles/PrivilegeListItem";
+import { PrivilegeListItem } from "../privileges/PrivilegeListItem.tsx";
 import { List } from "@mui/material";
 
 function ListOFPrevileges({

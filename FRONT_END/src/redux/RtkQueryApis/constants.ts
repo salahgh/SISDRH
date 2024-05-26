@@ -1,9 +1,9 @@
 // export const baseUrl_ = `http://${process.env['REACT_APP_BACKEND_HOST']}:${process.env['REACT_APP_BACKEND_PORT']}/GRH_N_war_exploded`
 // export const baseUrl_ = `http://${process.env['REACT_APP_BACKEND_HOST']}:${process.env['REACT_APP_BACKEND_PORT']}/${process.env['REACT_APP_BACKEND_CONTEXT']}`
 
-// export const baseUrl_ = `http://localhost:8090/SI_RH_DSN`;
+export const baseUrl_ = `http://localhost:8090/SI_RH_DSN`;
 
-export const baseUrl_ = `http://192.213.71.243:8090/SI_RH_DSN`;
+// export const baseUrl_ = `http://192.213.71.243:8090/SI_RH_DSN`;
 export const exportToPhotoUrl = baseUrl_ + "/api/images/exportPhotos";
 export const exportToExcelUrl = baseUrl_ + "/api/images/exportToExcel";
 export const exportToPdfUrl = baseUrl_ + "/api/images/exportToPdf";

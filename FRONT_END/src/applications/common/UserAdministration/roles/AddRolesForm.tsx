@@ -12,13 +12,11 @@ import { Stack } from "@mui/material";
 
 export const AddRolesForm = ({
   matricule,
-  roles,
 }: {
   matricule: string;
   roles: UserQuery["user"]["roles"];
 }) => {
-  const { data: allRoles, loading, error } = useQuery(FindAllRolesDocument);
-
+  const { data: allRoles } = useQuery(FindAllRolesDocument);
   const [selectedRoleId, setSelectedRoleId] = useState();
 
   const [addRoleMutation] = useMutation(UserAddRoleDocument, {

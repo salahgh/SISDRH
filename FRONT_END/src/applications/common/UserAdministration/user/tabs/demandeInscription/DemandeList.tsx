@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Grid, Paper, Stack } from "@mui/material";
-import useSnackBarNotifications from "../../notifications/useSnackBarNotifications";
+import useSnackBarNotifications from "../../../../notifications/useSnackBarNotifications.tsx";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   FindAllDemandeInscriptionRemainingDocument,
   ValidateUserDemandeDocument,
-} from "../../../../_generated_gql_/graphql";
-import PersonDetails from "./PersonDetails";
+} from "../../../../../../_generated_gql_/graphql.ts";
+import PersonDetails from "./PersonDetails.tsx";
 
 const DemandeList = () => {
   const { data: allDemandes } = useQuery(

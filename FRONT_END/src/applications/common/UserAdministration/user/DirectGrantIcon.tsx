@@ -1,5 +1,5 @@
 import { Person } from "@mui/icons-material";
-import ASSETS from "../../../../../resources/ASSETS";
+import ASSETS from "../../../../resources/ASSETS.ts";
 import { Box } from "@mui/material";
 import React from "react";
 

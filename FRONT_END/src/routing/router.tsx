@@ -18,7 +18,7 @@ import UploadMainPage from "../applications/textReglementaire/pages/upload/uploa
 import SearchUI from "../applications/textReglementaire/pages/ocr/searchPage/searchUI.tsx";
 import OcrJobMain from "../applications/textReglementaire/pages/OcrJobMonitoring/OcrJobMain.tsx";
 import { Home } from "../applications/rh/Home.tsx";
-import SettingTabs from "../applications/common/UserAdministration/user/SettingsTabs.tsx";
+import SettingTabs from "../applications/common/UserAdministration/user/tabs/SettingsTabsPanel.tsx";
 
 export const router = createBrowserRouter([
   {

@@ -1,4 +1,4 @@
-import { PrivilegeDto } from "../../../../redux/mainApi";
+import { PrivilegeDto } from "../../../../redux/mainApi.ts";
 import {
   Avatar,
   IconButton,

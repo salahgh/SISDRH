@@ -1,11 +1,12 @@
-import { ParTextReglementaireIcon } from "./ParTextReglementaireIcon";
-import { DirectGrantIcon } from "./DirectGrantIcon";
+import { ParTextReglementaireIcon } from "./ParTextReglementaireIcon.tsx";
+import { DirectGrantIcon } from "./DirectGrantIcon.tsx";
 import { ManageAccounts, PersonAdd } from "@mui/icons-material";
-import ASSETS from "../../../../../resources/ASSETS";
+import ASSETS from "../../../../resources/ASSETS.ts";
 import React from "react";
 import { useTheme } from "@mui/material/styles";
+import { PrivilegesEnum } from "../../../../_generated_gql_/graphql.ts";
 
-export const useGetTabsArray = (value, privileges) => {
+export const useGetTabsArray = (value) => {
   const theme = useTheme();
   return [
     {
@@ -15,7 +16,7 @@ export const useGetTabsArray = (value, privileges) => {
         bgcolor: value === "1" ? theme.palette.action.selected : "null",
       },
       value: "1",
-      privilege: privileges.OcrResultDirectGrant,
+      privilege: PrivilegesEnum.OcrResultDirectGrant,
     },
     {
       icon: <DirectGrantIcon />,
@@ -24,7 +25,7 @@ export const useGetTabsArray = (value, privileges) => {
         bgcolor: value === "2" ? theme.palette.action.selected : "null",
       },
       value: "2",
-      privilege: privileges.OcrResultDirectGrant,
+      privilege: PrivilegesEnum.OcrResultDirectGrant,
     },
     {
       icon: (
@@ -41,7 +42,7 @@ export const useGetTabsArray = (value, privileges) => {
         bgcolor: value === "3" ? theme.palette.action.selected : "null",
       },
       value: "3",
-      privilege: privileges.GestionCompte,
+      privilege: PrivilegesEnum.GestionCompte,
     },
     {
       icon: (
