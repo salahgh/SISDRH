@@ -1,35 +1,37 @@
-import {
-  Button,
-  List,
-  ListItemButton,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
-import ASSETS from "../../../../../../resources/ASSETS.ts";
-import ListOFPrevileges from "../../../privileges/ListOFPrevileges.tsx";
+import { Button, Stack, Typography } from "@mui/material";
+import ListOFPrivileges from "../../../privileges/ListOFPrevileges.tsx";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   AllPrivilegesDocument,
-  PrivilegesEnum,
+  FindPrivilegesByUserNameDocument,
   UserAddPrivilegeDocument,
   UserDeletePrivilegeDocument,
   UserDocument,
 } from "../../../../../../_generated_gql_/graphql.ts";
 import { useSelector } from "react-redux";
-import { useState } from "react";
 import useSnackBarNotifications from "../../../../notifications/useSnackBarNotifications.tsx";
 import { FormDialogue } from "../../../../components/dialogs/FormDialogue.tsx";
 import { selectSelectedUser } from "../../../../../../redux/features/userAdministration/userAdministrationSlice.ts";
 import { CustomNoResultOverlay } from "../../../../../pam/mainDataGrid/CustomNoResultOverlay.tsx";
+import { useEffect, useState } from "react";
 
 export const DirectUserPrivileges = () => {
   const matricule = useSelector(selectSelectedUser);
-
   const [addPrivilegeOpen, setAddPrivilegeOpen] = useState<boolean>(false);
 
   const { handleShowGraphQlErrorSnackBar, handleShowInfoSnackBar } =
     useSnackBarNotifications();
+
+  const { data: userPrivileges, loading } = useQuery(
+    FindPrivilegesByUserNameDocument,
+    {
+      variables: {
+        userName: matricule,
+      },
+    },
+  );
+
+  console.log("user privilges", userPrivileges);
 
   const {
     data: user,
@@ -50,6 +52,12 @@ export const DirectUserPrivileges = () => {
           matricule: matricule,
         },
       },
+      {
+        query: FindPrivilegesByUserNameDocument,
+        variables: {
+          userName: matricule,
+        },
+      },
     ],
   });
 
@@ -59,6 +67,12 @@ export const DirectUserPrivileges = () => {
         query: UserDocument,
         variables: {
           matricule: matricule,
+        },
+      },
+      {
+        query: FindPrivilegesByUserNameDocument,
+        variables: {
+          userName: matricule,
         },
       },
     ],
@@ -79,13 +93,28 @@ export const DirectUserPrivileges = () => {
     userAddPrivilege({
       variables: { username: matricule, privilegeName: privilegeName },
     })
-      .then((r) => {
+      .then(() => {
         handleShowInfoSnackBar("privilege " + privilegeName + " added");
       })
       .catch((error) => handleShowGraphQlErrorSnackBar(JSON.stringify(error)));
   }
 
-  const { data: privilges, loading, error } = useQuery(AllPrivilegesDocument);
+  const { data: allPrivileges } = useQuery(AllPrivilegesDocument);
+  const [filteredPrivileges, setFilteredPrivileges] = useState([]);
+
+  useEffect(() => {
+    console.log("effect ...");
+    if (allPrivileges && userPrivileges) {
+      setFilteredPrivileges(
+        allPrivileges?.allPrivileges?.filter(
+          (item) =>
+            userPrivileges?.findPrivilegesByUserName?.findIndex(
+              (i) => i?.id === item?.id,
+            ) === -1,
+        ),
+      );
+    }
+  }, [allPrivileges, userPrivileges, loading]);
 
   return (
     <Stack sx={{ overflow: "auto" }}>
@@ -99,10 +128,10 @@ export const DirectUserPrivileges = () => {
           user?.user?.personnel?.pnoma
         }
         content={
-          <ListOFPrevileges
-            privileges={privilges?.allPrivileges}
+          <ListOFPrivileges
+            privileges={filteredPrivileges}
             handleClick={handleAddPrivilege}
-          ></ListOFPrevileges>
+          ></ListOFPrivileges>
         }
         open={addPrivilegeOpen}
         setOpen={setAddPrivilegeOpen}
@@ -110,14 +139,14 @@ export const DirectUserPrivileges = () => {
       <Button variant={"contained"} onClick={() => setAddPrivilegeOpen(true)}>
         <Typography fontWeight={"bold"}> إضافة إمتياز مباشر</Typography>
       </Button>
-      {user?.user?.privileges?.length === 0 ? (
+      {userPrivileges?.findPrivilegesByUserName?.length === 0 ? (
         <div className={"flex flex-row center"}>
           <CustomNoResultOverlay width={90}></CustomNoResultOverlay>
         </div>
       ) : (
-        <ListOFPrevileges
+        <ListOFPrivileges
           handleDelete={handleDeletePrivilege}
-          privileges={user?.user?.privileges}
+          privileges={userPrivileges?.findPrivilegesByUserName}
         />
       )}
     </Stack>

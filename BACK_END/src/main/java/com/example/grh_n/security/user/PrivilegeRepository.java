@@ -18,11 +18,17 @@ public interface PrivilegeRepository extends CrudRepository<Privilege, String>,
 
     Optional<Privilege> findByName(String name);
 
+    @Query("select p from Privilege p inner join p.users u where u.id = :userName order by p.name")
+    List<Privilege> findByUserName(String userName);
+
     Page<Privilege> findAllByNameContaining(String name, Pageable pageable);
 
     List<Privilege> findAllByNameContaining(String name);
 
     @Query("select p from Privilege p order by p.name")
     List<Privilege> findAllOrdered();
+
+    @Query("select p from Privilege p order by p.name")
+    List<Privilege> findAllByUserOrdered();
 
 }

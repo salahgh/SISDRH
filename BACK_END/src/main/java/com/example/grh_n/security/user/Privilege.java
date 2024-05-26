@@ -2,10 +2,7 @@ package com.example.grh_n.security.user;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -15,6 +12,7 @@ import java.util.Set;
 @Setter
 @Table(name = "A_Privilege")
 public class Privilege {
+
     @Id
     private String id;
 

@@ -54,6 +54,7 @@ public class GrhNApplication {
 
 
         for (RolesEnum value : RolesEnum.values()) {
+            if(roleRepository.existsById(value.name())) continue;
             roleRepository.save(
                     Role.builder()
                             .id(String.valueOf(value))
@@ -63,6 +64,7 @@ public class GrhNApplication {
         }
 
         for (PrivilegesEnum value : PrivilegesEnum.values()) {
+            if(privilegeRepository.existsById(value.name())) continue;
             privilegeRepository.save(
                     Privilege.builder()
                             .id(String.valueOf(value))
@@ -71,14 +73,6 @@ public class GrhNApplication {
             );
         }
 
-        for (PrivilegesEnum value : PrivilegesEnum.values()) {
-            privilegeRepository.save(
-                    Privilege.builder()
-                            .id(String.valueOf(value))
-                            .name(String.valueOf(value))
-                            .build()
-            );
-        }
         for (ReportNames value : ReportNames.values()) {
             if (!namesRepository.existsById(value.name())) {
                 namesRepository.save(ReportsNames.builder()

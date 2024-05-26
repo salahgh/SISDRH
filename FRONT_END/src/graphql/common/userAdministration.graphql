@@ -84,3 +84,11 @@ query allPrivilegesPaged ($paginationInput : PaginationInput){
         }
     }
 }
+
+query findPrivilegesByUserName($userName : String){
+    findPrivilegesByUserName(userName: $userName){
+        description
+        id
+        name
+    }
+}
