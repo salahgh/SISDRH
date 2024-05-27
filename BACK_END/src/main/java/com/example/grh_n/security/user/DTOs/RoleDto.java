@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class RoleDto implements Serializable {
 
-   private Long id;
+   private String id;
 
    private String name;
 

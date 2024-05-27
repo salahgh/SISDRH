@@ -22,7 +22,7 @@ export const DirectUserPrivileges = () => {
   const { handleShowGraphQlErrorSnackBar, handleShowInfoSnackBar } =
     useSnackBarNotifications();
 
-  const { data: userPrivileges, loading } = useQuery(
+  const { data: userPrivileges, loading: loadingUserPrivileges } = useQuery(
     FindPrivilegesByUserNameDocument,
     {
       variables: {
@@ -30,8 +30,6 @@ export const DirectUserPrivileges = () => {
       },
     },
   );
-
-  console.log("user privilges", userPrivileges);
 
   const {
     data: user,
@@ -44,39 +42,45 @@ export const DirectUserPrivileges = () => {
     },
   });
 
-  const [userDeletePrivilege] = useMutation(UserDeletePrivilegeDocument, {
-    refetchQueries: [
-      {
-        query: UserDocument,
-        variables: {
-          matricule: matricule,
+  const [userDeletePrivilege, { loading: deletingPrivilege }] = useMutation(
+    UserDeletePrivilegeDocument,
+    {
+      refetchQueries: [
+        {
+          query: UserDocument,
+          variables: {
+            matricule: matricule,
+          },
         },
-      },
-      {
-        query: FindPrivilegesByUserNameDocument,
-        variables: {
-          userName: matricule,
+        {
+          query: FindPrivilegesByUserNameDocument,
+          variables: {
+            userName: matricule,
+          },
         },
-      },
-    ],
-  });
+      ],
+    },
+  );
 
-  const [userAddPrivilege] = useMutation(UserAddPrivilegeDocument, {
-    refetchQueries: [
-      {
-        query: UserDocument,
-        variables: {
-          matricule: matricule,
+  const [userAddPrivilege, { loading: addingPrivilege }] = useMutation(
+    UserAddPrivilegeDocument,
+    {
+      refetchQueries: [
+        {
+          query: UserDocument,
+          variables: {
+            matricule: matricule,
+          },
         },
-      },
-      {
-        query: FindPrivilegesByUserNameDocument,
-        variables: {
-          userName: matricule,
+        {
+          query: FindPrivilegesByUserNameDocument,
+          variables: {
+            userName: matricule,
+          },
         },
-      },
-    ],
-  });
+      ],
+    },
+  );
 
   const handleDeletePrivilege = (privilegeName) => {
     userDeletePrivilege({
@@ -114,7 +118,7 @@ export const DirectUserPrivileges = () => {
         ),
       );
     }
-  }, [allPrivileges, userPrivileges, loading]);
+  }, [allPrivileges, userPrivileges, loadingUserPrivileges]);
 
   return (
     <Stack sx={{ overflow: "auto" }}>
@@ -131,6 +135,9 @@ export const DirectUserPrivileges = () => {
           <ListOFPrivileges
             privileges={filteredPrivileges}
             handleClick={handleAddPrivilege}
+            disabled={
+              addingPrivilege || deletingPrivilege || loadingUserPrivileges
+            }
           ></ListOFPrivileges>
         }
         open={addPrivilegeOpen}
@@ -147,6 +154,9 @@ export const DirectUserPrivileges = () => {
         <ListOFPrivileges
           handleDelete={handleDeletePrivilege}
           privileges={userPrivileges?.findPrivilegesByUserName}
+          disabled={
+            addingPrivilege || deletingPrivilege || loadingUserPrivileges
+          }
         />
       )}
     </Stack>

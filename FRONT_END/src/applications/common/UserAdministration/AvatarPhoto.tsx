@@ -7,7 +7,6 @@ import { GetPhotoByMatriculeAndSizeDocument } from "../../../_generated_gql_/gra
 import { buildPhotoSrc } from "../../../resources/ASSETS";
 import { Error } from "@mui/icons-material";
 import { Theme } from "@mui/material/styles";
-import { useSpring, animated } from "react-spring";
 
 interface AvatarPhotoProps {
   matricule: string | null | undefined;
@@ -23,12 +22,6 @@ interface AvatarPhotoProps {
 const AvatarPhoto = React.forwardRef((props: AvatarPhotoProps, ref) => {
   const { avatarVariant, size, imageSize, matricule, borderRadius, ...other } =
     props;
-
-  const springs = useSpring({
-    from: { opacity: 0, transform: `translateY(${size * 0.3}px)` },
-    to: { opacity: 1, transform: "translateY(0)" },
-    config: { duration: 150 },
-  });
 
   const { data, error, loading } = useQuery(
     GetPhotoByMatriculeAndSizeDocument,
@@ -48,11 +41,6 @@ const AvatarPhoto = React.forwardRef((props: AvatarPhotoProps, ref) => {
       height={size}
       borderRadius={avatarVariant === "rounded" ? borderRadius : null}
       border={"solid 1px"}
-      // borderColor={(theme) => theme?.palette.warning.dark}
-      // sx={{
-      //   backgroundColor: (theme: Theme) =>
-      //     lighten(theme.palette.warning.light, 0.5),
-      // }}
     >
       {error && !loading && (
         <Error

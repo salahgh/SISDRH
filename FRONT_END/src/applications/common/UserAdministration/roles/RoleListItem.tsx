@@ -6,21 +6,13 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { AddCircleOutline, DeleteForever } from "@mui/icons-material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { red } from "@mui/material/colors";
-import { ListItemProps } from "@mui/material/ListItem/ListItem";
-import { useSelector } from "react-redux";
-import { selectSelectedUser } from "../../../../redux/features/userAdministration/userAdministrationSlice";
-import { useMutation } from "@apollo/client";
-import {
-  UserDeleteRoleDocument,
-  UserDocument,
-  UserQuery,
-} from "../../../../_generated_gql_/graphql";
-import useSnackBarNotifications from "../../notifications/useSnackBarNotifications";
+import { UserQuery } from "../../../../_generated_gql_/graphql";
 import { highlightSearchTokenWithSpan } from "../../utilities/tools.ts";
 import * as React from "react";
+import { Theme } from "@mui/material/styles";
+import { DeleteForever } from "@mui/icons-material";
 
 export interface RoleListItemProps {
   role: UserQuery["user"]["roles"][0];
@@ -30,6 +22,8 @@ export interface RoleListItemProps {
   displayId?: boolean;
   bgcolor?: string;
   hilight?: string;
+  handleDelete?: (roleName: string) => void;
+  handleClick?: (roleName: string) => void;
 }
 
 export function RoleListItem({
@@ -40,37 +34,10 @@ export function RoleListItem({
   displayId,
   bgcolor,
   hilight,
+  handleDelete,
+  handleClick,
 }: RoleListItemProps) {
-  const matricule = useSelector(selectSelectedUser);
-
   const [hovered, setHovered] = useState<boolean>();
-
-  const [deleteRoleMutation] = useMutation(UserDeleteRoleDocument, {
-    refetchQueries: [
-      {
-        query: UserDocument,
-        variables: {
-          matricule: matricule,
-        },
-      },
-    ],
-  });
-
-  const { handleShowGraphQlErrorSnackBar, handleShowInfoSnackBar } =
-    useSnackBarNotifications();
-
-  const handleDelete = (role) => {
-    deleteRoleMutation({
-      variables: {
-        userName: matricule,
-        roleName: role?.name,
-      },
-    })
-      .then(() => handleShowInfoSnackBar("role " + role?.name + " deleted"))
-      .catch((error) => handleShowGraphQlErrorSnackBar(JSON.stringify(error)));
-  };
-
-  console.log(hilight);
 
   return (
     <ListItemButton
@@ -82,7 +49,10 @@ export function RoleListItem({
         borderRadius: 2,
       }}
       selected={isSelected}
-      onClick={() => setSelectedRoleId && setSelectedRoleId(role?.id)}
+      onClick={() => {
+        setSelectedRoleId && setSelectedRoleId(role?.id);
+        handleClick && handleClick(role?.name);
+      }}
     >
       <ListItemAvatar>
         <Avatar
@@ -91,7 +61,16 @@ export function RoleListItem({
             transform: "translate(5)",
           }}
         >
-          R
+          {hovered && handleDelete ? (
+            <IconButton
+              sx={{ bgcolor: (theme: Theme) => theme?.palette?.error?.dark }}
+              onClick={() => handleDelete(role?.name)}
+            >
+              <DeleteForever sx={{ color: "white" }}></DeleteForever>
+            </IconButton>
+          ) : (
+            "R"
+          )}
         </Avatar>
       </ListItemAvatar>
       <ListItemText
@@ -107,19 +86,6 @@ export function RoleListItem({
         }
         secondary={displayId && role?.id}
       ></ListItemText>
-      {/*{setTransferListOpen && (*/}
-      {/*  <IconButton onClick={() => setTransferListOpen(true)}>*/}
-      {/*    <AddCircleOutline sx={{ fontSize: 35 }}></AddCircleOutline>*/}
-      {/*  </IconButton>*/}
-      {/*)}*/}
-      {/*{hovered && (*/}
-      {/*  <IconButton*/}
-      {/*    sx={{ width: 35, height: 35 }}*/}
-      {/*    onClick={() => handleDelete(role)}*/}
-      {/*  >*/}
-      {/*    <DeleteForever sx={{ color: "#d22f2f", width: 30, height: 30 }} />*/}
-      {/*  </IconButton>*/}
-      {/*)}*/}
     </ListItemButton>
   );
 }

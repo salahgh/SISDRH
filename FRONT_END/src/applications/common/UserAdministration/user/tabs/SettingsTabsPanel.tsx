@@ -4,7 +4,6 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { SettingsTabsHeaders } from "./SettingsTabsHeaders.tsx";
 import OcrResultUserGrants from "./UserDirectGrantsPerFile/OcrResultUserGrants.tsx";
 import UserOcrResultsGrants from "./UserDirectGrantPerUser/UserOcrResultsGrants.tsx";
-import UsersDataGrid from "./userRolesAndPrivileges/UsersDataGrid.tsx";
 import RolesAsociatedPriviligesList from "./roleComposition/RolesAsociatedPriviligesList.tsx";
 import DemandInscriptionManagement from "./demandeInscription/DemandeInscriptionManageemnt.tsx";
 import { UserRolesAndPrivilegesMain } from "./userRolesAndPrivileges/UserRolesAndPrivilegesMain.tsx";
@@ -43,7 +42,6 @@ const SettingTabs = () => {
               sx={{ height: "calc(100vh - 195px)", padding: 1 }}
               value="5"
             >
-              {/*<RolesPrivileges/>*/}
               <DemandInscriptionManagement />
             </TabPanel>
           </TabContext>

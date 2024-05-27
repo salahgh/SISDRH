@@ -3,23 +3,7 @@ import {Grid, Stack, Typography} from "@mui/material";
 import {useQuery} from "@apollo/client"
 
 
-export function GetStack({username}: { username: string }) {
-   const {
-      data,
-      loading,
-      error,
-      refetch
-   } = useQuery(GetLoggedInUserDocument, {
-      variables: {
-         userName: username
-      }
-   })
-
-   useEffect(
-      () => {
-         refetch().then(() => null);
-      }, []
-   )
+export
 
    const personnel = data?.user?.personnel
 

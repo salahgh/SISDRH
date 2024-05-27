@@ -8,11 +8,15 @@ export function ListOFRoles({
   selectedRoleId,
   setSelectedRoleId,
   hilight = "",
+  handleDelete,
+  handleClick,
 }: {
   roles?: UserQuery["user"]["roles"];
   selectedRoleId?: string | null;
   setSelectedRoleId?: Dispatch<SetStateAction<string | null>>;
   hilight?: string;
+  handleDelete?: (roleName: string) => void;
+  handleClick?: (roleName: string) => void;
 }) {
   return (
     <List dense={true}>
@@ -23,6 +27,8 @@ export function ListOFRoles({
           displayId={false}
           role={role}
           hilight={hilight}
+          handleDelete={handleDelete}
+          handleClick={handleClick}
         />
       ))}
       {!roles && <CircularProgress></CircularProgress>}

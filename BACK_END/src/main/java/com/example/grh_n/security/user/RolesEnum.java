@@ -5,7 +5,6 @@ public enum RolesEnum {
     ROLE_SDRH ,
     ROLE_BF ,
     ROLE_OFF ,
-
     ROLE_SOFF ,
     ROLE_HDT ,
     ROLE_PCA

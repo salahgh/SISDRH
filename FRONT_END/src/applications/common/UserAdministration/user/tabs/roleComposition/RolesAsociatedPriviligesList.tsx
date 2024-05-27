@@ -1,23 +1,110 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
-import { FindAllRolesDocument } from "../../../../../../_generated_gql_/graphql.ts";
-import { Button, InputAdornment, Stack, TextField } from "@mui/material";
-import { Add, Search } from "@mui/icons-material";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  CreateRoleDocument,
+  DeletePrivilegeFromRoleDocument,
+  DeleteRoleDocument,
+  DPersonnel,
+  FindAllRolesDocument,
+  FindPersonnelsByRoleIdDocument,
+  FindPrivilegesByRoleIdDocument,
+  UserDeleteRoleDocument,
+  UserDocument,
+} from "../../../../../../_generated_gql_/graphql.ts";
+import {
+  Button,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Add, AddCircle, Search } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { ListOFRoles } from "../../ListOFRoles.tsx";
-import ListOFPrevileges from "../../../privileges/ListOFPrevileges.tsx";
+import ListOFPrivileges from "../../../privileges/ListOFPrevileges.tsx";
 import { FormDialogue } from "../../../../components/dialogs/FormDialogue.tsx";
-import TransferList from "../../../TransferList.tsx";
+import { CreateRoleForm } from "./CreateRoleForm.tsx";
+import { FormikHelpers, FormikValues } from "formik";
+import useSnackBarNotifications from "../../../../notifications/useSnackBarNotifications.tsx";
+import { AddPrivilegeToRoleForm } from "./AddPrivilegeToRoleForm.tsx";
+import Grid2 from "@mui/material/Unstable_Grid2";
+import { Personnel } from "./Personnel.tsx";
 
 const RolesAsociatedPriviligesList = () => {
   const [roleSearchName, setRoleSearchName] = useState<string>("");
-  const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [createRoleOpen, setCreateRoleOpen] = useState<boolean>(false);
-  const [TransferListOpen, setTransferListOpen] = useState<boolean>(false);
+  const [addPrivilegeToRoleOpen, setAddPrivilegeToRoleOpen] = useState();
 
-  const { data: allRoles, loading, error } = useQuery(FindAllRolesDocument);
+  const { data: allRoles, loading: loadingAllRoles } =
+    useQuery(FindAllRolesDocument);
+
   const [selectedRoleID, setSelectedRoleID] = useState();
   const [filteredRoles, setFilteredRoles] = useState([]);
+
+  const { data: privileges } = useQuery(FindPrivilegesByRoleIdDocument, {
+    variables: {
+      roleId: selectedRoleID,
+    },
+  });
+
+  const { data: rolePersonnels } = useQuery(FindPersonnelsByRoleIdDocument, {
+    variables: {
+      roleId: selectedRoleID,
+    },
+  });
+
+  const { handleShowInfoSnackBar, handleShowErrorSnackBar } =
+    useSnackBarNotifications();
+
+  const [createRole, { loading: creatingARole }] = useMutation(
+    CreateRoleDocument,
+    {
+      refetchQueries: [{ query: FindAllRolesDocument }],
+    },
+  );
+
+  const [deletePrivilege] = useMutation(DeletePrivilegeFromRoleDocument, {
+    refetchQueries: [
+      {
+        query: FindPrivilegesByRoleIdDocument,
+        variables: {
+          roleId: selectedRoleID,
+        },
+      },
+    ],
+  });
+
+  const [deleteRole] = useMutation(DeleteRoleDocument, {
+    refetchQueries: [
+      {
+        query: FindAllRolesDocument,
+        variables: {},
+      },
+    ],
+  });
+
+  const onSubmit = (
+    values: FormikValues,
+    formikHelpers: FormikHelpers<any>,
+  ) => {
+    const { setSubmitting } = formikHelpers;
+    setSubmitting(true);
+    createRole({
+      variables: {
+        role: {
+          description: values.description,
+          name: values.name,
+          id: values.name,
+        },
+      },
+    })
+      .then(() => {
+        handleShowInfoSnackBar("success");
+        setCreateRoleOpen(false);
+      })
+      .catch((e) => handleShowErrorSnackBar(JSON.stringify(e)));
+    setSubmitting(false);
+  };
 
   useEffect(() => {
     if (allRoles) {
@@ -29,25 +116,59 @@ const RolesAsociatedPriviligesList = () => {
     }
   }, [allRoles, roleSearchName]);
 
-  return (
-    <Stack width={"100%"} direction={"row"}>
-      <Button onClick={() => setTransferListOpen(true)}> add </Button>
+  function handleDeletePrivilege(privilegeName) {
+    deletePrivilege({
+      variables: {
+        privilegeId: privilegeName,
+        roleId: selectedRoleID,
+      },
+    }).catch((e) => handleShowErrorSnackBar(JSON.stringify(e)));
+  }
 
+  const handleDeleteRole = (roleId: string) => {
+    deleteRole({
+      variables: {
+        roleId: roleId,
+      },
+    }).catch((e) => handleShowErrorSnackBar(JSON.stringify(e)));
+  };
+
+  return (
+    <Stack
+      width={"100%"}
+      direction={"row"}
+      spacing={1}
+      // className={"bg-blue-500"}
+      height={"calc(100vh - 170px)"}
+    >
       <FormDialogue
-        open={TransferListOpen}
-        title={"dsdfsdf"}
+        open={addPrivilegeToRoleOpen}
+        title={"إضافة إمتياز إلى الدور " + selectedRoleID}
         content={
-          <TransferList
-            setTransferListOpen={setTransferListOpen}
-            role={
-              filteredRoles?.filter((role) => role.id === selectedRoleID)[0]
-            }
-          />
+          <AddPrivilegeToRoleForm
+            roleId={selectedRoleID}
+          ></AddPrivilegeToRoleForm>
         }
+        setOpen={setAddPrivilegeToRoleOpen}
+        mode={"create"}
       ></FormDialogue>
 
-      <Stack>
-        <Stack sx={{ width: 400 }} direction={"row"} spacing={1}>
+      <FormDialogue
+        open={createRoleOpen}
+        title={" إنشاء دور جديد"}
+        mode={"create"}
+        content={<CreateRoleForm onSubmit={onSubmit} />}
+        setOpen={setCreateRoleOpen}
+        padding={10}
+      ></FormDialogue>
+
+      <Stack
+        width={"50%"}
+        spacing={1}
+        sx={{ overflow: "auto" }}
+        // className={"bg-amber-200"}
+      >
+        <Stack direction={"row"} spacing={1}>
           <TextField
             size={"small"}
             InputProps={{
@@ -63,33 +184,48 @@ const RolesAsociatedPriviligesList = () => {
           ></TextField>
           <LoadingButton
             onClick={() => setCreateRoleOpen(true)}
-            startIcon={<Add />}
+            startIcon={<AddCircle></AddCircle>}
             variant={"contained"}
-            loading={loading}
+            loading={loadingAllRoles}
           >
-            add
+            <Typography fontWeight={"bold"}> إنشاء دور جديد</Typography>
           </LoadingButton>
         </Stack>
-        <Stack width={400}>
+        <Stack>
           <ListOFRoles
             roles={filteredRoles}
             selectedRoleId={selectedRoleID}
             setSelectedRoleId={setSelectedRoleID}
             hilight={roleSearchName}
+            handleDelete={handleDeleteRole}
           ></ListOFRoles>
         </Stack>
       </Stack>
-      <Stack width={"33%"}>
-        {selectedRoleID &&
-          filteredRoles?.filter((role) => role.id === selectedRoleID)[0] && (
-            <ListOFPrevileges
-              handleDelete={() => null}
-              privileges={
-                filteredRoles?.filter((role) => role.id === selectedRoleID)[0]
-                  ?.privileges
-              }
-            ></ListOFPrevileges>
-          )}
+      <Stack width={"50%"}>
+        <Grid2 spacing={1}>
+          {rolePersonnels?.findPersonnelsByRoleId?.map((personnel, index) => {
+            return (
+              <Grid2 className={"bg-blue-500"}>
+                <Personnel key={personnel?.matricule} personnel={personnel} />
+              </Grid2>
+            );
+          })}
+        </Grid2>
+      </Stack>
+      <Stack width={"50%"} sx={{ overflow: "auto" }} height={"50"}>
+        <Button
+          variant={"contained"}
+          onClick={() => setAddPrivilegeToRoleOpen(true)}
+          startIcon={<AddCircle></AddCircle>}
+        >
+          <Typography fontWeight={"bold"}>
+            {"إضافة إمتياز إلى الدور " + selectedRoleID}
+          </Typography>
+        </Button>
+        <ListOFPrivileges
+          privileges={privileges?.findPrivilegesByRoleId}
+          handleDelete={handleDeletePrivilege}
+        ></ListOFPrivileges>
       </Stack>
     </Stack>
   );

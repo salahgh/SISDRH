@@ -6,15 +6,18 @@ function ListOFPrevileges({
   privileges,
   handleDelete,
   handleClick,
+  disabled = false,
 }: {
   privileges?: Privilege[] | undefined;
   handleDelete?: (privilegeName: string) => void;
   handleClick?: (privilegeName: string) => void;
+  disabled?: boolean;
 }) {
   return (
     <List dir={"ltr"} dense={true}>
       {privileges?.map((privilege) => (
         <PrivilegeListItem
+          disabled={disabled}
           handleDelete={handleDelete}
           privilege={privilege}
           handleClick={handleClick}

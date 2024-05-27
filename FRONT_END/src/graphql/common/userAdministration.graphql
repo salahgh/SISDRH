@@ -19,13 +19,30 @@ query findAllRoles{
     findAllRoles {
         id
         name
-        privileges {
-            id
-            name
-            description
-        }
         description
 
+    }
+}
+query findPersonnelsByRoleId($roleId : String){
+    findPersonnelsByRoleId(roleId: $roleId){
+        id
+        matricule
+        noma
+        pnoma
+        grade {
+            grade
+            libGradeAr
+        }
+        arme {
+            id
+        }
+    }
+}
+query findPrivilegesByRoleId($roleId: String){
+    findPrivilegesByRoleId(roleId: $roleId){
+        id
+        name
+        description
     }
 }
 query allPrivileges{
@@ -84,11 +101,33 @@ query allPrivilegesPaged ($paginationInput : PaginationInput){
         }
     }
 }
-
 query findPrivilegesByUserName($userName : String){
     findPrivilegesByUserName(userName: $userName){
         description
         id
         name
     }
+}
+mutation createRole($role : RoleDtoInput){
+    createRole(role:$role){
+        id
+        name
+        description
+    }
+}
+mutation deleteRole($roleId : String){
+    deleteRole(roleId: $roleId)
+}
+query findAllRolesByUser($userName : String){
+    findAllRolesByUser(userName: $userName){
+        id
+        name
+        description
+    }
+}
+mutation userDeleteRole($roleName : String , $userName : String){
+    userDeleteRole(roleName: $roleName , userName: $userName)
+}
+mutation UserAddRole($userName : String , $roleName : String){
+    userAddRole(userName:$userName , roleName: $roleName)
 }

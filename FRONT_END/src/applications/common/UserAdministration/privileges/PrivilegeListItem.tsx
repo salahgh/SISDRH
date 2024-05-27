@@ -18,12 +18,14 @@ export function PrivilegeListItem({
   handleDelete,
   handleSelectPrivilege,
   handleClick,
+  disabled = false,
 }: {
   selectedPrivilegeId?: string | null;
   privilege: Privilege;
   handleSelectPrivilege?: Dispatch<SetStateAction<string | null>>;
   handleDelete?: (privilegeName: string) => void;
   handleClick?: (privilegeName: string) => void;
+  disabled?: boolean;
 }) {
   // todo delete icon displayed only when hovered
 
@@ -35,6 +37,7 @@ export function PrivilegeListItem({
       title={<Typography>{privilege?.description}</Typography>}
     >
       <ListItemButton
+        disabled={disabled}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         dir={"ltr"}

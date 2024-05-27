@@ -49,5 +49,10 @@ public class PrivilegeService {
    public List<Privilege> findPrivilegesByUserName(String userName){
       return privilegeRepository.findByUserName(userName);
    }
+
+   @GraphQLQuery
+   public List<Privilege> findPrivilegesByRoleId(String roleId){
+      return privilegeRepository.findByRoleId(roleId);
+   }
 }
 

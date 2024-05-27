@@ -22,7 +22,7 @@ export const SelectedRolePrivileges = ({ selectedRoleId }) => {
   });
 
   return (
-    <Stack flex={1}>
+    <Stack width={"100%"}>
       {user?.user?.privileges?.length === 0 ? (
         <div>
           <img

@@ -1,4 +1,4 @@
-import { Paper, Stack } from "@mui/material";
+import { Box, Paper, Stack } from "@mui/material";
 import * as React from "react";
 import UsersDataGrid from "./UsersDataGrid.tsx";
 import { UserHabitationsConfidentiality } from "./UserHabitationsConfidentiality.tsx";
@@ -13,7 +13,7 @@ export const UserRolesAndPrivilegesMain = () => {
 
   return (
     <Stack direction={"row"} sx={{ padding: 0, height: "100%" }} spacing={1}>
-      <Stack width={"20%"}>
+      <Stack width={"15%"}>
         <Paper sx={{ width: "100%", height: "100%", overflow: "auto" }}>
           <UsersDataGrid></UsersDataGrid>
         </Paper>
@@ -26,13 +26,17 @@ export const UserRolesAndPrivilegesMain = () => {
       <Stack width={"40%"}>
         <Paper sx={{ width: "100%", height: "100%", overflow: "auto" }}>
           <Stack spacing={1} direction={"row"} width={"100%"}>
-            <UserRoles
-              setSelectedRoleId={setSelectedRoleId}
-              selectedRoleId={selectedRoleId}
-            ></UserRoles>
-            <SelectedRolePrivileges
-              selectedRoleId={selectedRoleId}
-            ></SelectedRolePrivileges>
+            <Box width={"50%"}>
+              <UserRoles
+                setSelectedRoleId={setSelectedRoleId}
+                selectedRoleId={selectedRoleId}
+              ></UserRoles>
+            </Box>
+            <Box width={"50%"}>
+              <SelectedRolePrivileges
+                selectedRoleId={selectedRoleId}
+              ></SelectedRolePrivileges>
+            </Box>
           </Stack>
         </Paper>
       </Stack>

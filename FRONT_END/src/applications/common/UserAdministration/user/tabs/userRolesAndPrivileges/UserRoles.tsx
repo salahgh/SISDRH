@@ -6,7 +6,10 @@ import { AddRolesForm } from "../../../roles/AddRolesForm.tsx";
 import { FormDialogue } from "../../../../components/dialogs/FormDialogue.tsx";
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { UserDocument } from "../../../../../../_generated_gql_/graphql.ts";
+import {
+  FindAllRolesByUserDocument,
+  UserDocument,
+} from "../../../../../../_generated_gql_/graphql.ts";
 import { useSelector } from "react-redux";
 import { selectSelectedUser } from "../../../../../../redux/features/userAdministration/userAdministrationSlice.ts";
 
@@ -25,6 +28,12 @@ export const UserRoles = ({ setSelectedRoleId, selectedRoleId }) => {
     },
   });
 
+  const { data: userRoles } = useQuery(FindAllRolesByUserDocument, {
+    variables: {
+      userName: matricule,
+    },
+  });
+
   return (
     <Stack spacing={1} flex={1}>
       <FormDialogue
@@ -38,7 +47,7 @@ export const UserRoles = ({ setSelectedRoleId, selectedRoleId }) => {
         }
         content={
           <AddRolesForm
-            roles={user?.user?.roles}
+            roles={userRoles?.findAllRolesByUser}
             matricule={matricule}
           ></AddRolesForm>
         }
@@ -55,7 +64,7 @@ export const UserRoles = ({ setSelectedRoleId, selectedRoleId }) => {
       >
         <Typography fontWeight={"bold"}> إضفة دور</Typography>
       </Button>
-      {user?.user?.roles?.length === 0 ? (
+      {userRoles?.findAllRolesByUser?.length === 0 ? (
         <div
           style={{ width: "100%" }}
           className={"flex flex-row justify-center"}
@@ -66,7 +75,7 @@ export const UserRoles = ({ setSelectedRoleId, selectedRoleId }) => {
         <ListOFRoles
           setSelectedRoleId={setSelectedRoleId}
           selectedRoleId={selectedRoleId}
-          roles={user?.user?.roles}
+          roles={userRoles?.findAllRolesByUser}
         />
       )}
     </Stack>

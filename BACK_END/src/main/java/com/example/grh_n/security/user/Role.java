@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,17 +33,17 @@ public class Role {
            name = "A_role_privilege",
            joinColumns = @JoinColumn(name = "role_id"),
            inverseJoinColumns = @JoinColumn(name = "privilege_id"))
-   private Set<Privilege> privileges ;
+   private List<Privilege> privileges ;
 
    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-   private Set<User> users ;
+   private List<User> users ;
 
    @ManyToMany(fetch = FetchType.EAGER)
    @JoinTable(
            name = "A_role_composite",
            joinColumns = @JoinColumn(name = "role_id"),
            inverseJoinColumns = @JoinColumn(name = "composite_role_id"))
-   private Set<Role> compositeRoles ;
+   private List<Role> compositeRoles ;
 
    @Override
    public String toString() {

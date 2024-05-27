@@ -5,7 +5,6 @@ query GetOwnedFolders($username_ : String!) {
         description
     }
 }
-
 query GetFovoriteFolder{
     favoriteFolder(userName: "ddf"){
         id ,
@@ -19,7 +18,6 @@ query GetFolder($folderId : Long){
 
     }
 }
-
 query FindAllOcrResultsPaged($pageable : PaginationInput){
     findAllOcrResultsPaged(pageable: $pageable){
         pageable {
@@ -66,7 +64,6 @@ query MemoryUsage{
         max
         used
     }}
-
 query TypeTexteReglementaireByLibFr($libFr : String){
     typeTexteReglementaireByLib(lib: $libFr){
         libTypeTexteFr ,
@@ -417,7 +414,6 @@ query User($matricule : String){
         }
     }
 }
-
 query UserAuthorities($matricule : String) {
     user(matricule: $matricule){
         id
@@ -524,18 +520,13 @@ mutation UserAddPrivilege($username : String , $privilegeName : String){
 mutation UserAddPrivilegeRestriction($privilegeName : String , $userName : String){
     userAddPrivilegeRestriction(privilegeName: $privilegeName , userName: $userName)
 }
-mutation UserAddRole($userName : String , $roleName : String){
-    userAddRole(userName:$userName , roleName: $roleName)
-}
 mutation UserDeletePrivilege($userName : String , $privilegeName : String){
     userDeletePrivilege(userName:$userName , privilegeName: $privilegeName)
 }
 mutation UserDeletePrivilegeRestriction($userName : String , $privilegeName : String){
     userDeletePrivilegeRestriction(userName:$userName , privilegeName: $privilegeName)
 }
-mutation UserDeleteRole($userName : String , $roleName : String){
-    userDeleteRole(userName:$userName , roleName: $roleName)
-}
+
 mutation addPrivilegeToRole($roleId : String , $privilegeId : String ){
     addPrivilegeToRole(roleId: $roleId , privilegeId: $privilegeId)
 }

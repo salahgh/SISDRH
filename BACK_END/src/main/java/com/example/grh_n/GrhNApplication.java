@@ -52,17 +52,6 @@ public class GrhNApplication {
         }
 
 
-
-        for (RolesEnum value : RolesEnum.values()) {
-            if(roleRepository.existsById(value.name())) continue;
-            roleRepository.save(
-                    Role.builder()
-                            .id(String.valueOf(value))
-                            .name(String.valueOf(value))
-                            .build()
-            );
-        }
-
         for (PrivilegesEnum value : PrivilegesEnum.values()) {
             if(privilegeRepository.existsById(value.name())) continue;
             privilegeRepository.save(

@@ -5,11 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.lang.NonNullApi;
 
 import java.util.List;
 import java.util.Optional;
-
 
 public interface PrivilegeRepository extends CrudRepository<Privilege, String>,
         PagingAndSortingRepository<Privilege, String> {
@@ -31,4 +29,6 @@ public interface PrivilegeRepository extends CrudRepository<Privilege, String>,
     @Query("select p from Privilege p order by p.name")
     List<Privilege> findAllByUserOrdered();
 
+    @Query("select p from Privilege p inner join p.roles role where role.id = :roleId order by p.id")
+    List<Privilege> findByRoleId(String roleId);
 }
