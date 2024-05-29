@@ -44,30 +44,18 @@ import { PdfFileActions } from "./PdfFileActions.tsx";
 import { SearchHitOcrResultEntityElastic2 } from "../../../../../redux/mainApi.ts";
 import { useAppSelector } from "../../../../../redux/hooks.ts";
 import { OcrDoneChip } from "../../PdfFile/relations/OcrDoneChip.tsx";
+import OcrResultUserGrantsAvatarGroup from "./OcrResultUserGrantsAvatarGroup.tsx";
+import { FormDialogue } from "../../../../common/components/dialogs/FormDialogue.tsx";
 
 const rowHeight = 60;
-
-// @ts-ignore
-const ToolTipChildWrapper = React.forwardRef(({ children, ...other }, ref) => {
-  return (
-    <Stack
-      alignItems={"center"}
-      justifyContent={"center"}
-      direction={"row"}
-      ref={ref}
-      {...other}
-    >
-      {children}
-    </Stack>
-  );
-});
 
 export function RenderPageOcrResultTable() {
   const [confidentialiteOpen, setConfidentialiteOpen] = useState(false);
   const selectedFolder = useSelector(selectSelectedFolder);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const hasOcrResultDirectGrant = useHasAuthorities(
+
+  const OcrResultDirectGrant = useHasAuthorities(
     PrivilegesEnum.OcrResultDirectGrant,
   );
 
@@ -106,24 +94,6 @@ export function RenderPageOcrResultTable() {
     },
   );
 
-  const [addOcrResultsToFolder, { loading: addingOcrResultsLoading }] =
-    useMutation(AddOcrResultToFolderDocument, {
-      refetchQueries: [
-        {
-          query: FindAllOcrResultEntityByFoldersContainingDocument,
-          variables: {
-            folderId: selectedFolder?.id,
-            pagination: {
-              pageSize: paginationInput.pageSize,
-              pageNumber: paginationInput.pageNumber,
-            },
-          },
-        },
-      ],
-    });
-
-  const { data: fovoriteFolder } = useQuery(GetFovoriteFolderDocument);
-
   const handleRowClick: GridEventListener<"rowMouseEnter"> = (params) => {};
   const [usersChoiceDialogOpen, setUsersChoiceOpen] = useState<boolean>(false);
   const [ocrResultId, setOcrResultId] = useState<string>(null);
@@ -148,44 +118,6 @@ export function RenderPageOcrResultTable() {
   };
 
   // todo add loading state for favorite and delete files from folders individually
-
-  function toggleFavorite(
-    e:
-      | React.MouseEvent<HTMLAnchorElement>
-      | React.MouseEvent<HTMLButtonElement>,
-    row: any,
-  ) {
-    const isFavorite =
-      row.folders?.filter((item: any) => item?.description === "FAVORITE")
-        .length !== 0;
-    if (!isFavorite) {
-      addOcrResultsToFolder({
-        variables: {
-          folderId: fovoriteFolder?.favoriteFolder?.id,
-          ocrResultId: row?.id,
-        },
-      })
-        .then((result) => {
-          handleShowInfoSnackBar("ajouté avec succés");
-        })
-        .catch((error) =>
-          handleShowGraphQlErrorSnackBar(JSON.stringify(error)),
-        );
-    } else {
-      deletePdfFromFolder({
-        variables: {
-          folderId: fovoriteFolder?.favoriteFolder?.id,
-          pdfId: row?.id,
-        },
-      })
-        .then((result) => {
-          handleShowInfoSnackBar("supprimé avec succés");
-        })
-        .catch((error) =>
-          handleShowGraphQlErrorSnackBar(JSON.stringify(error)),
-        );
-    }
-  }
 
   function handleShowPdf(row) {
     dispatch(setSelectedFileId(row.id));
@@ -283,42 +215,43 @@ export function RenderPageOcrResultTable() {
       width: 320,
       renderCell: ({ row }: { row: any }) => (
         <>
-          <ListItem
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Tooltip
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "rgba(218,213,213,0.48)",
-                  },
+          <Tooltip
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  bgcolor: "rgba(218,213,213,0.48)",
                 },
+              },
+            }}
+            title={
+              <PagePreview
+                shouldNavigate={true}
+                fileId={row.id}
+                pageIndex={0}
+                width={"500px"}
+              />
+            }
+            placement={"right"}
+            arrow
+            sx={{ padding: 0, margin: 0 }}
+          >
+            <ListItem
+              sx={{
+                width: "100%",
               }}
-              title={
-                <PagePreview
-                  shouldNavigate={true}
-                  fileId={row.id}
-                  pageIndex={0}
-                  width={"500px"}
-                />
-              }
-              placement={"right"}
-              arrow
-              sx={{ padding: 0, margin: 0 }}
             >
               <Typography>{row.originalFileName}</Typography>
-            </Tooltip>
-          </ListItem>
+            </ListItem>
+          </Tooltip>
         </>
       ),
     },
     {
       field: "ocrDone",
       headerName: "عدد الصفحات",
-      width: 150,
+      width: 170,
       renderCell: (rowParams) => {
+        console.log("row", rowParams?.row);
         return (
           <Stack
             direction={"row"}
@@ -339,22 +272,38 @@ export function RenderPageOcrResultTable() {
                 {rowParams.row.numberOfPapers}
               </Typography>
             </Stack>
-            {/*{hasOcrResultDirectGrant && (*/}
-            {/*  <OcrResultUserGrantsAvatarGroup*/}
-            {/*    userIds={rowParams?.row?.ocrResultUserGrants?.map(*/}
-            {/*      (grant) => grant?.user?.personnel?.matricule,*/}
-            {/*    )}*/}
-            {/*    onClick={() => {*/}
-            {/*      setOcrResultId(rowParams?.row?.id);*/}
-            {/*      setUsersChoiceOpen(true);*/}
-            {/*    }}*/}
-            {/*  />*/}
-            {/*)}*/}
-
             <OcrDoneChip
               // showDone={true}
               ocrDone={rowParams?.row?.ocrDone}
             ></OcrDoneChip>
+          </Stack>
+        );
+      },
+    },
+    {
+      field: "ocrResultUserGrants",
+      headerName: "",
+      width: 130,
+      renderCell: ({ row }: { row: any }) => {
+        if (!OcrResultPin) return <></>;
+        return (
+          <Stack
+            direction={"row"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            justifyItems={"center"}
+          >
+            {OcrResultDirectGrant && (
+              <OcrResultUserGrantsAvatarGroup
+                userIds={row?.ocrResultUserGrants?.map(
+                  (grant) => grant?.user?.personnel?.matricule,
+                )}
+                onClick={() => {
+                  setOcrResultId(row?.id);
+                  setUsersChoiceOpen(true);
+                }}
+              />
+            )}
           </Stack>
         );
       },
@@ -418,11 +367,22 @@ export function RenderPageOcrResultTable() {
 
   return (
     <Stack flex={1}>
-      <UsersChoiceDialog
+      <FormDialogue
         open={usersChoiceDialogOpen}
         setOpen={setUsersChoiceOpen}
-        ocrResultId={ocrResultId}
+        title={"test sdfdsf"}
+        mode={"update"}
+        fullWidth={true}
+        maxWidth={"xl"}
+        content={
+          <UsersChoiceDialog
+            open={usersChoiceDialogOpen}
+            setOpen={setUsersChoiceOpen}
+            ocrResultId={ocrResultId}
+          />
+        }
       />
+
       <ActionBar setConfidentialiteOpen={setConfidentialiteOpen} />
       {/*<ConfidentialiteForm*/}
       {/*  open={confidentialiteOpen}*/}

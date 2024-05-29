@@ -18,6 +18,7 @@ import { RouteProtected } from "../redux/RtkQueryApis/constants.ts";
 import AllOutIcon from "@mui/icons-material/AllOut";
 import { darken } from "@mui/material";
 import ASSETS from "../resources/ASSETS.ts";
+import { Theme } from "@mui/material/styles";
 
 export const routs = {
   MuiSignIn: {
@@ -66,6 +67,7 @@ export const routs = {
   },
   UploadMainPage: {
     name: "UploadMainPage",
+    label: "تحميل النصوص",
     protected: true,
   },
   report: {
@@ -74,10 +76,12 @@ export const routs = {
   },
   SearchUI: {
     name: "SearchUI",
+    label: "بحث",
     protected: true,
   },
   OcrJobMain: {
     name: "OcrJobMain",
+    label: "مراقبة عملية التعرف الضوئي",
     protected: true,
   },
   UserAdministrationMain: {
@@ -93,7 +97,7 @@ export const routs = {
     protected: true,
   },
   User: {
-    name: "User",
+    name: "المجلدات",
     protected: true,
     label: "ملفاتي",
   },
@@ -103,6 +107,7 @@ export const routs = {
   },
   ApplicationChoice: {
     name: "ApplicationChoice",
+    label: "الإنتقال إلى تطبيقية أخرى",
     protected: true,
   },
   OcrUserMain: {
@@ -128,7 +133,8 @@ export const routs = {
     protected: true,
   },
   TextReglementairePrefrences: {
-    name: "TextReglementairePrefrences",
+    name: "settings",
+    label: "إعدادات",
     protected: true,
   },
   MapComponent: {
@@ -227,6 +233,7 @@ export const LINKS_TEXT_REGLEMENTAIRE_1 = [
   {
     text: routs.LandingPageTextReglementaire.label,
     navigateTo: getLink(routs.LandingPageTextReglementaire),
+    bgColor: "#1975d1",
     icon: (
       <ListItemIcon
         sx={{
@@ -235,13 +242,14 @@ export const LINKS_TEXT_REGLEMENTAIRE_1 = [
           justifyContent: "center",
         }}
       >
-        <HomeIcon sx={{ width: 40, height: 40 }} />
+        <HomeIcon sx={{ width: 40, height: 40, color: "#1975d1" }} />
       </ListItemIcon>
     ),
   },
   {
-    text: routs.User.name,
+    text: routs.User.label,
     navigateTo: getLink(routs.HomeTextReglementairePage),
+    bgColor: "#e55100",
     icon: (
       <ListItemIcon
         sx={{
@@ -250,15 +258,21 @@ export const LINKS_TEXT_REGLEMENTAIRE_1 = [
           justifyContent: "center",
         }}
       >
-        {/*<IconWrapper Icon={<AccountBox />}></IconWrapper>*/}
-        <Folder sx={{ width: 45, height: 45 }} />
+        <Folder
+          sx={{
+            width: 45,
+            height: 45,
+            color: "#e55100",
+          }}
+        />
       </ListItemIcon>
     ),
   },
 
   {
-    text: routs.UploadMainPage.name,
+    text: routs.UploadMainPage.label,
     navigateTo: getLink(routs.UploadMainPage),
+    bgColor: "#71b639",
     icon: (
       <ListItemIcon
         sx={{
@@ -267,13 +281,14 @@ export const LINKS_TEXT_REGLEMENTAIRE_1 = [
           justifyContent: "center",
         }}
       >
-        <Upload sx={{ width: 45, height: 45 }} />
+        <Upload sx={{ width: 45, height: 45, color: "#71b639" }} />
       </ListItemIcon>
     ),
   },
   {
-    text: routs.SearchUI.name,
+    text: routs.SearchUI.label,
     navigateTo: getLink(routs.SearchUI),
+    bgColor: "#e86b6b",
     icon: (
       <ListItemIcon
         sx={{
@@ -282,7 +297,7 @@ export const LINKS_TEXT_REGLEMENTAIRE_1 = [
           justifyContent: "center",
         }}
       >
-        <Search sx={{ width: 45, height: 45 }} />
+        <Search sx={{ width: 45, height: 45, color: "#e86b6b" }} />
       </ListItemIcon>
     ),
   },
@@ -290,8 +305,9 @@ export const LINKS_TEXT_REGLEMENTAIRE_1 = [
 
 export const LINKS_TEXT_REGLEMENTAIRE_2 = [
   {
-    text: routs.OcrJobMain.name,
+    text: routs.OcrJobMain.label,
     navigateTo: getLink(routs.OcrJobMain),
+    bgColor: "#e86b6b",
     icon: (
       <ListItemIcon
         sx={{
@@ -305,8 +321,9 @@ export const LINKS_TEXT_REGLEMENTAIRE_2 = [
     ),
   },
   {
-    text: routs.ApplicationChoice.name,
+    text: routs.ApplicationChoice.label,
     navigateTo: getLink(routs.ApplicationChoice),
+    bgColor: "#e86b6b",
     icon: (
       <ListItemIcon
         sx={{
@@ -320,8 +337,9 @@ export const LINKS_TEXT_REGLEMENTAIRE_2 = [
     ),
   },
   {
-    text: routs.TextReglementairePrefrences.name,
+    text: routs.TextReglementairePrefrences.label,
     navigateTo: getLink(routs.TextReglementairePrefrences),
+    bgColor: "#e86b6b",
     icon: (
       <ListItemIcon
         sx={{

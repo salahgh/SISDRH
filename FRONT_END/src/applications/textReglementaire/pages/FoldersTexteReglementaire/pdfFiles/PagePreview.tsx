@@ -8,8 +8,6 @@ import React from "react";
 import {
   selectSelectedSinglePdfViewerPageIndex,
   setSelectedFileId,
-  setSelectedSinglePdfViewerFileId,
-  setSelectedSinglePdfViewerPageIndex,
 } from "../../../../../redux/features/elasticSearch/selectedResultLineSlice";
 import { getLink, routs } from "../../../../../routing/routs";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,46 +48,38 @@ export function PagePreview(props: {
   const aspectRation = 4 / 3;
 
   return (
-    <>
-      <Stack
-        sx={{
-          width: width,
-          height: width * aspectRation,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {imageLoading && <CircularProgress />}
-        {imageError && <div> error while loading the image </div>}
-        {imageBase64 && !imageLoading && (
-          <>
-            <Card
-              sx={{
-                bgcolor:
-                  selectedPageIndex - 1 === pageIndex ? "#707070" : "#ffffff",
+    <Stack
+      sx={{
+        width: width,
+        height: width * aspectRation,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {imageLoading && <CircularProgress />}
+      {imageError && <div> error while loading the image </div>}
+      {imageBase64 && !imageLoading && (
+        <Card
+          sx={{
+            bgcolor:
+              selectedPageIndex - 1 === pageIndex ? "#707070" : "#ffffff",
+          }}
+        >
+          <CardActionArea sx={{ padding: 0.3 }} onClick={() => handleShowPdf()}>
+            <img
+              src={
+                "data:image/png;base64," + imageBase64.ocrResultImagePrepared
+              }
+              alt="Element"
+              style={{
+                width: width,
+                height: width * aspectRation,
+                display: "block",
               }}
-            >
-              <CardActionArea
-                sx={{ padding: 0.3 }}
-                onClick={() => handleShowPdf()}
-              >
-                <img
-                  src={
-                    "data:image/png;base64," +
-                    imageBase64.ocrResultImagePrepared
-                  }
-                  alt="Element"
-                  style={{
-                    width: width,
-                    height: width * aspectRation,
-                    display: "block",
-                  }}
-                />
-              </CardActionArea>
-            </Card>
-          </>
-        )}
-      </Stack>
-    </>
+            />
+          </CardActionArea>
+        </Card>
+      )}
+    </Stack>
   );
 }

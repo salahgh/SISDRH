@@ -209,6 +209,20 @@ public class UserService {
       return (List<User>) userRepository.findAllById(ids);
    }
 
+   @GraphQLMutation
+   public void lockAccount(String userId){
+      User user = this.getByMatricule(userId);
+      user.setLocked("o");
+      userRepository.save(user);
+   }
+
+   @GraphQLMutation
+   public void unLockAccount(String userId){
+      User user = this.getByMatricule(userId);
+      user.setLocked("n");
+      userRepository.save(user);
+   }
+
 
 
 }

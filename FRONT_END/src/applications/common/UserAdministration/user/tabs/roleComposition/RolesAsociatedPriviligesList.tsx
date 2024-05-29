@@ -201,11 +201,18 @@ const RolesAsociatedPriviligesList = () => {
           ></ListOFRoles>
         </Stack>
       </Stack>
-      <Stack width={"50%"}>
-        <Grid2 spacing={1}>
+      <Stack width={"50%"} spacing={1} padding={1}>
+        <Typography variant={"h6"} fontWeight={"bold"}>
+          {"الحسابات المتحصلة على الدور " +
+            selectedRoleID +
+            " بعدد (" +
+            rolePersonnels?.findPersonnelsByRoleId?.length +
+            ")"}
+        </Typography>
+        <Grid2 container={true} spacing={1} width={"100%"}>
           {rolePersonnels?.findPersonnelsByRoleId?.map((personnel, index) => {
             return (
-              <Grid2 className={"bg-blue-500"}>
+              <Grid2>
                 <Personnel key={personnel?.matricule} personnel={personnel} />
               </Grid2>
             );

@@ -131,3 +131,22 @@ mutation userDeleteRole($roleName : String , $userName : String){
 mutation UserAddRole($userName : String , $roleName : String){
     userAddRole(userName:$userName , roleName: $roleName)
 }
+mutation lockAccount($userId : String){
+    lockAccount(userId: $userId)
+}
+mutation unLockAccount($userId :String){
+    unLockAccount(userId: $userId)
+}
+query userLocked($matricule : String){
+    user(matricule: $matricule){
+        id
+        locked
+    }
+}
+query findAllByApplicationId($id : String){
+    findAllByApplicationId(applicationId:$id){
+        id
+        name
+        description
+    }
+}

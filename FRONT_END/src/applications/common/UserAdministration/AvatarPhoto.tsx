@@ -40,7 +40,6 @@ const AvatarPhoto = React.forwardRef((props: AvatarPhotoProps, ref) => {
       width={size}
       height={size}
       borderRadius={avatarVariant === "rounded" ? borderRadius : null}
-      border={"solid 1px"}
     >
       {error && !loading && (
         <Error

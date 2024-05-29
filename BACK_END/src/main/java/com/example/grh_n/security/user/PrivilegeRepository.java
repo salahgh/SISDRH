@@ -29,6 +29,9 @@ public interface PrivilegeRepository extends CrudRepository<Privilege, String>,
     @Query("select p from Privilege p order by p.name")
     List<Privilege> findAllByUserOrdered();
 
+    @Query("select p from Privilege p where p.application.id = :applicationId order by p.name")
+    List<Privilege> findAllByApplicationId(String applicationId);
+
     @Query("select p from Privilege p inner join p.roles role where role.id = :roleId order by p.id")
     List<Privilege> findByRoleId(String roleId);
 }

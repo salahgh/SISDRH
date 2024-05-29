@@ -39,12 +39,10 @@ export const foldersSlice = createSlice({
 
 export const { setSelectedFolder, setSelectedPdfViewer, setPage } =
   foldersSlice.actions;
-
 export const selectSelectedFolder = (state: RootState) =>
   state.folder.selectedFolder;
 export const selectSelectedPdfViewer = (state: RootState) =>
   state.folder.selectedPdfViewer;
-
 export const selectPage = (state: RootState) => state.folder.page;
 
 export default foldersSlice.reducer;

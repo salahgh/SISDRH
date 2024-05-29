@@ -22,7 +22,7 @@ import { Drawer, DrawerHeader } from "./StyledDrawerComponents";
 import { useSelector } from "react-redux";
 import { selectselectedApplication } from "../../../redux/features/appNavigation/appNavigationSlice";
 import { APPLICATIONS } from "../../../redux/RtkQueryApis/constants";
-import { Typography } from "@mui/material";
+import { darken, lighten, Tooltip, Typography } from "@mui/material";
 import { PrivilegesEnum } from "../../../_generated_gql_/graphql";
 import { useHasAuthorities } from "../../../security/useHasAuthoritie.ts";
 
@@ -116,10 +116,9 @@ export default function MyDrawer() {
               }}
             >
               {LINKS_TEXT_REGLEMENTAIRE_1.map((item) => (
-                <ListItem
-                  key={item.text}
-                  disablePadding
-                  sx={{ display: "block" }}
+                <Tooltip
+                  title={<Typography>{item?.text}</Typography>}
+                  placement={"right"}
                 >
                   <ListItemButton
                     selected={location.pathname === item.navigateTo}
@@ -127,25 +126,32 @@ export default function MyDrawer() {
                     sx={{
                       minHeight: 80,
                       px: 2.5,
-                      // '&.Mui-selected': {
-                      //     backgroundColor: '#ababab', // Change to desired background color
-                      // },
-                      // '&:hover': {
-                      //
-                      //     backgroundColor: '#c2c2c2', // Change to desired background color
-                      // },
-                      // '&:hover.Mui-selected': {
-                      //     backgroundColor: '#d9d9d9', // Change to desired background color
-                      // },
+                      "&.Mui-selected": {
+                        backgroundColor: lighten(item?.bgColor, 0.8), // Change to desired background color
+                      },
+                      "&:hover": {
+                        backgroundColor: lighten(item?.bgColor, 0.8), // Change to desired background color
+                      },
+                      "&:hover.Mui-selected": {
+                        backgroundColor: lighten(item?.bgColor, 0.6), // Change to desired background color
+                      },
                     }}
                   >
                     {item.icon}
                     <ListItemText
-                      primary={<Typography>{item.text}</Typography>}
+                      primary={
+                        <Typography
+                          color={darken(item?.bgColor, 0.2)}
+                          fontWeight={"bold"}
+                          variant={"h5"}
+                        >
+                          {item.text}
+                        </Typography>
+                      }
                       sx={{ opacity: open ? 1 : 0, paddingLeft: 1 }}
                     />
                   </ListItemButton>
-                </ListItem>
+                </Tooltip>
               ))}
             </List>
             <Divider></Divider>
@@ -155,36 +161,45 @@ export default function MyDrawer() {
               }}
             >
               {LINKS_TEXT_REGLEMENTAIRE_2.map((item) => (
-                <ListItem
-                  key={item.text}
-                  disablePadding
-                  sx={{ display: "block" }}
-                >
-                  <ListItemButton
-                    selected={location.pathname === item.navigateTo}
-                    onClick={() => navigate(item.navigateTo)}
-                    sx={{
-                      minHeight: 80,
-                      px: 2.5,
-                      // '&.Mui-selected': {
-                      //     backgroundColor: '#ababab', // Change to desired background color
-                      // },
-                      // '&:hover': {
-                      //
-                      //     backgroundColor: '#c2c2c2', // Change to desired background color
-                      // },
-                      // '&:hover.Mui-selected': {
-                      //     backgroundColor: '#d9d9d9', // Change to desired background color
-                      // },
-                    }}
+                <Tooltip title={item?.text} placement={"right"}>
+                  <ListItem
+                    key={item.text}
+                    disablePadding
+                    sx={{ display: "block" }}
                   >
-                    {item.icon}
-                    <ListItemText
-                      primary={item.text}
-                      sx={{ opacity: open ? 1 : 0, paddingLeft: 1 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
+                    <ListItemButton
+                      selected={location.pathname === item.navigateTo}
+                      onClick={() => navigate(item.navigateTo)}
+                      sx={{
+                        minHeight: 80,
+                        px: 2.5,
+                        "&.Mui-selected": {
+                          backgroundColor: lighten(item?.bgColor, 0.8), // Change to desired background color
+                        },
+                        "&:hover": {
+                          backgroundColor: lighten(item?.bgColor, 0.5), // Change to desired background color
+                        },
+                        "&:hover.Mui-selected": {
+                          backgroundColor: lighten(item?.bgColor, 0.65), // Change to desired background color
+                        },
+                      }}
+                    >
+                      {item.icon}
+                      <ListItemText
+                        primary={
+                          <Typography
+                            // color={darken(item?.bgColor, 0.2)}
+                            fontWeight={"bold"}
+                            variant={"h5"}
+                          >
+                            {item.text}
+                          </Typography>
+                        }
+                        sx={{ opacity: open ? 1 : 0, paddingLeft: 1 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </Tooltip>
               ))}
             </List>
           </>

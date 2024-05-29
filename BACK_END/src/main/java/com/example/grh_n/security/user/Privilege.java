@@ -1,5 +1,6 @@
 package com.example.grh_n.security.user;
 
+import com.example.grh_n.Applications;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -25,5 +26,8 @@ public class Privilege {
 
     @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
     private List<Role> roles ;
+
+    @ManyToOne
+    Applications application;
 
 }
