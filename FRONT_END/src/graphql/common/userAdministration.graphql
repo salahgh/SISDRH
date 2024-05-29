@@ -150,3 +150,10 @@ query findAllByApplicationId($id : String){
         description
     }
 }
+query findAllApplications{
+    findAllApplications {
+        id
+        libAr
+        libFr
+    }
+}

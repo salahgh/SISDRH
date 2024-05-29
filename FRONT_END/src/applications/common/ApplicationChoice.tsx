@@ -10,7 +10,10 @@ import { TypographyProps } from "@mui/material/Typography/Typography";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
-import { PrivilegesEnum } from "../../_generated_gql_/graphql.ts";
+import {
+  FindAllApplicationsDocument,
+  PrivilegesEnum,
+} from "../../_generated_gql_/graphql.ts";
 import { Animated } from "./components/Animated.tsx";
 import ASSETS from "../../resources/ASSETS.ts";
 import { setselectedApplication } from "../../redux/features/appNavigation/appNavigationSlice.ts";
@@ -19,12 +22,11 @@ import { getLink, routs } from "../../routing/routs.tsx";
 import { AnimatedLock } from "./components/AnimatedLock.tsx";
 import { ASSETS_LOTTIE } from "../../resources/lotties/ASSETS_LOTTIE.ts";
 import { useHasAuthorities } from "../../security/useHasAuthoritie.ts";
+import { useQuery } from "@apollo/client";
 
 function MediaCard({
   image,
   title,
-  titleProps,
-  disabled,
   action,
   width,
 }: {
@@ -35,12 +37,6 @@ function MediaCard({
   action: any;
   width: number;
 }) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setselectedApplication(null));
-  });
-
   return (
     <Card sx={{ width: width }}>
       <CardActionArea onClick={action}>
@@ -86,7 +82,8 @@ const ApplicationChoice = () => {
   const hasApplicationApplicationSimulation = useHasAuthorities(
     PrivilegesEnum.ApplicationSimulation,
   );
-  // const hasApplicationBugTracker = useHasAuthorities(PrivilegesEnum.ApplicationBugTracker)
+
+  const { data: allApplications } = useQuery(FindAllApplicationsDocument);
 
   const hasAnyApplication = () => {
     return {
