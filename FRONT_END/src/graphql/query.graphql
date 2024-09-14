@@ -396,6 +396,9 @@ query User($matricule : String){
             id
             description
             name
+            application {
+                id
+            }
         }
         privileges_restriction {
             name
@@ -410,6 +413,9 @@ query User($matricule : String){
                 name
                 description
                 id
+                application {
+                    id
+                }
             }
         }
     }
@@ -513,25 +519,6 @@ mutation changeOcrResultGrant($ocrResultUserGrantKeys :  [OcrResultUserGrantKeyI
 }
 mutation updateConfidentialite($ocrResultId : String , $confidentialiteId : String ) {
     updateConfidentialite(ocrResultId: $ocrResultId , confidentailteId: $confidentialiteId)
-}
-mutation UserAddPrivilege($username : String , $privilegeName : String){
-    userAddPrivilege(userName: $username , privilegeName: $privilegeName)
-}
-mutation UserAddPrivilegeRestriction($privilegeName : String , $userName : String){
-    userAddPrivilegeRestriction(privilegeName: $privilegeName , userName: $userName)
-}
-mutation UserDeletePrivilege($userName : String , $privilegeName : String){
-    userDeletePrivilege(userName:$userName , privilegeName: $privilegeName)
-}
-mutation UserDeletePrivilegeRestriction($userName : String , $privilegeName : String){
-    userDeletePrivilegeRestriction(userName:$userName , privilegeName: $privilegeName)
-}
-
-mutation addPrivilegeToRole($roleId : String , $privilegeId : String ){
-    addPrivilegeToRole(roleId: $roleId , privilegeId: $privilegeId)
-}
-mutation deletePrivilegeFromRole($roleId : String , $privilegeId : String ){
-    deletePrivilegeFromRole(privilegeId: $privilegeId , roleId: $roleId)
 }
 mutation generateThumbnails{
     generateThumbnails

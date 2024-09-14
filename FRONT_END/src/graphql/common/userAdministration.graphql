@@ -1,5 +1,3 @@
-
-
 query allUsersPaged($pageable : PaginationInput){
     allUsersPaged(pageable: $pageable){
         content {
@@ -43,6 +41,9 @@ query findPrivilegesByRoleId($roleId: String){
         id
         name
         description
+        application {
+            id
+        }
     }
 }
 query allPrivileges{
@@ -50,6 +51,9 @@ query allPrivileges{
         id
         name
         description
+        application {
+            id
+        }
         roles {
             id
             name
@@ -81,6 +85,9 @@ query findRoleById($roleId : String){
             name
             description
             id
+            application {
+                id
+            }
         }
     }
 }
@@ -89,15 +96,21 @@ query privilegeById($privilegeById : Long){
         name
         description
         id
+        application {
+            id
+        }
     }
 }
 query allPrivilegesPaged ($paginationInput : PaginationInput){
     allPrivilegesPaged(pageable: $paginationInput){
         totalElements
-        content {
+        content{
             id
             description
             name
+            application {
+                id
+            }
         }
     }
 }
@@ -106,6 +119,9 @@ query findPrivilegesByUserName($userName : String){
         description
         id
         name
+        application {
+            id
+        }
     }
 }
 mutation createRole($role : RoleDtoInput){
@@ -156,4 +172,23 @@ query findAllApplications{
         libAr
         libFr
     }
+}
+mutation UserAddPrivilege($username : String , $privilegeName : String){
+    userAddPrivilege(userName: $username , privilegeName: $privilegeName)
+}
+mutation UserAddPrivilegeRestriction($privilegeName : String , $userName : String){
+    userAddPrivilegeRestriction(privilegeName: $privilegeName , userName: $userName)
+}
+mutation UserDeletePrivilege($userName : String , $privilegeName : String){
+    userDeletePrivilege(userName:$userName , privilegeName: $privilegeName)
+}
+mutation UserDeletePrivilegeRestriction($userName : String , $privilegeName : String){
+    userDeletePrivilegeRestriction(userName:$userName , privilegeName: $privilegeName)
+}
+
+mutation addPrivilegeToRole($roleId : String , $privilegeId : String ){
+    addPrivilegeToRole(roleId: $roleId , privilegeId: $privilegeId)
+}
+mutation deletePrivilegeFromRole($roleId : String , $privilegeId : String ){
+    deletePrivilegeFromRole(privilegeId: $privilegeId , roleId: $roleId)
 }

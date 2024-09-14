@@ -1,0 +1,145 @@
+query candidatById($id : String){
+    candidatById(id: $id){
+        nom
+        noma
+        pnom
+        pnoma
+        dn
+        id
+        sex {
+            id
+            libAr
+            libFr
+        }
+        wn {
+            id
+            libAr
+            libFr
+            regionMilitaire {
+                id
+                libAbrRegionAr
+                libAbrRegionFr
+                libRegionAr
+                libRegionFr
+            }
+        }
+        wr {
+            id
+            libAr
+            libFr
+            regionMilitaire {
+                id
+                libAbrRegionAr
+                libAbrRegionFr
+                libRegionAr
+                libRegionFr
+            }
+        }
+        ppere
+        wnPere {
+            id
+            libAr
+            libFr
+        }
+        nmere
+        pmere
+        wnMere {
+            id
+            libAr
+            libFr
+        }
+        email
+        telephone
+        diplomes {
+            id
+            anne
+            diplomeCivile {
+                libAr
+                codeDipCiv
+            }
+            diplomesecole
+            moyenne
+            specialite {
+                libAr
+                id
+            }
+        }
+        autreDiplome
+    }
+}
+
+query searchCandidat($candidatSearchDto: CandidatSearchDtoInput , $pageable : PaginationInput)
+{
+    searchCandidat(candidatSearchDto: $candidatSearchDto , pageable:  $pageable){
+        totalElements
+        totalPages
+        content {
+            nom
+            noma
+            pnom
+            pnoma
+            dn
+            id
+            sex {
+                id
+                libAr
+                libFr
+            }
+            wn {
+                id
+                libAr
+                libFr
+                regionMilitaire {
+                    id
+                    libAbrRegionAr
+                    libAbrRegionFr
+                    libRegionAr
+                    libRegionFr
+                }
+            }
+            wr {
+                id
+                libAr
+                libFr
+                regionMilitaire {
+                    id
+                    libAbrRegionAr
+                    libAbrRegionFr
+                    libRegionAr
+                    libRegionFr
+                }
+            }
+            ppere
+            wnPere {
+                id
+                libAr
+                libFr
+            }
+            nmere
+            pmere
+            wnMere {
+                id
+                libAr
+                libFr
+            }
+            email
+            telephone
+            diplomes {
+                id
+                anne
+                diplomeCivile {
+                    libAr
+                    codeDipCiv
+                }
+                diplomesecole
+                moyenne
+                specialite {
+                    libAr
+                    id
+                }
+            }
+            autreDiplome
+        }
+    }
+}
+

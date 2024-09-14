@@ -57,6 +57,9 @@ public class DPersonnel {
     @JoinColumn(name = "poste")
     private RhPoste poste ;
 
+    @OneToMany(mappedBy = "personnel")
+    List<Adresse> adresses ;
+
 
 //    @OneToOne(mappedBy = "personnel" , fetch = FetchType.LAZY)
 //    private User user;

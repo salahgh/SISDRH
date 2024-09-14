@@ -5,16 +5,13 @@ import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.json.JsonData;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrIndexElasticRepository;
 import com.example.grh_n.textReglementaire.tess4j.ElasticSearch.ElasticEntity.OcrResultEntityElastic_2;
-<<<<<<< HEAD:BACK_END/src/main/java/com/example/grh_n/textReglementaire/tess4j/ElasticSearch/OcrResultSearchService.java
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.AutoriteService;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.DomaineService;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.*;
-=======
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.Confidentialite;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.OcrResultService;
 import com.example.grh_n.textReglementaire.tess4j.OcrResultJPA.OcrResult.TypeTexteReglementaire;
 import io.leangen.graphql.annotations.GraphQLQuery;
->>>>>>> textViewer:BACK_END/src/main/java/com/example/grh_n/textReglementaire/tess4j/ElasticSearch/ProductSearchService.java
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -42,7 +39,6 @@ public class OcrResultSearchService {
     private final OcrIndexElasticRepository ocrIndexElasticRepository_;
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
     private final Integer PAGE_SIZE_LIMIt = 100;
-
     private final OcrResultService ocrResultService;
     private final DomaineService domaineService;
     private final AutoriteService autoriteService;
@@ -60,20 +56,20 @@ public class OcrResultSearchService {
     // todo see the possiblity for eliminating the content from the backend
 
 
-<<<<<<< HEAD:BACK_END/src/main/java/com/example/grh_n/textReglementaire/tess4j/ElasticSearch/OcrResultSearchService.java
     @GetMapping
     public OcrResultEntityElastic_2 findByid(@RequestParam String fileId) {
         return ocrIndexElasticRepository_.findById(fileId).orElseThrow(
                 () -> new EntityNotFoundException("pdf file with id =  " + fileId + " does not exist")
         );
-=======
-    @GraphQLQuery(name = "ocrResultElasticById")
-    public OcrResultEntityElastic_2 findByid(String fileId){
-       return ocrIndexElasticRepository_.findById(fileId).orElseThrow(
-               () -> new EntityNotFoundException("pdf file with id =  " +  fileId +" does not exist")
-       ) ;
->>>>>>> textViewer:BACK_END/src/main/java/com/example/grh_n/textReglementaire/tess4j/ElasticSearch/ProductSearchService.java
     }
+
+    @GraphQLQuery(name = "ocrResultElasticById")
+    public OcrResultEntityElastic_2 findByid_(String fileId){
+        return ocrIndexElasticRepository_.findById(fileId).orElseThrow(
+                () -> new EntityNotFoundException("pdf file with id =  " +  fileId +" does not exist")
+        ) ;
+    }
+
 
     @PostMapping
     public SearchHits<OcrResultEntityElastic_2> findElasticOcrResultsAllCriterias(

@@ -239,6 +239,31 @@ const ApplicationChoice = () => {
             </Animated>
           </div>
         )}
+
+        {!fakeLoading && (
+          <div className={"shadow-lg rounded-2xl"}>
+            <Animated
+              index={-2}
+              config={{
+                tension: 120,
+                friction: 14,
+                clamp: true,
+              }}
+              delay={150}
+            >
+              <MediaCard
+                width={width}
+                image={ASSETS.PROCESS}
+                title={"المراسلات"}
+                action={() => {
+                  dispatch(setselectedApplication(APPLICATIONS.GEC));
+                  navigate(getLink(routs.HomeGec));
+                }}
+              />
+            </Animated>
+          </div>
+        )}
+
         {!hasAnyApplication().hasAthoritie &&
           !(hasAnyApplication().loading || fakeLoading) && (
             <Stack spacing={4} alignItems={"center"}>

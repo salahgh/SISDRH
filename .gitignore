@@ -11,3 +11,5 @@ FRONT_END/src/_generated_gql_/
 FRONT_END/src/graphql/schema.graphql
 
 FRONT_END/package-lock.json
+
+BACK_END/.idea/

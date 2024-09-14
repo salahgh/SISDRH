@@ -19,6 +19,8 @@ import SearchUI from "../applications/textReglementaire/pages/ocr/searchPage/sea
 import OcrJobMain from "../applications/textReglementaire/pages/OcrJobMonitoring/OcrJobMain.tsx";
 import { Home } from "../applications/rh/Home.tsx";
 import SettingTabs from "../applications/common/UserAdministration/user/tabs/SettingsTabsPanel.tsx";
+import { HomeGec } from "../applications/gec/HomeGec.tsx";
+import LandingPageRecrutement from "../applications/recrutement/LandingPageRecrutement.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: routs.PersonnelNoteDataGrid.name,
         element: <PersonnelNoteDataGrid />,
+      },
+      {
+        path: routs.HomeGec.name,
+        element: <HomeGec />,
       },
       {
         path: routs.RhHome.name,
@@ -143,10 +149,10 @@ export const router = createBrowserRouter([
         path: routs.LandingPageTextReglementaire.name,
         element: <HomePageTextReglementaire />,
       },
-      //     {
-      //       path: routs.LandingPageRecrutement.name,
-      //       element: <LandingPageRecrutement />,
-      //     },
+      {
+        path: routs.LandingPageRecrutement.name,
+        element: <LandingPageRecrutement />,
+      },
       //     {
       //       path: routs.TextReglementairePrefrences.name,
       //       element: <TextReglementairePrefrences />,
@@ -171,6 +177,7 @@ export const router = createBrowserRouter([
         path: routs.PamHome.name,
         element: <PamHome />,
       },
+
       //     {
       //       path: routs.SimulationHome.name,
       //       element: <SimulationHome />,

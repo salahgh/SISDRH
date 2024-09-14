@@ -36,9 +36,5 @@ public class RhRRegionMilitaire {
     @Column(name = "TRIE_", nullable = true)
     private String trie;
 
-    @OneToMany(mappedBy = "regionMilitaire")
-    @ToString.Exclude
-    private List<RhRunite> runites ;
-
 
 }

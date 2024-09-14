@@ -1,0 +1,81 @@
+query findAllByCourrierId($courrierId : String){
+    findAllAttachmentsByCourrierId(courrierId: $courrierId){
+        id
+        pdf
+    }
+}
+mutation deleteAttachmentById($attachmentId : String){
+    deleteAttachmentById(attachmentId: $attachmentId)
+}
+query findCourrierAutoriteById($id : Long){
+    findCourrierAutoriteById(id: $id){
+        id
+        rhRunite {
+            abreviationFr
+            abreviationAr
+            libUniteeAr
+            libUniteeFr
+        }
+    }
+}
+mutation createCourrier($courrierDto : CourrierDtoInput){
+    createCourrier(courrierDto: $courrierDto){
+        id
+    }
+}
+mutation deleteCourrierById($id : String){
+    deleteCourrierById(id: $id)
+}
+mutation addDestinataireToCourrier($courrierId : String , $destinataireId : Long){
+    addDestinataireToCourrier(courrierId: $courrierId , destinataireId: $destinataireId){
+        id
+    }
+}
+mutation deleteDestinataireFromCourrier($courrierId : String , $destinataireId : Long){
+    deleteDestinataireFromCourrier(courrierId: $courrierId , destinataireId: $destinataireId){
+        id
+    }
+}
+mutation addReferenceToCourrier($courrierId : String , $referenceId : String){
+    addReferenceToCourrier(courrierId: $courrierId , referenceId: $referenceId){
+        id
+    }
+}
+mutation deleteReferenceFromCourrier($courrierId : String , $referenceId : String){
+    deleteReferenceFromCourrier(courrierId: $courrierId , referenceId: $referenceId){
+        id
+    }
+}
+mutation addAttachmentToCourrier($courrierId : String , $data : Base64String){
+    addAttachmentToCourrier(courrierId: $courrierId , data: $data){
+        id
+    }
+}
+query findAllTypeCourrier{
+    findAllTypeCourrier{
+        id
+        libFr
+        libAr
+    }
+}
+query findAllCourrierAutoriteByLib($lib : String, $pageable : PaginationInput){
+    findAllCourrierAutoriteByLib(lib: $lib , pageable: $pageable){
+        content {
+            id
+            rhRunite {
+                libUniteeFr
+                libUniteeAr
+                abreviationAr
+                abreviationFr
+                regionMilitaire {
+                    id
+                    libAbrRegionAr
+                    libAbrRegionFr
+                }
+            }
+        }
+        totalElements
+        totalPages
+    }
+}
+

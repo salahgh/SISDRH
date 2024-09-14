@@ -1,16 +1,8 @@
 package com.example.grh_n.security.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -44,13 +36,5 @@ public class Role {
            joinColumns = @JoinColumn(name = "role_id"),
            inverseJoinColumns = @JoinColumn(name = "composite_role_id"))
    private List<Role> compositeRoles ;
-
-   @Override
-   public String toString() {
-      return "Role{" +
-              "id='" + id + '\'' +
-              ", name='" + name + '\'' +
-              '}';
-   }
 
 }

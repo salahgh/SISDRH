@@ -70,7 +70,7 @@
 //                                dCandidat.noma ,
 //                                dCandidat.pnoma ,
 //                                qVvDiplomeCandidatV_entity.moyenne ,
-//                                dCandidat.RSexEntitie ,
+//                                dCandidat.Sex ,
 //                                dCandidat.ln ,
 //                                dCandidat.lr ,
 //                                qVvDiplomeCandidatV_entity.dateObtension ,
@@ -118,7 +118,7 @@
 //                                dCandidat.noma ,
 //                                dCandidat.pnoma ,
 //                                qVvDiplomeCandidatV_entity.moyenne ,
-//                                dCandidat.RSexEntitie ,
+//                                dCandidat.Sex ,
 //                                dCandidat.ln ,
 //                                dCandidat.lr ,
 //                                qVvDiplomeCandidatV_entity.dateObtension ,
@@ -134,7 +134,7 @@
 //////                                        qrSpecialite.idSpecialite.in(specialites).or(qrSpecialite.isNull())
 ////                                        qrSpecialite.idSpecialite.in(specialites).or(qrSpecialite.isNull())
 ////                                )
-////                                .and(dCandidat.RSexEntitie.idSex.in(sex))
+////                                .and(dCandidat.Sex.idSex.in(sex))
 //                );
 //
 //        Long count = dCandidatJPAQuery.fetchCount();

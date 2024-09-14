@@ -17,14 +17,6 @@
       <jdbc-url>jdbc:oracle:thin:@192.213.71.242:1521:DBDSN</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="GRH_N_PROD" uuid="6f88006a-5915-434a-923f-f19a41ba97cf">
-      <driver-ref>oracle.19</driver-ref>
-      <synchronize>true</synchronize>
-      <auto-commit>false</auto-commit>
-      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
-      <jdbc-url>jdbc:oracle:thin:@192.213.71.244:1521:DBDSN</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="DBSDRH" uuid="b2db307d-ddef-44cc-bae3-828651d1f6d7">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>

@@ -3,8 +3,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigInteger;
-
 @Entity
 @Getter
 @Setter
@@ -13,7 +11,7 @@ public class RhRunite {
 
     @Id
     @Column(name = "ID", nullable = false, precision = 0)
-    private String id;
+    private Long id;
 
     @Column(name = "LIB_UNITEE_FR", nullable = true)
     private String libUniteeFr;
@@ -33,7 +31,7 @@ public class RhRunite {
 
     @ManyToOne
     @JoinColumn(name = "LIEU_UNITE")
-    private RhRCodeGeo lieuUnite ;
+    private CodeGeo lieuUnite ;
 
     @Column(name = "DESSOUTE", nullable = true, length = 1)
     private String dessoute;

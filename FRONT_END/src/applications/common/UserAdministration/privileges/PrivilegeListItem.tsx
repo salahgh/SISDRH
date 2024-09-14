@@ -9,8 +9,35 @@ import {
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { green } from "@mui/material/colors";
-import { DeleteForever } from "@mui/icons-material";
+import {
+  DeleteForever,
+  GavelOutlined,
+  GroupAdd,
+  TransferWithinAStation,
+} from "@mui/icons-material";
 import { Privilege } from "../../../../_generated_gql_/graphql.ts";
+
+const getPrivilegeApplicationIcon = (applicationID: string) => {
+  console.log(applicationID);
+  switch (applicationID) {
+    case "3":
+      return (
+        <GavelOutlined
+          sx={{ color: "#ffffff", width: 17, height: 17 }}
+        ></GavelOutlined>
+      );
+    case "1":
+      return (
+        <TransferWithinAStation
+          sx={{ color: "#c23c3c", width: 20, height: 20 }}
+        ></TransferWithinAStation>
+      );
+    case "4":
+      return (
+        <GroupAdd sx={{ color: "#3c57c2", width: 20, height: 20 }}></GroupAdd>
+      );
+  }
+};
 
 export function PrivilegeListItem({
   selectedPrivilegeId,
@@ -30,6 +57,8 @@ export function PrivilegeListItem({
   // todo delete icon displayed only when hovered
 
   const [hovered, setHovered] = useState(false);
+
+  console.log(privilege);
 
   return (
     <Tooltip
@@ -70,7 +99,7 @@ export function PrivilegeListItem({
                 />
               </IconButton>
             ) : (
-              "P"
+              getPrivilegeApplicationIcon(privilege?.application?.id)
             )}
           </Avatar>
         </ListItemAvatar>

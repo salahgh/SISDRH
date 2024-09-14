@@ -92,7 +92,6 @@ export const Pam2024DataGrid = () => {
   // }, [page , getSort]);
 
   useEffect(() => {
-    console.log("pam effect");
     if (pam2024) {
       setRowCount(pam2024?.findPam2024?.totalElements);
     }

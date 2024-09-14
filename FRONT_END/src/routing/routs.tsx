@@ -19,6 +19,7 @@ import AllOutIcon from "@mui/icons-material/AllOut";
 import { darken } from "@mui/material";
 import ASSETS from "../resources/ASSETS.ts";
 import { Theme } from "@mui/material/styles";
+import { HomeGec } from "../applications/gec/HomeGec.tsx";
 
 export const routs = {
   MuiSignIn: {
@@ -29,6 +30,7 @@ export const routs = {
     name: "MuiSingUp",
     protected: false,
   },
+
   ForgottenPassword: {
     name: "ForgottenPassword",
     protected: false,
@@ -40,6 +42,10 @@ export const routs = {
   DemandeInscriptionSuccess: {
     name: "DemandeInscriptionSuccess",
     protected: false,
+  },
+  HomeGec: {
+    name: "HomeGec",
+    protected: true,
   },
   MainPage: {
     name: "MainPage",

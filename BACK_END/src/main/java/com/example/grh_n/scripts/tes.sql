@@ -1,3 +1,0 @@
-
-
-select * from RH_TED_STRUCTURE_INTERNE where TYPE_STRUCTURE_INTERNE_ID is null ;

@@ -28,7 +28,9 @@ import empty from "../resources/icons/allAps/empty.png";
 import retard from "../resources/gifs/en-retard.gif";
 import promotion from "../resources/icons/promotion-de-carriere.png";
 import reward from "../resources/icons/reward.png";
-import exemple_nom_document from "./exemple_nom_document.png"
+import exemple_nom_document from "./exemple_nom_document.png";
+import avatarMale from "../resources/avatars/mailAvatar2.png";
+import avatarFemale from "../resources/avatars/femailAvatar.png";
 
 const ASSETS = {
   BIRTH_ICON: orphanage,
@@ -41,8 +43,8 @@ const ASSETS = {
   BAC_SCIENCE_SVG: "ressources/icons/sciense.svg",
   BAC_LANGUE_ETRANGERE_SVG: "ressources/icons/MATH.svg",
   BAC_GESTION_SVG: "ressources/icons/gestion.svg",
-  AVATAR_MALE: "ressources/avatars/mailAvatar2.png",
-  AVATAR_FEMALE: "ressources/avatars/femailAvatar.png",
+  AVATAR_MALE: avatarMale,
+  AVATAR_FEMALE: avatarFemale,
   NO_RESULTS_FOUND: "ressources/icons/no-results.png",
   PROFILE_MILITAIRE: "ressources/icons/profile_picute_militaire.png",
   TEXT_REGLEMONTAIRE: TEXT_REGLEMONTAIRE,
@@ -74,7 +76,7 @@ const ASSETS = {
   retard: retard,
   promotion: promotion,
   reward: reward,
-  exemple_nom_document : exemple_nom_document
+  exemple_nom_document: exemple_nom_document,
 };
 
 export function getDiplomeIcon(idDiplome) {

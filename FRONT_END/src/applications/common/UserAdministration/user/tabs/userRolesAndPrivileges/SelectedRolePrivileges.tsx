@@ -1,6 +1,6 @@
 import ASSETS from "../../../../../../resources/ASSETS.ts";
 import { RoleListItem } from "../../../roles/RoleListItem.tsx";
-import ListOFPrevileges from "../../../privileges/ListOFPrevileges.tsx";
+import ListOFPrivileges from "../../../privileges/ListOFPrevileges.tsx";
 import { Stack } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { UserDocument } from "../../../../../../_generated_gql_/graphql.ts";
@@ -43,7 +43,7 @@ export const SelectedRolePrivileges = ({ selectedRoleId }) => {
                 }
                 displayId={true}
               />
-              <ListOFPrevileges
+              <ListOFPrivileges
                 privileges={
                   user?.user?.roles?.filter(
                     (role) => role?.id === selectedRoleId,

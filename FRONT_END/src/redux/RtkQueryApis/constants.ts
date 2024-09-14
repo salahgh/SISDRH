@@ -42,6 +42,7 @@ export const APPLICATIONS = {
   RH: "RH",
   PAM: "PAM",
   SIMULATION: "SIMULATION",
+  GEC: "GEC",
 };
 
 export const RouteProtected = "protected";
